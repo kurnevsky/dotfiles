@@ -27,6 +27,9 @@ setopt nomatch
 # Report the status of background jobs immediately, rather than waiting until just before printing a prompt
 setopt notify
 
+# Syntax highlighting
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
 # Autocompletion with an arrow-key driven interface
 zstyle ':completion:*' menu select
 # Sets autocompletion
