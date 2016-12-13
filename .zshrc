@@ -37,6 +37,10 @@ zstyle ':completion:*' menu select
 # Sets autocompletion
 autoload -Uz compinit && compinit
 
+# Many programs change the terminal state, and often do not restore terminal settings on exiting abnormally
+# This avoids the need to manually reset the terminal
+ttyctl -f
+
 bindkey -e
 [[ -n "${terminfo[khome]}" ]] && bindkey "${terminfo[khome]}" beginning-of-line
 [[ -n "${terminfo[kend]}" ]] && bindkey "${terminfo[kend]}" end-of-line
