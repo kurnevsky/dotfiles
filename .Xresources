@@ -1,0 +1,29 @@
+! XScreensaver
+
+xscreensaver.timeout: 0:10:00
+xscreensaver.lock: True
+xscreensaver.lockTimeout: 0:02:30
+xscreensaver.passwdTimeout: 0:00:30
+xscreensaver.visualID: default
+xscreensaver.splash: False
+xscreensaver.nice: 10
+xscreensaver.fade: False
+xscreensaver.unfade: False
+xscreensaver.dpmsEnabled: True
+xscreensaver.dpmsQuickOff: True
+xscreensaver.dpmsStandby: 0:15:00
+xscreensaver.dpmsSuspend: 0:20:00
+xscreensaver.dpmsOff: 0:30:00
+xscreensaver.mode: one
+xscreensaver.selected: 206
+xscreensaver.pointerHysteresis: 10
+xscreensaver.procInterrupts: True
+xscreensaver.authWarningSlack: 20
+
+! Emacs
+
+Xft.dpi: 96
+Xft.antialias: true
+Xft.rgba: rgb
+Xft.hinting: true
+Xft.hintstyle: hintslight
