@@ -29,6 +29,8 @@ setopt notify
 
 # Syntax highlighting
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# Automatically search the official repositories through pkgfile, when entering an unrecognized command
+source /usr/share/doc/pkgfile/command-not-found.zsh
 
 # Autocompletion with an arrow-key driven interface
 zstyle ':completion:*' menu select
