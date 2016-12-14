@@ -76,69 +76,103 @@ kill9 = withFocused $ \w ->
 kill9Window w = spawn $ "kill -9 `xdotool getwindowpid " ++ show w ++ "`"
 
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.union (planeKeys modm (Lines 3) Linear) $ M.fromList $
-  [ ((modm,                 xK_r     ), spawn $ XMonad.terminal conf) -- Launch terminal.
-  , ((modm .|. shiftMask,   xK_r     ), spawn "st") -- Launch terminal.
-  , ((modm,                 xK_e     ), spawn "st -e tmux new-session mc") -- Launch mc.
-  , ((modm,                 xK_F2    ), shellPrompt myXPConfig) -- Launch application.
-  , ((modm,                 xK_c     ), kill) -- Close the focused window.
-  , ((modm .|. shiftMask,   xK_c     ), kill9) -- Kill the focused window.
-  , ((modm,                 xK_space ), sendMessage NextLayout) -- Rotate through the available layout algorithms.
-  , ((modm .|. shiftMask,   xK_space ), (setLayout $ XMonad.layoutHook conf) >> docksStartupHook) -- Reset the layouts on the current workspace to default.
-  , ((modm,                 xK_n     ), refresh) -- Resize viewed windows to the correct size.
-  , ((modm,                 xK_Tab   ), windows W.focusDown) -- Move focus to the next window.
-  , ((modm .|. shiftMask,   xK_Tab   ), windows W.focusUp) -- Move focus to the previous window.
-  , ((modm,                 xK_Return), windows W.focusMaster) -- Move focus to the master window.
-  , ((modm .|. shiftMask,   xK_Return), windows W.swapMaster) -- Swap the focused window and the master window.
-  , ((modm .|. controlMask, xK_comma ), windows W.swapUp) -- Swap the focused window with the previous window.
-  , ((modm .|. controlMask, xK_period), windows W.swapDown) -- Swap the focused window with the next window.
-  , ((modm,                 xK_comma ), sendMessage Shrink) -- Shrink the master area.
-  , ((modm,                 xK_period), sendMessage Expand) -- Expand the master area.
-  , ((modm,                 xK_t     ), withFocused $ windows . W.sink) -- Push window back into tiling.
-  , ((modm .|. shiftMask,   xK_comma ), sendMessage (IncMasterN (-1))) -- Increment the number of windows in the master area.
-  , ((modm .|. shiftMask,   xK_period), sendMessage (IncMasterN 1)) -- Decrement the number of windows in the master area.
-  , ((modm              ,   xK_b     ), sendMessage ToggleStruts) -- Toggle the status bar gap.
-  , ((modm .|. shiftMask,   xK_q     ), confirmPrompt myXPConfig "exit" $ io exitSuccess) -- Quit xmonad.
-  , ((modm,                 xK_q     ), spawn "for pid in `pgrep taffybar`; do kill $pid; done; xmonad --recompile; xmonad --restart") -- Restart xmonad.
-  , ((modm,                 xK_F6    ), spawn "sleep 0.5; xset dpms force off") -- Turn off screen.
-  , ((modm,                 xK_u     ), focusUrgent) -- Focus urgent window (window with notification).
-  , ((modm,                 xK_v     ), windows copyToAll) -- Make focused window always visible.
-  , ((modm .|. shiftMask,   xK_v     ), killAllOtherCopies) -- Toggle window state back.
-  , ((0,                    xF86XK_MonBrightnessUp), spawn "xbacklight -inc 10")
-  , ((0,                    xF86XK_MonBrightnessDown), spawn "xbacklight -dec 10")
-  , ((shiftMask,            xF86XK_MonBrightnessUp), spawn "xbacklight = 100")
-  , ((shiftMask,            xF86XK_MonBrightnessDown), spawn "xbacklight = 1")
+  -- Launch terminal.
+  [ ((modm, xK_r), spawn $ XMonad.terminal conf)
+  -- Launch terminal.
+  , ((modm .|. shiftMask, xK_r), spawn "st")
+  -- Launch mc.
+  , ((modm, xK_e), spawn "st -e tmux new-session mc")
+  -- Launch application.
+  , ((modm, xK_F2), shellPrompt myXPConfig)
+  -- Close the focused window.
+  , ((modm, xK_c), kill)
+  -- Kill the focused window.
+  , ((modm .|. shiftMask, xK_c), kill9)
+  -- Rotate through the available layout algorithms.
+  , ((modm, xK_space), sendMessage NextLayout)
+  -- Reset the layouts on the current workspace to default.
+  , ((modm .|. shiftMask, xK_space), (setLayout $ XMonad.layoutHook conf) >> docksStartupHook)
+  -- Resize viewed windows to the correct size.
+  , ((modm, xK_n), refresh)
+  -- Move focus to the next window.
+  , ((modm, xK_Tab), windows W.focusDown)
+  -- Move focus to the previous window.
+  , ((modm .|. shiftMask, xK_Tab), windows W.focusUp)
+  -- Move focus to the master window.
+  , ((modm, xK_Return), windows W.focusMaster)
+  -- Swap the focused window and the master window.
+  , ((modm .|. shiftMask, xK_Return), windows W.swapMaster)
+  -- Swap the focused window with the previous window.
+  , ((modm .|. controlMask, xK_comma), windows W.swapUp)
+  -- Swap the focused window with the next window.
+  , ((modm .|. controlMask, xK_period), windows W.swapDown)
+  -- Shrink the master area.
+  , ((modm, xK_comma), sendMessage Shrink)
+  -- Expand the master area.
+  , ((modm, xK_period), sendMessage Expand)
+  -- Push window back into tiling.
+  , ((modm, xK_t), withFocused $ windows . W.sink)
+  -- Increment the number of windows in the master area.
+  , ((modm .|. shiftMask, xK_comma), sendMessage (IncMasterN (-1)))
+  -- Decrement the number of windows in the master area.
+  , ((modm .|. shiftMask, xK_period), sendMessage (IncMasterN 1))
+  -- Toggle the status bar gap.
+  , ((modm, xK_b), sendMessage ToggleStruts)
+  -- Quit xmonad.
+  , ((modm .|. shiftMask, xK_q), confirmPrompt myXPConfig "exit" $ io exitSuccess)
+  -- Restart xmonad.
+  , ((modm, xK_q), spawn "for pid in $(pgrep -u $(whoami) taffybar); do kill $pid; done; xmonad --recompile; xmonad --restart")
+  -- Turn off screen.
+  , ((modm, xK_F6), spawn "sleep 0.5; xset dpms force off")
+  -- Focus urgent window (window with notification).
+  , ((modm, xK_u), focusUrgent)
+  -- Make focused window always visible.
+  , ((modm, xK_v), windows copyToAll)
+  -- Toggle window state back.
+  , ((modm .|. shiftMask, xK_v), killAllOtherCopies)
+  , ((0, xF86XK_MonBrightnessUp), spawn "xbacklight -inc 10")
+  , ((0, xF86XK_MonBrightnessDown), spawn "xbacklight -dec 10")
+  , ((shiftMask, xF86XK_MonBrightnessUp), spawn "xbacklight = 100")
+  , ((shiftMask, xF86XK_MonBrightnessDown), spawn "xbacklight = 1")
   -- dbus-send --dest=com.github.chjj.compton._0 / com.github.chjj.compton.win_set uint32:0x5a0000a string:invert_color_force uint16:1
-  , ((modm,                 xK_i     ), withDisplay $ \dpy -> withFocused $ \w -> inversionStatus dpy w >>= invert dpy w . not)
-  , ((modm .|. shiftMask,   xK_i     ), spawn "xcalib -i -a") -- Invert colors.
-  --, ((modm .|. shiftMask,   xK_i     ), spawn "xcalib -c") -- Clear invertions.
-  , ((modm,                 xK_o     ), windowMenu)
-  , ((modm,                 xK_m     ), withFocused minimizeWindow)
-  , ((modm .|. shiftMask,   xK_m     ), sendMessage RestoreNextMinimizedWin)
-  , ((modm,                 xK_w     ), withDisplay $ \dpy -> withFocused $ io . raiseWindow dpy)
-  -- , ((modm,                 xK_w     ), withFocused $ windows . (W.shiftMaster .) . W.focusWindow)
-  , ((modm,                 xK_f     ), sendMessage $ JumpToLayout "Full")
-  , ((modm,                 xK_g     ), sendMessage $ JumpToLayout "Grid")
-  , ((modm,                 xK_h     ), sendMessage $ JumpToLayout "Tiled")
-  , ((modm,                 xK_j     ), sendMessage $ JumpToLayout "Mirror")
-  , ((modm,                 xK_Escape), spawn "xscreensaver-command -lock")
-  , ((0,                    xK_Print ), spawn "maim ~/screenshot-$(date +%F-%T).png")
-  , ((shiftMask,            xK_Print ), spawn "maim -i $(xdotool getactivewindow) ~/screenshot-$(date +%F-%T).png")
-  , ((controlMask,          xK_Print ), spawn "maim -s -c 1,0,0,0.6 -p 10 ~/screenshot-$(date +%F-%T).png")
+  , ((modm, xK_i), withDisplay $ \dpy -> withFocused $ \w -> inversionStatus dpy w >>= invert dpy w . not)
+  , ((modm .|. shiftMask, xK_i), spawn "xcalib -i -a") -- Invert colors.
+  , ((modm .|. controlMask .|. shiftMask, xK_i), spawn "xcalib -c") -- Clear invertions.
+  , ((modm, xK_o), windowMenu)
+  , ((modm, xK_m), withFocused minimizeWindow)
+  , ((modm .|. shiftMask, xK_m), sendMessage RestoreNextMinimizedWin)
+  , ((modm, xK_w), withDisplay $ \dpy -> withFocused $ io . raiseWindow dpy)
+  , ((modm, xK_f), sendMessage $ JumpToLayout "Full")
+  , ((modm, xK_g), sendMessage $ JumpToLayout "Grid")
+  , ((modm, xK_h), sendMessage $ JumpToLayout "Tiled")
+  , ((modm, xK_j), sendMessage $ JumpToLayout "Mirror")
+  , ((modm, xK_Escape), spawn "xscreensaver-command -lock")
+  , ((0, xK_Print), spawn "maim ~/screenshot-$(date +%F-%T).png")
+  , ((shiftMask, xK_Print), spawn "maim -i $(xdotool getactivewindow) ~/screenshot-$(date +%F-%T).png")
+  , ((controlMask, xK_Print), spawn "maim -s -c 1,0,0,0.6 -p 10 ~/screenshot-$(date +%F-%T).png")
   ]
   ++
-  [((m .|. modm, k), windows $ f i)
-    | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
-    , (f, m) <- [(W.greedyView, 0), -- mod-[1..9], Switch to workspace N.
-                 (W.shift, shiftMask), -- mod-shift-[1..9], Move client to workspace N.
-                 (copy, controlMask), -- mod-ctrl-[1..9], Copy client to workspace N.
-                 (swapWithCurrent, controlMask .|. shiftMask) -- mod-ctrl-shift-[1..9], Swap workspace with workspace N.
-                ]]
+  [ ((m .|. modm, k), windows $ f i)
+  | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
+  , (f, m) <- -- mod-[1..9], Switch to workspace N.
+              [ (W.greedyView, 0)
+              -- mod-shift-[1..9], Move client to workspace N.
+              , (W.shift, shiftMask)
+              -- mod-ctrl-[1..9], Copy client to workspace N.
+              , (copy, controlMask)
+              -- mod-ctrl-shift-[1..9], Swap workspace with workspace N.
+              , (swapWithCurrent, controlMask .|. shiftMask)
+              ]
+  ]
   ++
-  [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
-    | (key, sc) <- zip [xK_a, xK_s, xK_d] [0..]
-    , (f, m) <- [(W.view, 0), -- mod-{a,s,d}, Switch to physical/Xinerama screens 1, 2, or 3.
-                 (W.shift, shiftMask) -- mod-shift-{a,s,d}, Move client to screen 1, 2, or 3.
-                ]]
+  [ ((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
+  | (key, sc) <- zip [xK_a, xK_s, xK_d] [0..]
+  , (f, m) <- -- mod-{a,s,d}, Switch to physical/Xinerama screens 1, 2, or 3.
+              [ (W.view, 0)
+              -- mod-shift-{a,s,d}, Move client to screen 1, 2, or 3.
+              , (W.shift, shiftMask)
+              ]
+  ]
 
 myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList
   [ ((modm,               button1), \w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster) -- Set the window to floating mode and move by dragging.
