@@ -67,8 +67,7 @@ myXPConfig = def
   , alwaysHighlight = True
   }
 
--- withDisplay $ \dpy -> withFocused $ io . void . killClient dpy
--- kill9 = spawn "kill -9 `xdotool getactivewindow getwindowpid`"
+-- kill9 = spawn "kill -9 $(xdotool getactivewindow getwindowpid)"
 kill9 = withFocused $ \w ->
   do p <- runQuery pid w
      whenJust p $ io . signalProcess 9
