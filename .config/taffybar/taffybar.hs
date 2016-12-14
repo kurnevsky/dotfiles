@@ -47,7 +47,7 @@ mpris2 = mpris2New
 
 mpris = mprisNew defaultMPRISConfig
 
-wifi = netMonitorNewWith 1 "wlp2s0" 1 "lan ▼ $inKB$ ▲ $outKB$ kb/s"
+wifi = netMonitorNewWith 1 "wlp2s0" 1 "n ▼ $inKB$ ▲ $outKB$ kb/s"
 
 disk = dioMonitorNew diskCfg 1 "sda"
 
