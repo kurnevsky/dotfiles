@@ -175,12 +175,18 @@ myKeys conf@(XConfig { XMonad.modMask = modm }) = M.union (planeKeys modm (Lines
   ]
 
 myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList
-  [ ((modm,               button1), \w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster) -- Set the window to floating mode and move by dragging.
-  , ((modm,               button2), killWindow) -- Close window.
-  , ((modm .|. shiftMask, button2), kill9Window) -- Kill window.
-  , ((modm,               button3), \w -> focus w >> mouseResizeWindow w >> windows W.shiftMaster) -- Set the window to floating mode and resize by dragging.
-  , ((0,                  8      ), killWindow)
-  , ((0,                  9      ), \w -> windows (W.focusWindow w) >> windowMenu)
+  -- Set the window to floating mode and move by dragging.
+  [ ((modm, button1), \w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster)
+  -- Close window.
+  , ((modm, button2), killWindow)
+  -- Kill window.
+  , ((modm .|. shiftMask, button2), kill9Window)
+  -- Set the window to floating mode and resize by dragging.
+  , ((modm, button3), \w -> focus w >> mouseResizeWindow w >> windows W.shiftMaster)
+  -- Close window.
+  , ((0, 8), killWindow)
+  -- Open window menu.
+  , ((0, 9), \w -> windows (W.focusWindow w) >> windowMenu)
   ]
 
 data MyLayout a = MyLayout deriving (Read, Show)
