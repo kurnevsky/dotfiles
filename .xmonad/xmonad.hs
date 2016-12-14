@@ -73,9 +73,9 @@ kill9 = withFocused $ \w ->
   do p <- runQuery pid w
      whenJust p $ io . signalProcess 9
 
-kill9Window w = spawn $ "kill -9 `xdotool getwindowpid " ++ show w ++ "`"
+kill9Window w = spawn $ "kill -9 $(xdotool getwindowpid " ++ show w ++ ")"
 
-myKeys conf@(XConfig {XMonad.modMask = modm}) = M.union (planeKeys modm (Lines 3) Linear) $ M.fromList $
+myKeys conf@(XConfig { XMonad.modMask = modm }) = M.union (planeKeys modm (Lines 3) Linear) $ M.fromList $
   -- Launch terminal.
   [ ((modm, xK_r), spawn $ XMonad.terminal conf)
   -- Launch terminal.
