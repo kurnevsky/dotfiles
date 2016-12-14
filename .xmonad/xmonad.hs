@@ -40,6 +40,7 @@ import XMonad.Layout.FullscreenNoBorders
 import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.ManageHelpers
 import XMonad.Layout.TrackFloating
+import XMonad.Hooks.FadeInactive
 
 myTerminal = "st -e tmux"
 
@@ -129,15 +130,23 @@ myKeys conf@(XConfig { XMonad.modMask = modm }) = M.union (planeKeys modm (Lines
   , ((modm, xK_v), windows copyToAll)
   -- Toggle window state back.
   , ((modm .|. shiftMask, xK_v), killAllOtherCopies)
+  -- Increase monitor backlight level.
   , ((0, xF86XK_MonBrightnessUp), spawn "xbacklight -inc 10")
+  -- Decrease monitor backlight level.
   , ((0, xF86XK_MonBrightnessDown), spawn "xbacklight -dec 10")
+  -- Set monitor backlight level to maximum value.
   , ((shiftMask, xF86XK_MonBrightnessUp), spawn "xbacklight = 100")
+  -- Set monitor backlight level to minimum value.
   , ((shiftMask, xF86XK_MonBrightnessDown), spawn "xbacklight = 1")
   -- dbus-send --dest=com.github.chjj.compton._0 / com.github.chjj.compton.win_set uint32:0x5a0000a string:invert_color_force uint16:1
   , ((modm, xK_i), withDisplay $ \dpy -> withFocused $ \w -> inversionStatus dpy w >>= invert dpy w . not)
-  , ((modm .|. shiftMask, xK_i), spawn "xcalib -i -a") -- Invert colors.
-  , ((modm .|. controlMask .|. shiftMask, xK_i), spawn "xcalib -c") -- Clear invertions.
+  -- Invert colors.
+  , ((modm .|. shiftMask, xK_i), spawn "xcalib -i -a")
+  -- Clear invertions.
+  , ((modm .|. controlMask .|. shiftMask, xK_i), spawn "xcalib -c")
+  -- Open window menu.
   , ((modm, xK_o), windowMenu)
+  -- Minimize focused window.
   , ((modm, xK_m), withFocused minimizeWindow)
   , ((modm .|. shiftMask, xK_m), sendMessage RestoreNextMinimizedWin)
   , ((modm, xK_w), withDisplay $ \dpy -> withFocused $ io . raiseWindow dpy)
@@ -218,7 +227,9 @@ myManageHook = fullscreenManageHook <> manageDocks <> (fmap not isDialog --> ins
 
 myEventHook e = screenCornerEventHook e <> perWindowKbdLayout e <> fullscreenEventHook e <> docksEventHook e
 
-myLogHook = updatePointer (0.5, 0.5) (0, 0)
+myLogHook = do
+  fadeInactiveLogHook 0.9
+  updatePointer (0.5, 0.5) (0, 0)
 
 decorateName' :: Window -> X String
 decorateName' w = show <$> getName w
