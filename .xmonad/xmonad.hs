@@ -35,7 +35,6 @@ import XMonad.Layout.Named
 import XMonad.Layout.LayoutCombinators
 import XMonad.Util.Compton
 import XMonad.Layout.Fullscreen
-import XMonad.Layout.FullscreenNoBorders
 import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.ManageHelpers
 import XMonad.Layout.TrackFloating
@@ -49,7 +48,7 @@ myFocusFollowsMouse = True
 myClickJustFocuses :: Bool
 myClickJustFocuses = False
 
-myBorderWidth = 2
+myBorderWidth = 1
 
 myModMask = mod4Mask
 
@@ -57,7 +56,7 @@ myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
 myNormalBorderColor = "gray"
 
-myFocusedBorderColor = "blue"
+myFocusedBorderColor = "black"
 
 myXPConfig = def
   { position = Top
@@ -220,8 +219,7 @@ instance LayoutModifier MyLayout a where
 
 myLayout = ModifiedLayout MyLayout $
   dwmStyle shrinkText defaultTheme $
-  lessBorders (Union Never FullscreenNoBordersAmbiguity) $
-  ModifiedLayout FullscreenNoBorders $
+  smartBorders $
   fullscreenFocus $
   smartSpacing 2 $
   avoidStruts $
