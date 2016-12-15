@@ -1,5 +1,8 @@
 import System.Taffybar
 
+import Data.Maybe
+import Control.Applicative
+import System.Directory
 import System.Taffybar.Systray
 import System.Taffybar.TaffyPager
 import System.Taffybar.SimpleClock
@@ -14,6 +17,7 @@ import System.Taffybar.Widgets.PollingBar
 import System.Taffybar.Widgets.PollingGraph
 import System.Information.Memory
 import System.Information.CPU
+import Graphics.UI.Gtk
 
 memCallback = do
   mi <- parseMeminfo
@@ -47,7 +51,20 @@ mpris2 = mpris2New
 
 mpris = mprisNew defaultMPRISConfig
 
-wifi = netMonitorNewWith 1 "wlp2s0" 1 "n ▼ $inKB$ ▲ $outKB$ kb/s"
+networksList :: IO [String]
+networksList = filter (maybe False (/= '.') . listToMaybe) <$> getDirectoryContents "/sys/class/net"
+
+isShowNetwork :: String -> Bool
+isShowNetwork ('w' : 'l' : 'p' : _) = True
+isShowNetwork ('e' : 'n' : 'p' : _) = True
+isShowNetwork _ = False
+
+net :: IO [IO Widget]
+net = do
+  networks <- networksList
+  return $
+    map (\network -> netMonitorNewWith 1 network 1 (network ++ " ▼ $inKB$ ▲ $outKB$")) $
+    filter isShowNetwork networks
 
 disk = dioMonitorNew diskCfg 1 "sda"
 
@@ -63,7 +80,9 @@ weather = weatherNew (defaultWeatherConfig "UMMS") { weatherTemplate = "$station
 
 clock = textClockNew Nothing "<span fgcolor='orange'>%a %b %_d %H:%M:%S</span>" 1
 
-main = defaultTaffybar defaultTaffybarConfig
-  { startWidgets = [pager]
-  , endWidgets = [clock, weather, tray, battery, mem, cpu, disk, wifi, mpris, mpris2]
-  }
+main = do
+  n <- net
+  defaultTaffybar defaultTaffybarConfig
+    { startWidgets = [pager]
+    , endWidgets = [clock, weather, tray, battery, mem, cpu, disk] ++ n ++ [mpris, mpris2]
+    }
