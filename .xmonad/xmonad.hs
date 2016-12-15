@@ -42,7 +42,7 @@ import XMonad.Hooks.ManageHelpers
 import XMonad.Layout.TrackFloating
 import XMonad.Hooks.FadeInactive
 
-myTerminal = "st -e tmux"
+myTerminal = "urxvt -e tmux"
 
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = True
@@ -79,9 +79,9 @@ myKeys conf@(XConfig { XMonad.modMask = modm }) = M.union (planeKeys modm (Lines
   -- Launch terminal.
   [ ((modm, xK_r), spawn $ XMonad.terminal conf)
   -- Launch terminal.
-  , ((modm .|. shiftMask, xK_r), spawn "st")
+  , ((modm .|. shiftMask, xK_r), spawn "urxvt")
   -- Launch mc.
-  , ((modm, xK_e), spawn "st -e tmux new-session mc")
+  , ((modm, xK_e), spawn "urxvt -e tmux new-session mc")
   -- Launch application.
   , ((modm, xK_F2), shellPrompt myXPConfig)
   -- Close the focused window.
