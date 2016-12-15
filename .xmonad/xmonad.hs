@@ -11,7 +11,6 @@ import XMonad.Layout.Spacing
 import qualified XMonad.StackSet as W
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.EwmhDesktops (ewmh)
-import XMonad.Hooks.ScreenCorners
 import XMonad.Actions.GridSelect
 import XMonad.Layout.NoBorders
 import XMonad.Hooks.UrgencyHook hiding (Never)
@@ -75,6 +74,19 @@ kill9 = withFocused $ \w ->
 
 kill9Window w = spawn $ "kill -9 $(xdotool getwindowpid " ++ show w ++ ")"
 
+decorateName' :: Window -> X String
+decorateName' w = show <$> getName w
+
+goToSelectedOnWorkspace gsConfig = do
+  let keyValuePair w = flip (,) w `fmap` decorateName' w
+  wins <- gets (W.index . windowset)
+  when (length wins > 1) $ do
+    namedWindows <- mapM keyValuePair wins
+    maybeWindow <- gridselect gsConfig namedWindows
+    case maybeWindow of
+      Just window -> windows $ W.focusWindow window
+      Nothing     -> return ()
+
 myKeys conf@(XConfig { XMonad.modMask = modm }) = M.union (planeKeys modm (Lines 3) Linear) $ M.fromList $
   -- Launch terminal.
   [ ((modm, xK_r), spawn $ XMonad.terminal conf)
@@ -118,6 +130,10 @@ myKeys conf@(XConfig { XMonad.modMask = modm }) = M.union (planeKeys modm (Lines
   , ((modm .|. shiftMask, xK_period), sendMessage (IncMasterN 1))
   -- Toggle the status bar gap.
   , ((modm, xK_b), sendMessage ToggleStruts)
+  -- Select workspace.
+  , ((modm, xK_z), gridselectWorkspace myGSConfig W.greedyView)
+  -- Select window on current workspace.
+  , ((modm, xK_x), goToSelectedOnWorkspace myGSConfig)
   -- Quit xmonad.
   , ((modm .|. shiftMask, xK_q), confirmPrompt myXPConfig "exit" $ io exitSuccess)
   -- Restart xmonad.
@@ -204,7 +220,6 @@ instance LayoutModifier MyLayout a where
 
 myLayout = ModifiedLayout MyLayout $
   dwmStyle shrinkText defaultTheme $
-  screenCornerLayoutHook $
   lessBorders (Union Never FullscreenNoBordersAmbiguity) $
   ModifiedLayout FullscreenNoBorders $
   fullscreenFocus $
@@ -225,24 +240,11 @@ myManageHook = fullscreenManageHook <> manageDocks <> (fmap not isDialog --> ins
   [ className =? "kcalc" --> doFloat
   ]
 
-myEventHook e = screenCornerEventHook e <> perWindowKbdLayout e <> fullscreenEventHook e <> docksEventHook e
+myEventHook e = perWindowKbdLayout e <> fullscreenEventHook e <> docksEventHook e
 
 myLogHook = do
   fadeInactiveLogHook 0.9
   updatePointer (0.5, 0.5) (0, 0)
-
-decorateName' :: Window -> X String
-decorateName' w = show <$> getName w
-
-goToSelectedOnWorkspace gsConfig = do
-  let keyValuePair w = flip (,) w `fmap` decorateName' w
-  wins <- gets (W.index . windowset)
-  when (length wins > 1) $ do
-    namedWindows <- mapM keyValuePair wins
-    maybeWindow <- gridselect gsConfig namedWindows
-    case maybeWindow of
-      Just window -> windows $ W.focusWindow window
-      Nothing     -> return ()
 
 myGSConfig :: HasColorizer a => GSConfig a
 myGSConfig = defaultGSConfig
@@ -253,8 +255,6 @@ myGSConfig = defaultGSConfig
 
 myStartupHook = do
   docksStartupHook
-  addScreenCorner SCUpperLeft $ goToSelectedOnWorkspace myGSConfig
-  addScreenCorner SCLowerLeft $ gridselectWorkspace myGSConfig W.greedyView
   spawn "setxkbmap -model pc101 -layout us,ru -option grp:caps_toggle -option grp:switch -option grp_led:caps -option lv3:ralt_switch"
   spawn "sleep 1; xmodmap ~/.Xmodmap"
   spawn "compton -b -f -I 0.10 -O 0.10 --backend glx --vsync opengl --dbus"
