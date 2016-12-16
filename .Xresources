@@ -44,6 +44,8 @@ URxvt.url-select.launcher: /usr/bin/xdg-open
 URxvt.url-select.underline: true
 ! Disable scrollbar
 URxvt.scrollBar: false
+! Disable glyphs - it increases tmux performance
+URxvt*skipBuiltinGlyphs: true
 ! Background/foreground colors
 URxvt.background: #282c34
 URxvt.foreground: #abb2bf
