@@ -9,6 +9,7 @@ import System.Posix.Signals
 import XMonad hiding ((|||))
 import XMonad.Layout.Spacing
 import qualified XMonad.StackSet as W
+import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.EwmhDesktops (ewmh)
 import XMonad.Actions.GridSelect
 import XMonad.Layout.NoBorders
@@ -38,6 +39,7 @@ import XMonad.Hooks.ManageHelpers
 import XMonad.Layout.TrackFloating
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.DynamicLog
+import XMonad.Util.Run
 
 myTerminal = "st -e tmux"
 
@@ -129,6 +131,8 @@ myKeys conf@(XConfig { XMonad.modMask = modm }) = M.union (planeKeys modm (Lines
   , ((modm .|. shiftMask, xK_comma), sendMessage (IncMasterN (-1)))
   -- Decrement the number of windows in the master area.
   , ((modm .|. shiftMask, xK_period), sendMessage (IncMasterN 1))
+  -- Toggle the status bar gap.
+  , ((modm, xK_b), sendMessage ToggleStruts)
   -- Select workspace.
   , ((modm, xK_z), gridselectWorkspace myGSConfig W.greedyView)
   -- Select window on current workspace.
@@ -222,6 +226,7 @@ myLayout = ModifiedLayout MyLayout $
   smartBorders $
   fullscreenFocus $
   smartSpacing 2 $
+  avoidStruts $
   maximize $
   minimize $
   named "Tiled" tiled |||
@@ -234,15 +239,16 @@ myLayout = ModifiedLayout MyLayout $
     delta   = 3 / 100 -- Percent of screen to increment by when resizing panes.
 
 -- To find the property name associated with a program, use > xprop | grep WM_CLASS.
-myManageHook = fullscreenManageHook <> (fmap not isDialog --> insertPosition Master Newer) <> composeAll
+myManageHook = fullscreenManageHook <> manageDocks <> (fmap not isDialog --> insertPosition Master Newer) <> composeAll
   [ className =? "kcalc" --> doFloat
   ]
 
-myEventHook e = perWindowKbdLayout e <> fullscreenEventHook e
+myEventHook e = perWindowKbdLayout e <> fullscreenEventHook e <> docksEventHook e
 
-myLogHook = do
+myLogHook hXmobar = do
   fadeInactiveLogHook 0.9
   updatePointer (0.5, 0.5) (0, 0)
+  dynamicLogWithPP $ xmobarPP { ppOutput = hPutStrLn hXmobar }
 
 myGSConfig :: HasColorizer a => GSConfig a
 myGSConfig = defaultGSConfig
@@ -252,6 +258,7 @@ myGSConfig = defaultGSConfig
   }
 
 myStartupHook = do
+  docksStartupHook
   spawn "setxkbmap -model pc101 -layout us,ru -option grp:caps_toggle -option grp:switch -option grp_led:caps -option lv3:ralt_switch"
   spawn "sleep 1; xmodmap ~/.Xmodmap"
   spawn "compton -b -f -I 0.10 -O 0.10 --backend glx --vsync opengl --dbus"
@@ -262,7 +269,7 @@ myStartupHook = do
   spawn "pgrep nm-applet; if [ $? -ne 0 ]; then nm-applet; fi"
   spawn "pgrep parcellite; if [ $? -ne 0 ]; then parcellite; fi"
 
-myConfig = withUrgencyHook NoUrgencyHook $ ewmh defaultConfig
+myConfig hXmobar = withUrgencyHook NoUrgencyHook $ ewmh defaultConfig
   { terminal           = myTerminal
   , focusFollowsMouse  = myFocusFollowsMouse
   , clickJustFocuses   = myClickJustFocuses
@@ -276,10 +283,12 @@ myConfig = withUrgencyHook NoUrgencyHook $ ewmh defaultConfig
   , layoutHook         = myLayout
   , manageHook         = myManageHook
   , handleEventHook    = myEventHook
-  , logHook            = myLogHook
+  , logHook            = myLogHook hXmobar
   , startupHook        = myStartupHook
   }
 
 myBar = "xmobar ~/.xmonad/xmobar.hs"
 
-main = statusBar myBar xmobarPP toggleStrutsKey myConfig >>= xmonad
+main = do
+  hXmobar <- spawnPipe myBar
+  xmonad $ myConfig hXmobar
