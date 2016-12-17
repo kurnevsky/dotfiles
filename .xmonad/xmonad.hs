@@ -87,9 +87,6 @@ goToSelectedOnWorkspace gsConfig = do
       Just window -> windows $ W.focusWindow window
       Nothing     -> return ()
 
--- Toggle the status bar gap.
-toggleStrutsKey XConfig { XMonad.modMask = modm } = (modm, xK_b)
-
 myKeys conf@(XConfig { XMonad.modMask = modm }) = M.union (planeKeys modm (Lines 3) Linear) $ M.fromList $
   -- Launch terminal.
   [ ((modm, xK_r), spawn $ XMonad.terminal conf)
