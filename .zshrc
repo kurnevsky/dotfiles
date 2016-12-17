@@ -46,9 +46,16 @@ bindkey -e
 [[ -n "${terminfo[kend]}" ]] && bindkey "${terminfo[kend]}" end-of-line
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
+bindkey "\e[3~" delete-char
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
 export PATH=~/.cabal/bin:$PATH
 export EDITOR=nano
+
+# Fix del key for st
+function zle-line-init () { echoti smkx }
+function zle-line-finish () { echoti rmkx }
+zle -N zle-line-init
+zle -N zle-line-finish
