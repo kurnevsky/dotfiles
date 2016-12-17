@@ -34,7 +34,7 @@ Xft.hintstyle: hintslight
 URxvt.font: xft:DejaVu Sans Mono:pixelsize=13:antialias=true:autohint=false
 ! Reduce spacing by one pixel between characters
 URxvt.letterSpace: -1
-! Add extensions.
+! Add/remove extensions
 URxvt.perl-ext: default,url-select,-searchable-scrollback
 ! Open links with ctrl+mouse_left
 URxvt.url-select.button: C-1
@@ -45,7 +45,7 @@ URxvt.url-select.underline: true
 ! Disable scrollbar
 URxvt.scrollBar: false
 ! Disable glyphs - it increases tmux performance
-URxvt*skipBuiltinGlyphs: true
+URxvt.skipBuiltinGlyphs: true
 ! Background/foreground colors
 URxvt.background: #282c34
 URxvt.foreground: #abb2bf
