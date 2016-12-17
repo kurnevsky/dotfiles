@@ -9,12 +9,10 @@ import System.Posix.Signals
 import XMonad hiding ((|||))
 import XMonad.Layout.Spacing
 import qualified XMonad.StackSet as W
-import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.EwmhDesktops (ewmh)
 import XMonad.Actions.GridSelect
 import XMonad.Layout.NoBorders
 import XMonad.Hooks.UrgencyHook hiding (Never)
-import System.Taffybar.Hooks.PagerHints (pagerHints)
 import XMonad.Prompt
 import XMonad.Prompt.Shell
 import XMonad.Prompt.ConfirmPrompt
@@ -39,8 +37,9 @@ import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.ManageHelpers
 import XMonad.Layout.TrackFloating
 import XMonad.Hooks.FadeInactive
+import XMonad.Hooks.DynamicLog
 
-myTerminal = "urxvt -e tmux"
+myTerminal = "st -e tmux"
 
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = True
@@ -86,13 +85,16 @@ goToSelectedOnWorkspace gsConfig = do
       Just window -> windows $ W.focusWindow window
       Nothing     -> return ()
 
+-- Toggle the status bar gap.
+toggleStrutsKey XConfig { XMonad.modMask = modm } = (modm, xK_b)
+
 myKeys conf@(XConfig { XMonad.modMask = modm }) = M.union (planeKeys modm (Lines 3) Linear) $ M.fromList $
   -- Launch terminal.
   [ ((modm, xK_r), spawn $ XMonad.terminal conf)
   -- Launch terminal.
-  , ((modm .|. shiftMask, xK_r), spawn "urxvt")
+  , ((modm .|. shiftMask, xK_r), spawn "st")
   -- Launch mc.
-  , ((modm, xK_e), spawn "urxvt -e tmux new-session mc")
+  , ((modm, xK_e), spawn "st -e tmux new-session mc")
   -- Launch application.
   , ((modm, xK_F2), shellPrompt myXPConfig)
   -- Close the focused window.
@@ -102,7 +104,7 @@ myKeys conf@(XConfig { XMonad.modMask = modm }) = M.union (planeKeys modm (Lines
   -- Rotate through the available layout algorithms.
   , ((modm, xK_space), sendMessage NextLayout)
   -- Reset the layouts on the current workspace to default.
-  , ((modm .|. shiftMask, xK_space), (setLayout $ XMonad.layoutHook conf) >> docksStartupHook)
+  , ((modm .|. shiftMask, xK_space), setLayout $ XMonad.layoutHook conf)
   -- Resize viewed windows to the correct size.
   , ((modm, xK_n), refresh)
   -- Move focus to the next window.
@@ -127,8 +129,6 @@ myKeys conf@(XConfig { XMonad.modMask = modm }) = M.union (planeKeys modm (Lines
   , ((modm .|. shiftMask, xK_comma), sendMessage (IncMasterN (-1)))
   -- Decrement the number of windows in the master area.
   , ((modm .|. shiftMask, xK_period), sendMessage (IncMasterN 1))
-  -- Toggle the status bar gap.
-  , ((modm, xK_b), sendMessage ToggleStruts)
   -- Select workspace.
   , ((modm, xK_z), gridselectWorkspace myGSConfig W.greedyView)
   -- Select window on current workspace.
@@ -136,7 +136,7 @@ myKeys conf@(XConfig { XMonad.modMask = modm }) = M.union (planeKeys modm (Lines
   -- Quit xmonad.
   , ((modm .|. shiftMask, xK_q), confirmPrompt myXPConfig "exit" $ io exitSuccess)
   -- Restart xmonad.
-  , ((modm, xK_q), spawn "for pid in $(pgrep -u $(whoami) taffybar); do kill $pid; done; xmonad --recompile; xmonad --restart")
+  , ((modm, xK_q), restart "xmonad" True)
   -- Turn off screen.
   , ((modm, xK_F6), spawn "sleep 0.5; xset dpms force off")
   -- Focus urgent window (window with notification).
@@ -222,7 +222,6 @@ myLayout = ModifiedLayout MyLayout $
   smartBorders $
   fullscreenFocus $
   smartSpacing 2 $
-  avoidStruts $
   maximize $
   minimize $
   named "Tiled" tiled |||
@@ -234,11 +233,12 @@ myLayout = ModifiedLayout MyLayout $
     ratio   = 1 / 2 -- Default proportion of screen occupied by master pane.
     delta   = 3 / 100 -- Percent of screen to increment by when resizing panes.
 
-myManageHook = fullscreenManageHook <> manageDocks <> (fmap not isDialog --> insertPosition Master Newer) <> composeAll -- To find the property name associated with a program, use > xprop | grep WM_CLASS.
+-- To find the property name associated with a program, use > xprop | grep WM_CLASS.
+myManageHook = fullscreenManageHook <> (fmap not isDialog --> insertPosition Master Newer) <> composeAll
   [ className =? "kcalc" --> doFloat
   ]
 
-myEventHook e = perWindowKbdLayout e <> fullscreenEventHook e <> docksEventHook e
+myEventHook e = perWindowKbdLayout e <> fullscreenEventHook e
 
 myLogHook = do
   fadeInactiveLogHook 0.9
@@ -252,19 +252,17 @@ myGSConfig = defaultGSConfig
   }
 
 myStartupHook = do
-  docksStartupHook
   spawn "setxkbmap -model pc101 -layout us,ru -option grp:caps_toggle -option grp:switch -option grp_led:caps -option lv3:ralt_switch"
   spawn "sleep 1; xmodmap ~/.Xmodmap"
   spawn "compton -b -f -I 0.10 -O 0.10 --backend glx --vsync opengl --dbus"
   spawn "feh --bg-fill ~/Images/pic-3909-1920x1200.jpg"
-  spawn "taffybar"
   spawn "sleep 1; xscreensaver -no-splash"
   spawn "pgrep volumeicon; if [ $? -ne 0 ]; then volumeicon; fi"
   spawn "pgrep gnome-keyring; if [ $? -ne 0 ]; then gnome-keyring-daemon; fi"
   spawn "pgrep nm-applet; if [ $? -ne 0 ]; then nm-applet; fi"
   spawn "pgrep parcellite; if [ $? -ne 0 ]; then parcellite; fi"
 
-myConfig = withUrgencyHook NoUrgencyHook $ ewmh $ pagerHints defaultConfig
+myConfig = withUrgencyHook NoUrgencyHook $ ewmh defaultConfig
   { terminal           = myTerminal
   , focusFollowsMouse  = myFocusFollowsMouse
   , clickJustFocuses   = myClickJustFocuses
@@ -282,4 +280,6 @@ myConfig = withUrgencyHook NoUrgencyHook $ ewmh $ pagerHints defaultConfig
   , startupHook        = myStartupHook
   }
 
-main = xmonad myConfig
+myBar = "xmobar ~/.xmonad/xmobar.hs"
+
+main = statusBar myBar xmobarPP toggleStrutsKey myConfig >>= xmonad
