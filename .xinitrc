@@ -17,4 +17,6 @@ numlockx
 
 dunst &
 
+trayer --edge top --align left --SetDockType true --SetPartialStrut false --expand true --height 25 --transparent true --alpha 0 --tint 0x000000 --widthtype request --monitor 0 &
+
 exec xmonad 2>> ~/.xsession-errors
