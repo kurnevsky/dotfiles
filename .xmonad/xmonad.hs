@@ -39,6 +39,7 @@ import XMonad.Layout.TrackFloating
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.DynamicLog
 import XMonad.Util.Run
+import XMonad.Hooks.IgnoreNetActiveWindow
 
 myTerminal = "st -e tmux"
 
@@ -264,7 +265,7 @@ myStartupHook = do
   spawn "pgrep nm-applet; if [ $? -ne 0 ]; then nm-applet; fi"
   spawn "pgrep parcellite; if [ $? -ne 0 ]; then parcellite; fi"
 
-myConfig hXmobar = withUrgencyHook NoUrgencyHook $ ewmh defaultConfig
+myConfig hXmobar = ignoreNetActiveWindow (return True) $ withUrgencyHook NoUrgencyHook $ ewmh defaultConfig
   { terminal           = myTerminal
   , focusFollowsMouse  = myFocusFollowsMouse
   , clickJustFocuses   = myClickJustFocuses
