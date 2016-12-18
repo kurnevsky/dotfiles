@@ -10,7 +10,7 @@ import XMonad hiding ((|||))
 import XMonad.Layout.Spacing
 import qualified XMonad.StackSet as W
 import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.EwmhDesktops (ewmh)
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Actions.GridSelect
 import XMonad.Layout.NoBorders
 import XMonad.Hooks.UrgencyHook hiding (Never)
@@ -33,7 +33,6 @@ import XMonad.Layout.Grid
 import XMonad.Layout.Named
 import XMonad.Layout.LayoutCombinators
 import XMonad.Util.Compton
-import XMonad.Layout.Fullscreen
 import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.ManageHelpers
 import XMonad.Layout.TrackFloating
@@ -221,7 +220,6 @@ instance LayoutModifier MyLayout a where
 myLayout = ModifiedLayout MyLayout $
   dwmStyle shrinkText defaultTheme $
   smartBorders $
-  fullscreenFocus $
   smartSpacing 2 $
   avoidStruts $
   maximize $
@@ -236,7 +234,7 @@ myLayout = ModifiedLayout MyLayout $
     delta   = 3 / 100 -- Percent of screen to increment by when resizing panes.
 
 -- To find the property name associated with a program, use > xprop | grep WM_CLASS.
-myManageHook = fullscreenManageHook <> manageDocks <> (fmap not isDialog --> insertPosition Master Newer) <> composeAll
+myManageHook = manageDocks <> (fmap not isDialog --> insertPosition Master Newer) <> composeAll
   [ className =? "kcalc" --> doFloat
   ]
 
