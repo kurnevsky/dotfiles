@@ -16,31 +16,31 @@ Config { font = "xft:DejaVu Sans:pixelsize=14:antialias=true:autohint=false"
                                   , "-i", "<fc=darkgreen>∞</fc>"
                                   , "-o", "<left>% (<timeleft>)"
                                   ] 1000
-                    , Run Memory [ "--template", "m <usedratio>%"
+                    , Run Memory [ "--template", "mem <usedratio>%"
                                  , "--Low", "50"
                                  , "--High", "90"
                                  , "--low", "darkgreen"
                                  , "--normal", "darkorange"
                                  , "--high", "darkred"
                                  ] 10
-                      , Run Cpu [ "--template", "c <total>%"
-                                , "--Low", "10"
-                                , "--High", "90"
-                                , "--low", "darkgreen"
-                                , "--normal", "darkorange"
-                                , "--high", "darkred"
-                                ] 10
-                      , Run DiskIO [("sda", "d <read>/<write>")] [] 10
-                      , Run DynNetwork [ "--template", "<dev> ▼ <rx>K/s ▲ <tx>K/s"
-                                       , "--Low", "131072"
-                                       , "--High", "1048576"
-                                       , "--low", "darkgreen"
-                                       , "--normal", "darkorange"
-                                       , "--high", "darkred"
-                                       ] 10
-                      , Run StdinReader
-                      , Run Com "/bin/bash" [ "-c", "~/.xmonad/trayer-pad-icon.sh"
-                                            ] "trayer" 10
+                    , Run Cpu [ "--template", "cpu <total>%"
+                              , "--Low", "10"
+                              , "--High", "90"
+                              , "--low", "darkgreen"
+                              , "--normal", "darkorange"
+                              , "--high", "darkred"
+                              ] 10
+                    , Run DiskIO [("sda", "io <read>/<write>")] [] 10
+                    , Run DynNetwork [ "--template", "<dev> ▼ <rx>K/s ▲ <tx>K/s"
+                                     , "--Low", "131072"
+                                     , "--High", "1048576"
+                                     , "--low", "darkgreen"
+                                     , "--normal", "darkorange"
+                                     , "--high", "darkred"
+                                     ] 10
+                    , Run StdinReader
+                    , Run Com "/bin/bash" [ "-c", "~/.xmonad/trayer-pad-icon.sh"
+                                          ] "trayer" 10
                     ]
        , sepChar = "%"
        , alignSep = "}{"
