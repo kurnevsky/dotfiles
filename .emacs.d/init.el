@@ -90,7 +90,9 @@
                       ghc))
 (require 'package)
 (add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/"))
+  '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives
+  '("melpa-stable" . "https://stable.melpa.org/packages/"))
 ;; Activate all the packages (in particular autoloads).
 (package-initialize)
 ;; Fetch the list of packages available.
@@ -274,6 +276,7 @@
 
 ;; Ensime.
 (use-package ensime
+  :pin melpa-stable
   :bind (:map ensime-mode-map
           ("C-l e" . ensime-print-errors-at-point)
           ("C-l t" . ensime-inspect-type-at-point)
