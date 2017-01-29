@@ -51,7 +51,7 @@ bindkey "\e[3~" delete-char
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
-export PATH=~/.cabal/bin:$PATH
+export PATH=~/.bin:~/.cabal/bin:$PATH
 export EDITOR=nano
 
 # Fix del key for st
