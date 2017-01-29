@@ -41,7 +41,7 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Util.Run
 import XMonad.Hooks.IgnoreNetActiveWindow
 
-myTerminal = "st -e tmux"
+myTerminal = "alacritty -e tmux"
 
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = True
@@ -91,9 +91,9 @@ myKeys conf@(XConfig { XMonad.modMask = modm }) = M.union (planeKeys modm (Lines
   -- Launch terminal.
   [ ((modm, xK_r), spawn $ XMonad.terminal conf)
   -- Launch terminal.
-  , ((modm .|. shiftMask, xK_r), spawn "st")
+  , ((modm .|. shiftMask, xK_r), spawn "alacritty")
   -- Launch mc.
-  , ((modm, xK_e), spawn "st -e tmux new-session mc")
+  , ((modm, xK_e), spawn "alacritty -e tmux new-session mc")
   -- Launch application.
   , ((modm, xK_F2), shellPrompt myXPConfig)
   -- Close the focused window.
