@@ -1,14 +1,21 @@
 caps.drop all
-seccomp
-protocol unix,inet,inet6,netlink
 netfilter
-tracelog
+nonewprivs
 noroot
-private-dev
+protocol unix,inet,inet6
+seccomp
 shell none
-include /etc/firejail/whitelist-common.inc
+
+private-dev
+private-tmp
+private-etc resolv.conf,fonts/,gtk-3.0/,pulse/
+private-bin firefox
+
 whitelist /tmp/.X11-unix
+
+mkdir ~/.mozilla
 whitelist ~/.mozilla
+mkdir ~/.cache/mozilla/firefox
 whitelist ~/.cache/mozilla/firefox
-# whitelist /tmp/qtsingleapp-qBitto-1809-3e8-lockfile
+mkdir ~/Downloads
 whitelist ~/Downloads
