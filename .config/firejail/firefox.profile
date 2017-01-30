@@ -1,3 +1,5 @@
+name firefox
+
 caps.drop all
 netfilter
 nonewprivs
@@ -5,13 +7,12 @@ noroot
 protocol unix,inet,inet6
 seccomp
 shell none
+nogroups
 
 private-dev
 private-tmp
 private-etc resolv.conf,fonts/,gtk-3.0/,pulse/
 private-bin firefox
-
-whitelist /tmp/.X11-unix
 
 mkdir ~/.mozilla
 whitelist ~/.mozilla
