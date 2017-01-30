@@ -1,14 +1,22 @@
 caps.drop all
-seccomp
-protocol unix,inet,inet6
 netfilter
-tracelog
+nonewprivs
 noroot
-private-dev
+protocol unix,inet,inet6
+seccomp
 shell none
-include /etc/firejail/whitelist-common.inc
+nosound
+
+private-dev
+private-tmp
+private-etc resolv.conf,fonts/
+private-bin qbittorrent
+
 whitelist /tmp/.X11-unix
+
+mkdir ~/.local/share/data/qBittorrent
 whitelist ~/.local/share/data/qBittorrent
+mkdir ~/.config/qBittorrent
 whitelist ~/.config/qBittorrent
-# whitelist /tmp/qtsingleapp-qBitto-1809-3e8-lockfile
+mkdir ~/Torrents
 whitelist ~/Torrents
