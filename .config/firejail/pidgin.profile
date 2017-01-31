@@ -1,11 +1,18 @@
+name pidgin
+
 caps.drop all
-seccomp
-protocol unix,inet,inet6
 netfilter
-tracelog
+nogroups
+nonewprivs
 noroot
-private-dev
+protocol unix,inet,inet6
+seccomp
 shell none
-include /etc/firejail/whitelist-common.inc
-whitelist /tmp/.X11-unix
+
+private-bin pidgin
+private-dev
+private-etc resolv.conf,fonts,gtk-2.0,gtk-3.0,pulse,ssl,ca-certificates
+private-tmp
+
+mkdir ~/.purple
 whitelist ~/.purple
