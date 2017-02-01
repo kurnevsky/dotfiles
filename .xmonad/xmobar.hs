@@ -38,11 +38,11 @@ Config { font = "xft:DejaVu Sans:pixelsize=14:antialias=true:autohint=false"
                                      , "--normal", "darkorange"
                                      , "--high", "darkred"
                                      ] 10
-                    , Run StdinReader
+                    , Run UnsafeStdinReader
                     , Run Com "/bin/bash" [ "-c", "~/.xmonad/trayer-pad-icon.sh"
                                           ] "trayer" 10
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%trayer% : %StdinReader%}{%dynnetwork% : %diskio% : %cpu% : %memory% : %battery% : %UMMS% : %date%"
+       , template = "%trayer% : %UnsafeStdinReader%}{%dynnetwork% : %diskio% : %cpu% : %memory% : %battery% : %UMMS% : %date%"
        }

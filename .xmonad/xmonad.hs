@@ -1,5 +1,6 @@
 {-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, OverloadedStrings #-}
 
+import Data.List
 import Data.Monoid
 import Control.Monad
 import Control.Applicative
@@ -241,10 +242,27 @@ myManageHook = manageDocks <> (fmap not isDialog --> insertPosition Master Newer
 
 myEventHook e = perWindowKbdLayout e <> fullscreenEventHook e <> docksEventHook e
 
+xmobarEscape :: String -> String
+xmobarEscape = concatMap doubleLts
+  where doubleLts '<' = "<<"
+        doubleLts x   = [x]
+
+xmobarWorkspace :: String -> String
+xmobarWorkspace [ws] | ws >= '0' && ws <= '9' = "<action=xdotool key super+" ++ [ws] ++ ">" ++ [ws] ++ "</action>"
+xmobarWorkspace ws = xmobarEscape ws
+
+myPP hXmobar = xmobarPP { ppOutput = hPutStrLn hXmobar
+                        , ppCurrent = (ppCurrent xmobarPP) . xmobarWorkspace
+                        , ppVisible = (ppVisible xmobarPP) . xmobarWorkspace
+                        , ppHidden = (ppHidden xmobarPP) . xmobarWorkspace
+                        , ppHiddenNoWindows = (ppHiddenNoWindows xmobarPP) . xmobarWorkspace
+                        , ppUrgent = (ppUrgent xmobarPP) . xmobarWorkspace
+                        }
+
 myLogHook hXmobar = do
   fadeInactiveLogHook 0.9
   updatePointer (0.5, 0.5) (0, 0)
-  dynamicLogWithPP $ xmobarPP { ppOutput = hPutStrLn hXmobar }
+  dynamicLogWithPP $ myPP hXmobar
 
 myGSConfig :: HasColorizer a => GSConfig a
 myGSConfig = defaultGSConfig
