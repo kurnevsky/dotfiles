@@ -2,6 +2,7 @@
 
 import Data.List
 import Data.Monoid
+import Data.Char
 import Control.Monad
 import Control.Applicative
 import qualified Data.Map as M
@@ -88,7 +89,7 @@ goToSelectedOnWorkspace gsConfig = do
       Just window -> windows $ W.focusWindow window
       Nothing     -> return ()
 
-myKeys conf@(XConfig { XMonad.modMask = modm }) = M.union (planeKeys modm (Lines 3) Linear) $ M.fromList $
+myKeys conf@XConfig { XMonad.modMask = modm } = M.union (planeKeys modm (Lines 3) Linear) $ M.fromList $
   -- Launch terminal.
   [ ((modm, xK_r), spawn $ XMonad.terminal conf)
   -- Launch terminal.
@@ -199,7 +200,7 @@ myKeys conf@(XConfig { XMonad.modMask = modm }) = M.union (planeKeys modm (Lines
               ]
   ]
 
-myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList
+myMouseBindings XConfig { XMonad.modMask = modm } = M.fromList
   -- Set the window to floating mode and move by dragging.
   [ ((modm, button1), \w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster)
   -- Close window.
@@ -248,15 +249,19 @@ xmobarEscape = concatMap doubleLts
         doubleLts x   = [x]
 
 xmobarWorkspace :: String -> String
-xmobarWorkspace [ws] | ws >= '0' && ws <= '9' = "<action=xdotool key super+" ++ [ws] ++ ">" ++ [ws] ++ "</action>"
+xmobarWorkspace [ws] | isDigit ws = "<action=xdotool key super+" ++ [ws] ++ ">" ++ [ws] ++ "</action>"
 xmobarWorkspace ws = xmobarEscape ws
 
+xmobarLayout :: String -> String
+xmobarLayout l = "<action=xdotool key super+space>" ++ xmobarEscape l ++ "</action>"
+
 myPP hXmobar = xmobarPP { ppOutput = hPutStrLn hXmobar
-                        , ppCurrent = (ppCurrent xmobarPP) . xmobarWorkspace
-                        , ppVisible = (ppVisible xmobarPP) . xmobarWorkspace
-                        , ppHidden = (ppHidden xmobarPP) . xmobarWorkspace
-                        , ppHiddenNoWindows = (ppHiddenNoWindows xmobarPP) . xmobarWorkspace
-                        , ppUrgent = (ppUrgent xmobarPP) . xmobarWorkspace
+                        , ppCurrent = ppCurrent xmobarPP . xmobarWorkspace
+                        , ppVisible = ppVisible xmobarPP . xmobarWorkspace
+                        , ppHidden = ppHidden xmobarPP . xmobarWorkspace
+                        , ppHiddenNoWindows = ppHiddenNoWindows xmobarPP . xmobarWorkspace
+                        , ppUrgent = ppUrgent xmobarPP . xmobarWorkspace
+                        , ppLayout = ppLayout xmobarPP . xmobarLayout
                         }
 
 myLogHook hXmobar = do
