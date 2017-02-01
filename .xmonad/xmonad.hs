@@ -42,6 +42,7 @@ import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.DynamicLog
 import XMonad.Util.Run
 import XMonad.Hooks.IgnoreNetActiveWindow
+import XMonad.Xmobar.Actions (stripActions)
 
 myTerminal = "alacritty -e tmux"
 
@@ -243,17 +244,15 @@ myManageHook = manageDocks <> (fmap not isDialog --> insertPosition Master Newer
 
 myEventHook e = perWindowKbdLayout e <> fullscreenEventHook e <> docksEventHook e
 
-xmobarEscape :: String -> String
-xmobarEscape = concatMap doubleLts
-  where doubleLts '<' = "<<"
-        doubleLts x   = [x]
-
 xmobarWorkspace :: String -> String
 xmobarWorkspace [ws] | isDigit ws = "<action=xdotool key super+" ++ [ws] ++ ">" ++ [ws] ++ "</action>"
-xmobarWorkspace ws = xmobarEscape ws
+xmobarWorkspace ws = stripActions ws
 
 xmobarLayout :: String -> String
-xmobarLayout l = "<action=xdotool key super+space>" ++ xmobarEscape l ++ "</action>"
+xmobarLayout l = "<action=xdotool key super+space>" ++ stripActions l ++ "</action>"
+
+xmobarTitle :: String -> String
+xmobarTitle = stripActions
 
 myPP hXmobar = xmobarPP { ppOutput = hPutStrLn hXmobar
                         , ppCurrent = ppCurrent xmobarPP . xmobarWorkspace
@@ -262,6 +261,7 @@ myPP hXmobar = xmobarPP { ppOutput = hPutStrLn hXmobar
                         , ppHiddenNoWindows = ppHiddenNoWindows xmobarPP . xmobarWorkspace
                         , ppUrgent = ppUrgent xmobarPP . xmobarWorkspace
                         , ppLayout = ppLayout xmobarPP . xmobarLayout
+                        , ppTitle = ppTitle xmobarPP . xmobarTitle
                         }
 
 myLogHook hXmobar = do
