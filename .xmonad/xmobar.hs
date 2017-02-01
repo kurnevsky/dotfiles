@@ -30,19 +30,22 @@ Config { font = "xft:DejaVu Sans:pixelsize=14:antialias=true:autohint=false"
                               , "--normal", "darkorange"
                               , "--high", "darkred"
                               ] 10
-                    , Run DiskIO [("sda", "io <read>/<write>")] [] 10
-                    , Run DynNetwork [ "--template", "<dev> ▼ <rx>K/s ▲ <tx>K/s"
+                    , Run DiskIO [("sda", "io ▼ <write> ▲ <read>")] [] 10
+                    , Run DynNetwork [ "--template", "<dev> ▼ <rx>K ▲ <tx>K"
                                      , "--Low", "131072"
                                      , "--High", "1048576"
                                      , "--low", "darkgreen"
                                      , "--normal", "darkorange"
                                      , "--high", "darkred"
                                      ] 10
+                    , Run Mpris2 "DeaDBeeF" [ "--template", "<artist> <title>"
+                                            , "--maxtwidth", "50"
+                                            ] 10
                     , Run UnsafeStdinReader
                     , Run Com "/bin/bash" [ "-c", "~/.xmonad/trayer-pad-icon.sh"
                                           ] "trayer" 10
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%trayer% : %UnsafeStdinReader%}{%dynnetwork% : %diskio% : %cpu% : %memory% : %battery% : %UMMS% : %date%"
+       , template = "%trayer% : %UnsafeStdinReader%}{%mpris2% : %dynnetwork% : %diskio% : %cpu% : %memory% : %battery% : %UMMS% : %date%"
        }
