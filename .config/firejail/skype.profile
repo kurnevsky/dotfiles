@@ -1,12 +1,20 @@
+name skype
+
 caps.drop all
-seccomp
-protocol unix,inet,inet6
 netfilter
-tracelog
+nogroups
+nonewprivs
 noroot
-private-dev
+protocol unix,inet,inet6
+seccomp
 shell none
-include /etc/firejail/whitelist-common.inc
-whitelist /tmp/.X11-unix
+
+private-bin skype,sh,bash
+private-dev
+private-etc resolv.conf,fonts,pulse
+private-tmp
+
+mkdir ~/.Skype
 whitelist ~/.Skype
+mkdir ~/Skype
 whitelist ~/Skype

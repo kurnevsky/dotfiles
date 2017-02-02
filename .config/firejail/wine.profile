@@ -1,11 +1,17 @@
+name firefox
+
 caps.drop all
-seccomp
-protocol unix,inet,inet6
 netfilter
-tracelog
+nogroups
+nonewprivs
 noroot
-private-dev
+protocol unix,inet,inet6
+seccomp
 shell none
-include /etc/firejail/whitelist-common.inc
-whitelist /tmp/.X11-unix
-whitelist ~/mrt
+
+private-dev
+private-etc resolv.conf,fonts,gtk-3.0,pulse
+private-tmp
+
+mkdir ~/.wine
+whitelist ~/.wine
