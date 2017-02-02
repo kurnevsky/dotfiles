@@ -249,7 +249,7 @@ xmobarWorkspace [ws] | isDigit ws = "<action=xdotool key super+" ++ [ws] ++ ">" 
 xmobarWorkspace ws = stripActions ws
 
 xmobarLayout :: String -> String
-xmobarLayout l = "<action=xdotool key super+space>" ++ stripActions l ++ "</action>"
+xmobarLayout l = "<action=`xdotool key super+shift+space` button=3><action=xdotool key super+space>" ++ stripActions l ++ "</action></action>"
 
 xmobarTitle :: String -> String
 xmobarTitle = stripActions
