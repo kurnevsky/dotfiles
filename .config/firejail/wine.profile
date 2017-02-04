@@ -1,4 +1,4 @@
-name firefox
+name wine
 
 caps.drop all
 netfilter
