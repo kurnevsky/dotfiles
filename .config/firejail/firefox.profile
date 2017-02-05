@@ -13,7 +13,7 @@ shell none
 
 private-bin firefox
 private-dev
-private-etc resolv.conf,fonts,gtk-3.0,pulse
+private-etc resolv.conf,fonts,gtk-2.0,gtk-3.0,pulse
 private-tmp
 
 mkdir ~/.mozilla
