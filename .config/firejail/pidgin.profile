@@ -1,5 +1,7 @@
 name pidgin
 
+quiet
+
 caps.drop all
 netfilter
 nogroups

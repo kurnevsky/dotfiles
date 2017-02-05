@@ -1,5 +1,7 @@
 name tkabber
 
+quiet
+
 caps.drop all
 netfilter
 nogroups

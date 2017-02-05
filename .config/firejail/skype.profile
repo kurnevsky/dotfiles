@@ -1,5 +1,7 @@
 name skype
 
+quiet
+
 caps.drop all
 netfilter
 nogroups

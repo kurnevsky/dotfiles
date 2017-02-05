@@ -1,5 +1,7 @@
 name wine
 
+quiet
+
 caps.drop all
 netfilter
 nogroups

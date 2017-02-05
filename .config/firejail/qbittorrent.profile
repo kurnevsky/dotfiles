@@ -1,5 +1,7 @@
 name qbittorrent
 
+quiet
+
 caps.drop all
 netfilter
 nogroups

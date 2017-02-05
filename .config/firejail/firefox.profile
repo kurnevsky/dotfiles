@@ -1,5 +1,7 @@
 name firefox
 
+quiet
+
 caps.drop all
 netfilter
 nogroups
