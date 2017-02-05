@@ -280,13 +280,8 @@ myStartupHook = do
   docksStartupHook
   spawn "setxkbmap -model pc101 -layout us,ru -option grp:caps_toggle -option grp:switch -option grp_led:caps -option lv3:ralt_switch"
   spawn "sleep 1; xmodmap ~/.Xmodmap"
-  spawn "compton -b -f -I 0.10 -O 0.10 --backend glx --vsync opengl --dbus"
   spawn "feh --bg-fill ~/Images/pic-3909-1920x1200.jpg"
   spawn "sleep 1; xscreensaver -no-splash"
-  spawn "pgrep volumeicon; if [ $? -ne 0 ]; then volumeicon; fi"
-  spawn "pgrep gnome-keyring; if [ $? -ne 0 ]; then gnome-keyring-daemon; fi"
-  spawn "pgrep nm-applet; if [ $? -ne 0 ]; then nm-applet; fi"
-  spawn "pgrep parcellite; if [ $? -ne 0 ]; then parcellite; fi"
 
 myConfig hXmobar = ignoreNetActiveWindow (return True) $ withUrgencyHook NoUrgencyHook $ ewmh defaultConfig
   { terminal           = myTerminal
