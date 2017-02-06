@@ -1,12 +1,20 @@
+name tor-browser-en
+
+quiet
+
 caps.drop all
-seccomp
-protocol unix,inet,inet6
 netfilter
+nogroups
+nonewprivs
 noroot
-private-dev
-private-tmp
-private-etc mime.types,fonts/,xdg/,gtk-3.0/,X11/,pulse/
+protocol unix,inet,inet6
+seccomp
 shell none
-include /etc/firejail/whitelist-common.inc
-whitelist /tmp/.X11-unix
+
+private-bin tor-browser-en,env,bash,getconf,id
+private-dev
+private-etc fonts,gtk-2.0
+private-tmp
+
+mkdir ~/.tor-browser-en
 whitelist ~/.tor-browser-en
