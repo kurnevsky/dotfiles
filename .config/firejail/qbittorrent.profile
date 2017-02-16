@@ -14,7 +14,7 @@ shell none
 
 private-bin qbittorrent
 private-dev
-private-etc resolv.conf,fonts
+private-etc resolv.conf,localtime,fonts
 private-tmp
 
 mkdir ~/.local/share/data/qBittorrent

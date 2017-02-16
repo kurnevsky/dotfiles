@@ -13,7 +13,7 @@ shell none
 
 private-bin pidgin
 private-dev
-private-etc resolv.conf,fonts,gtk-2.0,gtk-3.0,pulse,ssl,ca-certificates
+private-etc resolv.conf,localtime,fonts,gtk-2.0,gtk-3.0,pulse,ssl,ca-certificates
 private-tmp
 
 mkdir ~/.purple

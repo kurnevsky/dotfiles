@@ -13,7 +13,7 @@ shell none
 
 private-bin eiskaltdcpp-daemon,eiskaltdcpp-qt,eiskaltdcpp-gtk
 private-dev
-private-etc resolv.conf,fonts,gtk-2.0,pulse
+private-etc resolv.conf,localtime,fonts,gtk-2.0,pulse
 private-tmp
 
 mkdir ~/.local/share/eiskaltdc++
