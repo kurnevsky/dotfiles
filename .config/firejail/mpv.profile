@@ -3,6 +3,7 @@ name mpv
 quiet
 
 caps.drop all
+net none
 netfilter
 nogroups
 nonewprivs
