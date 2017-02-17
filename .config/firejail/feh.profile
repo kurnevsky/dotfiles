@@ -1,4 +1,4 @@
-name mpv
+name feh
 
 quiet
 
@@ -12,9 +12,9 @@ protocol unix
 seccomp
 shell none
 
-private-bin mpv
+private-bin feh,convert,jpegtran
 private-dev
-private-etc mpv,fonts,pulse
+private-etc fonts
 private-tmp
 
 blacklist ~/.ssh
