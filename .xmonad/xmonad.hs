@@ -238,9 +238,7 @@ myLayout = ModifiedLayout MyLayout $
     delta   = 3 / 100 -- Percent of screen to increment by when resizing panes.
 
 -- To find the property name associated with a program, use > xprop | grep WM_CLASS.
-myManageHook = manageDocks <> (fmap not isDialog --> insertPosition Master Newer) <> composeAll
-  [ className =? "kcalc" --> doFloat
-  ]
+myManageHook = manageDocks <> (isFullscreen --> doFullFloat) <> (fmap not isDialog --> insertPosition Master Newer)
 
 myEventHook e = perWindowKbdLayout e <> fullscreenEventHook e <> docksEventHook e
 
