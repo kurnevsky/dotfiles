@@ -1,16 +1,29 @@
+# To find out the mime type of a file use: file --mime-type -b filename
 # See /usr/share/mime/types for all mimetypes.
 [Default Applications]
-application/pdf=zathura.desktop
-application/postscript=zathura.desktop
+# feh
 image/bmp=feh.desktop
 image/gif=feh.desktop
 image/jpeg=feh.desktop
 image/png=feh.desktop
 image/svg+xml=feh.desktop
 image/tiff=feh.desktop
-image/vnd.djvu=zathura.desktop
-image/vnd.djvu+multipage=zathura.desktop
+# firefox
 text/html=firefox.desktop
 x-scheme-handler/http=firefox.desktop
 x-scheme-handler/https=firefox.desktop
-
+# mpv
+video/mp4=mpv.desktop
+video/mpeg=mpv.desktop
+video/x-flv=mpv.desktop
+video/x-m4v=mpv.desktop
+video/x-matroska=mpv.desktop
+video/x-ms-asf=mpv.desktop
+video/x-msvideo=mpv.desktop
+# qbittorrent
+application/x-bittorrent=qBittorrent.desktop
+# zathura
+application/pdf=zathura.desktop
+application/postscript=zathura.desktop
+image/vnd.djvu=zathura.desktop
+image/vnd.djvu+multipage=zathura.desktop
