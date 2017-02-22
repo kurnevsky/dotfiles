@@ -1,0 +1,5 @@
+#!/bin/sh
+
+APP=$(basename "$0")
+
+firejail --quiet --profile=~/.config/firejail/"$APP".profile /bin/"$APP"
