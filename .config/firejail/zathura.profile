@@ -21,3 +21,5 @@ blacklist ~/.ssh
 read-only ~
 mkdir ~/.local/share/zathura
 read-write ~/.local/share/zathura
+mkdir ~/Print
+read-write ~/Print
