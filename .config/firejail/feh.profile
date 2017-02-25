@@ -1,6 +1,6 @@
-name feh
-
 quiet
+
+name feh
 
 caps.drop all
 net none

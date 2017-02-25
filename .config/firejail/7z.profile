@@ -1,6 +1,6 @@
-name 7z
-
 quiet
+
+name 7z
 
 caps.drop all
 net none

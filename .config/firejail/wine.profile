@@ -1,6 +1,6 @@
-name wine
-
 quiet
+
+name wine
 
 caps.drop all
 netfilter

@@ -1,6 +1,6 @@
-name mpv
-
 quiet
+
+name mpv
 
 caps.drop all
 net none

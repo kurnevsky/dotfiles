@@ -1,6 +1,6 @@
-name qbittorrent
-
 quiet
+
+name qbittorrent
 
 caps.drop all
 netfilter

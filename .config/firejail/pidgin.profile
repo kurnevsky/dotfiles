@@ -1,6 +1,6 @@
-name pidgin
-
 quiet
+
+name pidgin
 
 caps.drop all
 netfilter

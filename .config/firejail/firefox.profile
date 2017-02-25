@@ -1,6 +1,6 @@
-name firefox
-
 quiet
+
+name firefox
 
 caps.drop all
 netfilter

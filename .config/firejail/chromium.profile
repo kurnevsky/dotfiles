@@ -1,8 +1,9 @@
 # Works only if run chromium with --no-sandbox key.
 # Also --help key doesn't work because it tries to start man. Use man chromium instead.
-name chromium
 
 quiet
+
+name chromium
 
 caps.drop all
 netfilter

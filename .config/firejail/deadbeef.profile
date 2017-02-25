@@ -1,6 +1,6 @@
-name deadbeef
-
 quiet
+
+name deadbeef
 
 caps.drop all
 net none

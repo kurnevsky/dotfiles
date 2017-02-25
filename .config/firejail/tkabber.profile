@@ -1,6 +1,6 @@
-name tkabber
-
 quiet
+
+name tkabber
 
 caps.drop all
 netfilter

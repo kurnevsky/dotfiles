@@ -1,6 +1,6 @@
-name tor-browser-en
-
 quiet
+
+name tor-browser-en
 
 caps.drop all
 netfilter

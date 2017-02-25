@@ -1,6 +1,6 @@
-name eiskaltdcpp
-
 quiet
+
+name eiskaltdcpp
 
 caps.drop all
 netfilter
