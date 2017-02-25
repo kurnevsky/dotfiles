@@ -1,6 +1,6 @@
-name zathura
-
 quiet
+
+name zathura
 
 caps.drop all
 net none

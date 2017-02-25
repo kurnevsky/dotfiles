@@ -1,6 +1,6 @@
-name libreoffice
-
 quiet
+
+name libreoffice
 
 caps.drop all
 net none
