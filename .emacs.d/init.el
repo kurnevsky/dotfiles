@@ -28,8 +28,8 @@
 (setq inhibit-splash-screen t)
 ;; Cursor as line.
 (setq-default cursor-type 'bar)
-;; Turn on auto tabing.
-(electric-indent-mode t)
+;; Turn off auto tabing.
+(electric-indent-mode -1)
 ;; Don't use tabs for tabing.
 (setq-default indent-tabs-mode nil)
 ;; Turn on parens auto closing.
