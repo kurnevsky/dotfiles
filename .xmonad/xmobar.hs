@@ -54,5 +54,5 @@ Config { font = "xft:DejaVu Sans:pixelsize=14:antialias=true:autohint=false"
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%trayer% : %UnsafeStdinReader%}{%mpris2% : %dynnetwork% : %diskio% : %cpu% : %memory% : %swap% : %battery% : %UMMS% : %date%"
+       , template = "%trayer% : %UnsafeStdinReader%}{%mpris2% : %dynnetwork% : %diskio% : %cpu% : %memory% : %swap% : %battery% : %UMMS% : <action=`alacritty -e zsh -c 'cal -m -y; zsh -i'`>%date%</action>"
        }
