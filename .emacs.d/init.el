@@ -28,7 +28,7 @@
 (setq inhibit-splash-screen t)
 ;; Cursor as line.
 (setq-default cursor-type 'bar)
-;; Turn off auto tabing.
+;; Turn off auto tabbing.
 (electric-indent-mode -1)
 ;; Don't use tabs for tabing.
 (setq-default indent-tabs-mode nil)
