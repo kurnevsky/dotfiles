@@ -16,6 +16,13 @@ Config { font = "xft:DejaVu Sans:pixelsize=14:antialias=true:autohint=false"
                                   , "-i", "<fc=darkgreen>∞</fc>"
                                   , "-o", "<left>% (<timeleft>)"
                                   ] 1000
+                    , Run Swap [ "--template", "swap <used>M"
+                               , "--Low", "100"
+                               , "--High", "500"
+                               , "--low", "darkgreen"
+                               , "--normal", "darkorange"
+                               , "--high", "darkred"
+                               ] 10
                     , Run Memory [ "--template", "mem <usedratio>%"
                                  , "--Low", "50"
                                  , "--High", "90"
@@ -47,5 +54,5 @@ Config { font = "xft:DejaVu Sans:pixelsize=14:antialias=true:autohint=false"
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%trayer% : %UnsafeStdinReader%}{%mpris2% : %dynnetwork% : %diskio% : %cpu% : %memory% : %battery% : %UMMS% : %date%"
+       , template = "%trayer% : %UnsafeStdinReader%}{%mpris2% : %dynnetwork% : %diskio% : %cpu% : %memory% : %swap% : %battery% : %UMMS% : %date%"
        }
