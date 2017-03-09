@@ -50,7 +50,7 @@ bindkey -e
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 bindkey "\e[3~" delete-char
-bindkey '^J' autosuggest-accept
+bindkey '^ ' autosuggest-accept
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
