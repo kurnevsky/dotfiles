@@ -207,6 +207,7 @@ key_bindings:
   - { key: Insert,                  chars: "\x1b[2~"                     }
   - { key: Delete,                  chars: "\x1b[3~",  mode: AppKeypad   }
   - { key: Delete,                  chars: "\x1b[P",   mode: ~AppKeypad  }
+  - { key: Return,   mods: Control, chars: "\x0a"                        }
 
 # Mouse bindings
 #

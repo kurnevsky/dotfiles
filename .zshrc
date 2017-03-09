@@ -31,6 +31,8 @@ setopt notify
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # Automatically search the official repositories through pkgfile, when entering an unrecognized command
 source /usr/share/doc/pkgfile/command-not-found.zsh
+# Autocomplete with history.
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Autocompletion with an arrow-key driven interface
 zstyle ':completion:*' menu select
@@ -41,12 +43,14 @@ autoload -Uz compinit && compinit
 # This avoids the need to manually reset the terminal
 ttyctl -f
 
+# Find the key with: showkey -a
 bindkey -e
 [[ -n "${terminfo[khome]}" ]] && bindkey "${terminfo[khome]}" beginning-of-line
 [[ -n "${terminfo[kend]}" ]] && bindkey "${terminfo[kend]}" end-of-line
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 bindkey "\e[3~" delete-char
+bindkey '^J' autosuggest-accept
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
