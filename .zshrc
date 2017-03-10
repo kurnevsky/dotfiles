@@ -32,7 +32,7 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 # Automatically search the official repositories through pkgfile, when entering an unrecognized command
 source /usr/share/doc/pkgfile/command-not-found.zsh
 # Autocomplete with history.
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+# source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Autocompletion with an arrow-key driven interface
 zstyle ':completion:*' menu select
@@ -50,7 +50,7 @@ bindkey -e
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 bindkey "\e[3~" delete-char
-bindkey '^ ' autosuggest-accept
+# bindkey '^ ' autosuggest-accept
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
