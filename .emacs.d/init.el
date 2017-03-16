@@ -352,7 +352,8 @@
   (let ((buffer (generate-new-buffer "untitled")))
     (switch-to-buffer buffer)
     (funcall (and initial-major-mode))
-    (setq buffer-offer-save t)))
+    (setq buffer-offer-save t)
+    (text-mode)))
 ;; Functions for pane switching.
 (defun move-cursor-next-pane ()
   "Move cursor to the next pane."
