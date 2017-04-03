@@ -11,7 +11,7 @@ protocol unix,inet,inet6
 seccomp
 shell none
 
-private-bin tor-browser-en,env,bash,getconf,id
+private-bin tor-browser-en,env,bash,getconf,id,mkdir,rm,tar,xz
 private-dev
 private-etc fonts,gtk-2.0
 private-tmp
