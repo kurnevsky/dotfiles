@@ -67,8 +67,11 @@
 (setq js-indent-level 2)
 ;; Enable scroll while searching.
 (setq isearch-allow-scroll t)
-;; File to write custom-set-variables. TODO: create if it doesn't exist.
-(setq custom-file "~/.emacs.d/custom.el")
+;; File to write custom-set-variables.
+(defconst custom-el "~/.emacs.d/custom.el")
+(unless (file-exists-p custom-el)
+  (write-region "" nil custom-el))
+(setq custom-file custom-el)
 (load custom-file)
 
 ;; ========== Install packages ==========
