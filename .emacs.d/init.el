@@ -423,6 +423,7 @@ properly."
 (define-key isearch-mode-map (kbd "C-f") 'isearch-repeat-forward)
 (global-set-key (kbd "C-S-f") 'isearch-backward)
 (define-key isearch-mode-map (kbd "C-S-f") 'isearch-repeat-backward)
+(define-key isearch-mode-map (kbd "C-v") 'isearch-yank-kill)
 (global-set-key (kbd "C-r") 'query-replace)
 (global-set-key (kbd "C-n") 'new-empty-buffer)
 (global-set-key (kbd "C-s") 'save-buffer)
