@@ -67,6 +67,8 @@
 (setq js-indent-level 2)
 ;; Enable scroll while searching.
 (setq isearch-allow-scroll t)
+;; Don't exit search mode on navigation.
+(setq search-exit-option nil)
 ;; File to write custom-set-variables.
 (defconst custom-el "~/.emacs.d/custom.el")
 (unless (file-exists-p custom-el)
@@ -424,6 +426,7 @@ properly."
 (global-set-key (kbd "C-S-f") 'isearch-backward)
 (define-key isearch-mode-map (kbd "C-S-f") 'isearch-repeat-backward)
 (define-key isearch-mode-map (kbd "C-v") 'isearch-yank-kill)
+(define-key isearch-mode-map (kbd "<escape>") 'isearch-abort)
 (global-set-key (kbd "C-r") 'query-replace)
 (global-set-key (kbd "C-n") 'new-empty-buffer)
 (global-set-key (kbd "C-s") 'save-buffer)
