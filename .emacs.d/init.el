@@ -78,7 +78,6 @@
 
 ;; List of necessary packages.
 (setq package-list '(use-package
-                      projectile
                       haskell-mode
                       undo-tree
                       sr-speedbar
@@ -172,6 +171,7 @@
   :config
   (smex-initialize))
 
+;; The Silver Searcher.
 (use-package ag
   :defer t)
 
@@ -190,12 +190,15 @@
   (sml/setup))
 
 ;; Projectile - project management.
-(require 'projectile)
-(projectile-global-mode)
-(define-key projectile-mode-map (kbd "C-p f") 'projectile-find-file)
-(define-key projectile-mode-map (kbd "C-p o") 'projectile-find-file)
-(define-key projectile-mode-map (kbd "C-p g") 'projectile-ag)
-(define-key projectile-mode-map (kbd "C-p G") 'projectile-grep)
+(use-package projectile
+  :demand t
+  :bind (:map projectile-mode-map
+          ("C-p f" . projectile-find-file)
+          ("C-p o" . projectile-find-file)
+          ("C-p g" . projectile-ag)
+          ("C-p G" . projectile-grep))
+  :config
+  (projectile-global-mode))
 
 ;; Autocomplete.
 (use-package auto-complete
