@@ -82,7 +82,6 @@
 (setq package-list '(use-package
                       haskell-mode
                       undo-tree
-                      sr-speedbar
                       projectile-speedbar
                       yasnippet
                       jdee
@@ -124,7 +123,7 @@
   (column-number-mode t)
   (global-linum-mode t))
 
-;; Ido - smart file chosing (default).
+;; Ido - smart file choosing (default).
 (use-package ido
   :bind ("C-o" . ido-find-file)
   :config
@@ -232,12 +231,14 @@
   (defun undo-tree-overridden-undo-bindings-p () nil))
 ;; (define-key undo-tree-map (kbd "\C-x u") 'undo-tree-visualize)
 
-;; Sr speedbar - speedbar in the current frame.
 (require 'helm)
-(require 'sr-speedbar)
-(setq sr-speedbar-right-side t)
-(setq sr-speedbar-auto-refresh nil)
-(global-set-key (kbd "M-S-<f2>") 'sr-speedbar-close)
+
+;; Sr speedbar - speedbar in the current frame.
+(use-package sr-speedbar
+  :bind (("M-S-<f2>" . sr-speedbar-close))
+  :config
+  (setq sr-speedbar-right-side t)
+  (setq sr-speedbar-auto-refresh nil))
 
 ;; Projectile speedbar.
 (use-package projectile-speedbar
@@ -371,7 +372,7 @@
   "Move cursor to the previous pane."
   (interactive)
   (other-window -1))
-;; Search from beginning of document.
+;; Search from beginning of the document.
 (defun isearch-forward-from-begin ()
   "Search from beginning of document."
   (interactive)
