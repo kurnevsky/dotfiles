@@ -81,14 +81,12 @@
 ;; List of necessary packages.
 (setq package-list '(use-package
                       haskell-mode
-                      undo-tree
                       projectile-speedbar
                       yasnippet
                       jdee
                       rust-mode
                       racer
                       company
-                      magit
                       helm
                       ghc))
 (require 'package)
@@ -105,6 +103,10 @@
 (dolist (package package-list)
   (unless (package-installed-p package)
     (package-install package)))
+
+;; ========== Unset keys ==========
+(dolist (key '("\C-a" "\C-g"))
+  (global-unset-key key))
 
 ;; ========== Configure plugins ==========
 
@@ -235,7 +237,7 @@
 
 ;; Sr speedbar - speedbar in the current frame.
 (use-package sr-speedbar
-  :bind (("M-S-<f2>" . sr-speedbar-close))
+  :bind ("M-S-<f2>" . sr-speedbar-close)
   :config
   (setq sr-speedbar-right-side t)
   (setq sr-speedbar-auto-refresh nil))
@@ -248,7 +250,11 @@
 (require 'yasnippet)
 
 ;; Magit.
-(require 'magit)
+(use-package magit
+  :demand t
+  :bind (("C-g b" . magit-blame)
+          :map magit-blame-mode-map
+          ("C-g b" . magit-blame-quit)))
 
 ;; Scala mode.
 (use-package scala-mode
@@ -420,6 +426,17 @@ properly."
       (setq beg (line-beginning-position) end (line-end-position)))
     (comment-or-uncomment-region beg end)
     (next-line)))
+;; Print current local modes.
+(defun which-active-modes ()
+  "Gives a message of which minor modes are enabled in the current buffer."
+  (interactive)
+  (let ((active-modes))
+    (mapc (lambda (mode) (condition-case nil
+                           (if (and (symbolp mode) (symbol-value mode))
+                             (add-to-list 'active-modes mode))
+                           (error nil)))
+      minor-mode-list)
+    (message "Active modes are %s" active-modes)))
 ;; Key bindings.
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "C-f") 'isearch-forward)
