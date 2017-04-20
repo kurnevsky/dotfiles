@@ -218,6 +218,7 @@
           ("C-S-b" . mc/keyboard-quit)))
 
 ;; Undo tree.
+;; TODO: undo-tree-visualize hotkey
 (use-package undo-tree
   :demand t
   :bind (:map undo-tree-map
@@ -231,9 +232,10 @@
   (global-undo-tree-mode)
   (setq undo-tree-enable-undo-in-region nil)
   (defun undo-tree-overridden-undo-bindings-p () nil))
-;; (define-key undo-tree-map (kbd "\C-x u") 'undo-tree-visualize)
 
-(require 'helm)
+;; TODO: check if it's better than AC and maybe use it.
+(use-package helm
+  :defer t)
 
 ;; Sr speedbar - speedbar in the current frame.
 (use-package sr-speedbar
@@ -291,7 +293,7 @@
 
 ;; Ensime.
 (use-package ensime
-  :pin melpa-stable
+  ;; :pin melpa-stable
   :bind (:map ensime-mode-map
           ("C-l e" . ensime-print-errors-at-point)
           ("C-l t" . ensime-inspect-type-at-point)
@@ -461,7 +463,6 @@ properly."
 
 ;; Cx0 = ???, C|-
 ;; clone-indirect-buffer
-;; C-g magit blame
 ;; undo tree show
 
 ;;https://stackoverflow.com/questions/4918707/in-emacs-how-to-go-back-to-previous-line-position-after-using-semantic-jump-to
