@@ -133,7 +133,10 @@
 
 ;; Buffer switcher (default).
 (use-package bs
-  :bind ("<f2>" . bs-show))
+  :bind (("<f2>" . bs-show)
+          :map bs-mode-map
+          ("<f2>" . bs-abort)
+          ("<escape>" . bs-abort)))
 
 ;; Speedbar (default).
 (use-package speedbar
@@ -313,7 +316,7 @@
 (add-hook 'haskell-mode-hook 'haskell-indentation-mode)
 
 (require 'ghc)
-(add-hook 'haskell-mode-hook 'ghc-init)
+;; (add-hook 'haskell-mode-hook 'ghc-init)
 
 ;; Jdee - java mode.
 (require 'jdee)
