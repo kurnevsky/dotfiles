@@ -81,8 +81,6 @@
 ;; List of necessary packages.
 (setq package-list '(use-package
                       haskell-mode
-                      projectile-speedbar
-                      yasnippet
                       jdee
                       rust-mode
                       racer
@@ -249,7 +247,9 @@
   :bind ("M-<f2>" . projectile-speedbar-open-current-buffer-in-tree))
 
 ;; Yasnippet.
-(require 'yasnippet)
+;; TODO: do I need it?
+(use-package yasnippet
+  :defer t)
 
 ;; Magit.
 (use-package magit
@@ -302,10 +302,11 @@
           ("C-l b" . ensime-sbt-do-compile)
           ("C-l r" . ensime-sbt-do-run)
           ("C-l i" . ensime-import-type-at-point))
+  :init
+  (add-hook 'ensime-mode-hook (lambda () (auto-complete-mode -1)))
   :config
   (setq ensime-ac-enable-argument-placeholders -1)
-  (setq ensime-ac-override-settings -1)
-  (add-hook 'ensime-mode-hook (lambda () (auto-complete-mode -1))))
+  (setq ensime-ac-override-settings -1))
 
 ;; Haskell mode.
 (require 'haskell-mode)
