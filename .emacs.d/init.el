@@ -80,13 +80,11 @@
 
 ;; List of necessary packages.
 (setq package-list '(use-package
-                      haskell-mode
                       jdee
                       rust-mode
                       racer
                       company
-                      helm
-                      ghc))
+                      helm))
 (require 'package)
 (add-to-list 'package-archives
   '("melpa" . "https://melpa.org/packages/"))
@@ -312,11 +310,18 @@
   (setq ensime-ac-override-settings -1))
 
 ;; Haskell mode.
-(require 'haskell-mode)
-(add-hook 'haskell-mode-hook 'haskell-indentation-mode)
+(use-package haskell-mode
+  :mode ("\\.hs\\'" . haskell-mode)
+  :interpreter ("ghci" . haskell-mode))
 
-(require 'ghc)
-;; (add-hook 'haskell-mode-hook 'ghc-init)
+;; GHC mod.
+(use-package ghc
+  :commands ghc-init
+  :init
+  (defun ghc-init-interactive ()
+    "Initialize ghc module"
+    (interactive)
+    (ghc-init)))
 
 ;; Jdee - java mode.
 (require 'jdee)
