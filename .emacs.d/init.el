@@ -459,7 +459,6 @@ properly."
 (global-set-key (kbd "C-r") 'query-replace)
 (global-set-key (kbd "C-n") 'new-empty-buffer)
 (global-set-key (kbd "C-s") 'save-buffer)
-(global-set-key (kbd "C-z") 'undo)
 (global-set-key (kbd "C-a") 'mark-whole-buffer)
 (global-set-key (kbd "C-=") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
