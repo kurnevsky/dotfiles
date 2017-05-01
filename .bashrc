@@ -3,7 +3,7 @@
 
 PS1='[\u@\h \W]\$ '
 
-export EDITOR='nano'
+export EDITOR=emacsnw
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
