@@ -12,9 +12,19 @@ seccomp
 shell none
 
 private-bin skypeforlinux,sh,electron
-# private-dev doesn't fit because of video0 device
 private-etc resolv.conf,localtime,fonts,gtk-3.0,pulse
 private-tmp
+
+# private-dev doesn't fit because of video0 device
+whitelist /dev/dri
+whitelist /dev/null
+whitelist /dev/full
+whitelist /dev/zero
+whitelist /dev/random
+whitelist /dev/snd
+whitelist /dev/urandom
+whitelist /dev/shm
+whitelist /dev/video0
 
 mkdir ~/.config/skypeforlinux
 whitelist ~/.config/skypeforlinux
