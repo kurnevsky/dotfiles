@@ -75,6 +75,19 @@
   (write-region "" nil custom-el))
 (setq custom-file custom-el)
 (load custom-file)
+;; Ask before killing new buffer.
+(setq-default new-untitled nil)
+(put 'new-untitled 'permanent-local t)
+(defun kill-buffer-ask-first (orig-fun &rest args)
+  "Prompts before killing buffer if it isn't associated with a file"
+  (let ((buffer (get-buffer (car args)))) ;; TODO: check if args are empty
+    (if (and (buffer-local-value 'new-untitled (get-buffer (car args)))
+          (buffer-modified-p buffer)
+          (not (buffer-file-name buffer)))
+      (if (yes-or-no-p (format "Buffer '%s' modified and not associated with a file, kill it anyway?" (buffer-name buffer)))
+        (apply orig-fun args))
+      (apply orig-fun args))))
+(advice-add 'kill-buffer :around 'kill-buffer-ask-first)
 
 ;; ========== Install packages ==========
 
@@ -377,9 +390,9 @@
   (interactive)
   (let ((buffer (generate-new-buffer "untitled")))
     (switch-to-buffer buffer)
-    (funcall (and initial-major-mode))
+    (text-mode)
     (setq buffer-offer-save t)
-    (text-mode)))
+    (setq-local new-untitled t)))
 ;; Functions for pane switching.
 (defun move-cursor-next-pane ()
   "Move cursor to the next pane."
