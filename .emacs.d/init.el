@@ -93,7 +93,6 @@
 
 ;; List of necessary packages.
 (setq package-list '(use-package
-                      jdee
                       rust-mode
                       racer
                       company
@@ -337,7 +336,10 @@
     (ghc-init)))
 
 ;; Jdee - java mode.
-(require 'jdee)
+(use-package jdee
+  :mode ("\\.java\\'" . jdee-mode)
+  :config
+  (setq jdee-server-dir "~/jdee"))
 
 ;; Company mode.
 (require 'company)
