@@ -482,6 +482,15 @@ properly."
                            (error nil)))
       minor-mode-list)
     (message "Active modes are %s" active-modes)))
+;; Format json with jq.
+(defun jq-region ()
+  (interactive)
+  (save-excursion
+    (shell-command-on-region (mark) (point) "jq ." (buffer-name) t)))
+(defun jq-buffer ()
+  (interactive)
+  (save-excursion
+    (shell-command-on-region (point-min) (point-max) "jq ." (buffer-name) t)))
 ;; Key bindings.
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "C-f") 'isearch-forward)
