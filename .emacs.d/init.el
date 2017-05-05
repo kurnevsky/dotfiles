@@ -141,6 +141,25 @@
   (setq ido-everywhere t)
   (setq ido-enable-flex-matching t))
 
+;; TODO: (mapcar 'window-buffer (window-list))
+(use-package ediff
+  :config
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+  (setq ediff-split-window-function 'split-window-horizontally)
+  (custom-set-faces
+    '(ediff-current-diff-A ((t (:background "red" :foreground "white"))))
+    '(ediff-current-diff-B ((t (:background "red" :foreground "white"))))
+    '(ediff-current-diff-C ((t (:background "red" :foreground "white"))))
+    '(ediff-fine-diff-A ((t (:background "darkgoldenrod" :foreground "white"))))
+    '(ediff-fine-diff-B ((t (:background "darkgoldenrod" :foreground "white"))))
+    '(ediff-fine-diff-C ((t (:background "darkgoldenrod" :foreground "white"))))
+    '(ediff-odd-diff-A ((t (:background "darkred" :foreground "white"))))
+    '(ediff-odd-diff-B ((t (:background "darkred" :foreground "white"))))
+    '(ediff-odd-diff-C ((t (:background "darkred" :foreground "white"))))
+    '(ediff-even-diff-A ((t (:background "darkred" :foreground "white"))))
+    '(ediff-even-diff-B ((t (:background "darkred" :foreground "white"))))
+    '(ediff-even-diff-C ((t (:background "darkred" :foreground "white"))))))
+
 ;; Buffer switcher (default).
 (use-package bs
   :bind (("<f2>" . bs-show)
