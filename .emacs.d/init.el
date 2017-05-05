@@ -504,11 +504,11 @@ properly."
 (defun xmlstarlet-region ()
   (interactive)
   (save-excursion
-    (shell-command-on-region (mark) (point) "xmlstarlet format --indent-tab" (buffer-name) t)))
+    (shell-command-on-region (mark) (point) "xmlstarlet format" (buffer-name) t)))
 (defun xmlstarlet-buffer ()
   (interactive)
   (save-excursion
-    (shell-command-on-region (point-min) (point-max) "xmlstarlet format --indent-tab" (buffer-name) t)))
+    (shell-command-on-region (point-min) (point-max) "xmlstarlet format" (buffer-name) t)))
 ;; Key bindings.
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "C-f") 'isearch-forward)
