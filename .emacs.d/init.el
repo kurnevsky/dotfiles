@@ -491,6 +491,15 @@ properly."
   (interactive)
   (save-excursion
     (shell-command-on-region (point-min) (point-max) "jq ." (buffer-name) t)))
+;; Format xml with xmllint.
+(defun xmllint-region ()
+  (interactive)
+  (save-excursion
+    (shell-command-on-region (mark) (point) "xmllint --format -" (buffer-name) t)))
+(defun xmllint-buffer ()
+  (interactive)
+  (save-excursion
+    (shell-command-on-region (point-min) (point-max) "xmllint --format -" (buffer-name) t)))
 ;; Key bindings.
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "C-f") 'isearch-forward)
