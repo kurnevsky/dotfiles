@@ -500,6 +500,15 @@ properly."
   (interactive)
   (save-excursion
     (shell-command-on-region (point-min) (point-max) "xmllint --format -" (buffer-name) t)))
+;; Format xml with xmlstarlet.
+(defun xmlstarlet-region ()
+  (interactive)
+  (save-excursion
+    (shell-command-on-region (mark) (point) "xmlstarlet format --indent-tab" (buffer-name) t)))
+(defun xmlstarlet-buffer ()
+  (interactive)
+  (save-excursion
+    (shell-command-on-region (point-min) (point-max) "xmlstarlet format --indent-tab" (buffer-name) t)))
 ;; Key bindings.
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "C-f") 'isearch-forward)
