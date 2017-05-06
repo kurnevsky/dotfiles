@@ -29,7 +29,6 @@ import Graphics.X11.ExtraTypes.XF86
 import XMonad.Layout.DwmStyle
 import XMonad.Layout.Minimize
 import XMonad.Layout.Maximize
-import XMonad.Layout.LayoutModifier
 import XMonad.Actions.UpdatePointer
 import XMonad.Layout.Grid
 import XMonad.Layout.Named
@@ -88,6 +87,7 @@ kill9 = withFocused kill9Window
 decorateName' :: Window -> X String
 decorateName' w = show <$> getName w
 
+goToSelectedOnWorkspace :: GSConfig Word64 -> X ()
 goToSelectedOnWorkspace gsConfig = do
   let keyValuePair w = flip (,) w `fmap` decorateName' w
   wins <- gets (W.index . windowset)
@@ -98,6 +98,7 @@ goToSelectedOnWorkspace gsConfig = do
       Just window -> windows $ W.focusWindow window
       Nothing     -> return ()
 
+myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys conf@XConfig { XMonad.modMask = modm } = M.union (planeKeys modm (Lines 3) Linear) $ M.fromList $
   -- Launch terminal.
   [ ((modm, xK_r), spawn $ XMonad.terminal conf)
@@ -209,6 +210,7 @@ myKeys conf@XConfig { XMonad.modMask = modm } = M.union (planeKeys modm (Lines 3
               ]
   ]
 
+myMouseBindings :: XConfig Layout -> M.Map (ButtonMask, Button) (Window -> X ())
 myMouseBindings XConfig { XMonad.modMask = modm } = M.fromList
   -- Set the window to floating mode and move by dragging.
   [ ((modm, button1), \w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster)
@@ -224,13 +226,7 @@ myMouseBindings XConfig { XMonad.modMask = modm } = M.fromList
   , ((0, 9), \w -> windows (W.focusWindow w) >> windowMenu)
   ]
 
-data MyLayout a = MyLayout deriving (Read, Show)
-
-instance LayoutModifier MyLayout a where
-  modifyDescription _ l = drop 42 $ description l
-
-myLayout = ModifiedLayout MyLayout $
-  dwmStyle shrinkText defaultTheme $
+myLayout = dwmStyle shrinkText defaultTheme $
   smartBorders $
   smartSpacing 2 $
   avoidStruts $
@@ -266,7 +262,7 @@ myPP hXmobar = xmobarPP { ppOutput = hPutStrLn hXmobar
                         , ppHidden = ppHidden xmobarPP . xmobarWorkspace
                         , ppHiddenNoWindows = ppHiddenNoWindows xmobarPP . xmobarWorkspace
                         , ppUrgent = ppUrgent xmobarPP . xmobarWorkspace
-                        , ppLayout = ppLayout xmobarPP . xmobarLayout
+                        , ppLayout = ppLayout xmobarPP . xmobarLayout . drop 42
                         , ppTitle = ppTitle xmobarPP . xmobarTitle
                         }
 
