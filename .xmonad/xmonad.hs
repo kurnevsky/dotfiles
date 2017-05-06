@@ -1,11 +1,11 @@
 {-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, OverloadedStrings #-}
 
-import Data.List
-import Data.Monoid
-import Data.Char
 import Control.Monad
 import Control.Applicative
+import Data.Char
 import qualified Data.Map as M
+import Data.Monoid
+import GHC.Word
 import System.Exit
 import System.Posix.Signals
 import XMonad hiding ((|||))
@@ -44,6 +44,7 @@ import XMonad.Util.Run
 import XMonad.Hooks.IgnoreNetActiveWindow
 import XMonad.Xmobar.Actions (stripActions)
 
+myTerminal :: String
 myTerminal = "st -e tmux"
 
 myFocusFollowsMouse :: Bool
@@ -52,16 +53,22 @@ myFocusFollowsMouse = True
 myClickJustFocuses :: Bool
 myClickJustFocuses = False
 
+myBorderWidth :: Word32
 myBorderWidth = 1
 
+myModMask :: KeyMask
 myModMask = mod4Mask
 
+myWorkspaces :: [String]
 myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
+myNormalBorderColor :: String
 myNormalBorderColor = "gray"
 
+myFocusedBorderColor :: String
 myFocusedBorderColor = "black"
 
+myXPConfig :: XPConfig
 myXPConfig = def
   { position = Top
   , height = 25
@@ -70,12 +77,13 @@ myXPConfig = def
   , alwaysHighlight = True
   }
 
--- kill9 = spawn "kill -9 $(xdotool getactivewindow getwindowpid)"
-kill9 = withFocused $ \w ->
-  do p <- runQuery pid w
-     whenJust p $ io . signalProcess 9
+kill9Window :: Window -> X ()
+kill9Window w = do
+  p <- runQuery pid w
+  whenJust p $ io . signalProcess 9
 
-kill9Window w = spawn $ "kill -9 $(xdotool getwindowpid " ++ show w ++ ")"
+kill9 :: X ()
+kill9 = withFocused kill9Window
 
 decorateName' :: Window -> X String
 decorateName' w = show <$> getName w
