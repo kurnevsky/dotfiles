@@ -5,9 +5,10 @@ import Control.Applicative
 import Data.Char
 import qualified Data.Map as M
 import Data.Monoid
-import GHC.Word
 import System.Exit
+import System.Posix.Process
 import System.Posix.Signals
+import System.Posix.Types
 import XMonad hiding ((|||))
 import XMonad.Layout.Spacing
 import qualified XMonad.StackSet as W
@@ -42,32 +43,24 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Util.Run
 import XMonad.Hooks.IgnoreNetActiveWindow
 import XMonad.Xmobar.Actions (stripActions)
+import XMonad.Layout.Tabbed
 
-myTerminal :: String
 myTerminal = "st -e tmux"
 
-myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = True
 
-myClickJustFocuses :: Bool
 myClickJustFocuses = False
 
-myBorderWidth :: Word32
 myBorderWidth = 1
 
-myModMask :: KeyMask
 myModMask = mod4Mask
 
-myWorkspaces :: [String]
 myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
-myNormalBorderColor :: String
 myNormalBorderColor = "gray"
 
-myFocusedBorderColor :: String
 myFocusedBorderColor = "black"
 
-myXPConfig :: XPConfig
 myXPConfig = def
   { position = Top
   , height = 25
@@ -76,18 +69,31 @@ myXPConfig = def
   , alwaysHighlight = True
   }
 
+withPid :: Window -> (ProcessID -> X ()) -> X ()
+withPid w f = do
+  maybePid <- runQuery pid w
+  whenJust maybePid f
+
+withPidIfNotXmonad :: Window -> (ProcessID -> X ()) -> X ()
+withPidIfNotXmonad w f = withPid w $ \pid -> do
+  xmonadPid <- io getProcessID
+  when (pid /= xmonadPid) $ f pid
+
 kill9Window :: Window -> X ()
-kill9Window w = do
-  p <- runQuery pid w
-  whenJust p $ io . signalProcess 9
+kill9Window w = withPidIfNotXmonad w (io . signalProcess 9)
 
 kill9 :: X ()
 kill9 = withFocused kill9Window
 
+killSafe :: X ()
+killSafe = withFocused killWindowSafe
+
+killWindowSafe :: Window -> X ()
+killWindowSafe w = withPidIfNotXmonad w $ \_ -> killWindow w
+
 decorateName' :: Window -> X String
 decorateName' w = show <$> getName w
 
-goToSelectedOnWorkspace :: GSConfig Word64 -> X ()
 goToSelectedOnWorkspace gsConfig = do
   let keyValuePair w = flip (,) w `fmap` decorateName' w
   wins <- gets (W.index . windowset)
@@ -98,7 +104,6 @@ goToSelectedOnWorkspace gsConfig = do
       Just window -> windows $ W.focusWindow window
       Nothing     -> return ()
 
-myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys conf@XConfig { XMonad.modMask = modm } = M.union (planeKeys modm (Lines 3) Linear) $ M.fromList $
   -- Launch terminal.
   [ ((modm, xK_r), spawn $ XMonad.terminal conf)
@@ -109,7 +114,7 @@ myKeys conf@XConfig { XMonad.modMask = modm } = M.union (planeKeys modm (Lines 3
   -- Launch application.
   , ((modm, xK_F2), shellPrompt myXPConfig)
   -- Close the focused window.
-  , ((modm, xK_c), kill)
+  , ((modm, xK_c), killSafe)
   -- Kill the focused window.
   , ((modm .|. shiftMask, xK_c), kill9)
   -- Rotate through the available layout algorithms.
@@ -210,36 +215,43 @@ myKeys conf@XConfig { XMonad.modMask = modm } = M.union (planeKeys modm (Lines 3
               ]
   ]
 
-myMouseBindings :: XConfig Layout -> M.Map (ButtonMask, Button) (Window -> X ())
 myMouseBindings XConfig { XMonad.modMask = modm } = M.fromList
   -- Set the window to floating mode and move by dragging.
   [ ((modm, button1), \w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster)
   -- Close window.
-  , ((modm, button2), killWindow)
+  , ((modm, button2), killWindowSafe)
   -- Kill window.
   , ((modm .|. shiftMask, button2), kill9Window)
   -- Set the window to floating mode and resize by dragging.
   , ((modm, button3), \w -> focus w >> mouseResizeWindow w >> windows W.shiftMaster)
   -- Close window.
-  , ((0, 8), killWindow)
+  , ((0, 8), killWindowSafe)
   -- Open window menu.
   , ((0, 9), \w -> windows (W.focusWindow w) >> windowMenu)
   ]
 
-myLayout = dwmStyle shrinkText defaultTheme $
-  smartBorders $
-  smartSpacing 2 $
-  avoidStruts $
-  maximize $
-  minimize $
-  named "Tiled" tiled |||
-  named "Mirror" (Mirror tiled) |||
-  named "Grid" Grid |||
-  named "Full" (trackFloating Full) where
-    tiled   = Tall nmaster delta ratio
-    nmaster = 1 -- The default number of windows in the master pane.
-    ratio   = 1 / 2 -- Default proportion of screen occupied by master pane.
-    delta   = 3 / 100 -- Percent of screen to increment by when resizing panes.
+myTheme = def { activeColor = "#000000"
+              , inactiveColor = "#000000"
+              , urgentColor = "#000000"
+              , activeBorderColor = "#444444"
+              , inactiveBorderColor = "#444444"
+              , urgentBorderColor = "#444444"
+              , activeTextColor = "#00FF00"
+              , inactiveTextColor = "#FFFFFF"
+              , urgentTextColor = "#FF0000"
+              , fontName = "xft:DejaVu Sans:pixelsize=14:antialias=true:autohint=false"
+              , decoHeight = 25
+              }
+
+myLayout = fullLayoutModifiers fullLayout ||| layoutModifiers layouts where
+  fullLayout = named "Full" (trackFloating $ tabbedBottom shrinkText myTheme)
+  fullLayoutModifiers = smartBorders . avoidStruts . maximize . minimize
+  layouts = named "Tiled" tiled ||| named "Mirror" (Mirror tiled) ||| named "Grid" Grid
+  layoutModifiers = dwmStyle shrinkText def . smartBorders . smartSpacing 2 . avoidStruts . maximize . minimize
+  tiled = Tall nmaster delta ratio
+  nmaster = 1 -- The default number of windows in the master pane.
+  ratio = 1 / 2 -- Default proportion of screen occupied by master pane.
+  delta = 3 / 100 -- Percent of screen to increment by when resizing panes.
 
 -- To find the property name associated with a program, use > xprop | grep WM_CLASS.
 myManageHook = manageDocks <> (isFullscreen --> doFullFloat) <> (fmap not isDialog --> insertPosition Master Newer)
@@ -262,7 +274,7 @@ myPP hXmobar = xmobarPP { ppOutput = hPutStrLn hXmobar
                         , ppHidden = ppHidden xmobarPP . xmobarWorkspace
                         , ppHiddenNoWindows = ppHiddenNoWindows xmobarPP . xmobarWorkspace
                         , ppUrgent = ppUrgent xmobarPP . xmobarWorkspace
-                        , ppLayout = ppLayout xmobarPP . xmobarLayout . drop 42
+                        , ppLayout = ppLayout xmobarPP . xmobarLayout . reverse . takeWhile (/= ' ') . reverse
                         , ppTitle = ppTitle xmobarPP . xmobarTitle
                         }
 
