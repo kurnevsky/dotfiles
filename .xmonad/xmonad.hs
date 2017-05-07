@@ -74,13 +74,11 @@ withPid w f = do
   maybePid <- runQuery pid w
   whenJust maybePid f
 
-withPidIfNotXmonad :: Window -> (ProcessID -> X ()) -> X ()
-withPidIfNotXmonad w f = withPid w $ \pid -> do
-  xmonadPid <- io getProcessID
-  when (pid /= xmonadPid) $ f pid
-
 kill9Window :: Window -> X ()
-kill9Window w = withPidIfNotXmonad w (io . signalProcess 9)
+kill9Window w = withWindowSet $ \ws ->
+  if W.member w ws
+  then withPid w (io . signalProcess 9)
+  else return ()
 
 kill9 :: X ()
 kill9 = withFocused kill9Window
@@ -89,7 +87,10 @@ killSafe :: X ()
 killSafe = withFocused killWindowSafe
 
 killWindowSafe :: Window -> X ()
-killWindowSafe w = withPidIfNotXmonad w $ \_ -> killWindow w
+killWindowSafe w = withWindowSet $ \ws ->
+  if W.member w ws
+  then killWindow w
+  else return ()
 
 decorateName' :: Window -> X String
 decorateName' w = show <$> getName w
