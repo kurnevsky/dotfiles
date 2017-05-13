@@ -76,9 +76,7 @@ withPid w f = do
 
 kill9Window :: Window -> X ()
 kill9Window w = withWindowSet $ \ws ->
-  if W.member w ws
-  then withPid w (io . signalProcess 9)
-  else return ()
+  when (W.member w ws) $ withPid w (io . signalProcess 9)
 
 kill9 :: X ()
 kill9 = withFocused kill9Window
@@ -88,9 +86,7 @@ killSafe = withFocused killWindowSafe
 
 killWindowSafe :: Window -> X ()
 killWindowSafe w = withWindowSet $ \ws ->
-  if W.member w ws
-  then killWindow w
-  else return ()
+  when (W.member w ws) $ killWindow w
 
 decorateName' :: Window -> X String
 decorateName' w = show <$> getName w
@@ -244,12 +240,18 @@ myTheme = def { activeColor = "#000000"
               , decoHeight = 25
               }
 
-myLayout = fullLayoutModifiers fullLayout ||| layoutModifiers layouts where
-  fullLayout = named "Full" (trackFloating $ tabbedBottom shrinkText myTheme)
-  fullLayoutModifiers = smartBorders . avoidStruts . maximize . minimize
-  layouts = named "Tiled" tiled ||| named "Mirror" (Mirror tiled) ||| named "Grid" Grid
-  layoutModifiers = dwmStyle shrinkText def . smartBorders . smartSpacing 2 . avoidStruts . maximize . minimize
-  tiled = Tall nmaster delta ratio
+myLayout = fullLayoutModifiers fullLayout |||
+           tiledLayoutModifiers tiledLayout |||
+           mirrorLayoutModifiers mirrorLayout |||
+           gridLayoutModifiers gridLayout where
+  fullLayoutModifiers = named "Full" . smartBorders . avoidStruts . maximize . minimize . trackFloating
+  tiledLayoutModifiers = named "Tiled" . dwmStyle shrinkText def . smartBorders . smartSpacing 2 . avoidStruts . maximize . minimize
+  mirrorLayoutModifiers = named "Mirror" . dwmStyle shrinkText def . smartBorders . smartSpacing 2 . avoidStruts . maximize . minimize
+  gridLayoutModifiers = named "Grid" . dwmStyle shrinkText def . smartBorders . smartSpacing 2 . avoidStruts . maximize . minimize
+  fullLayout = tabbedBottom shrinkText myTheme
+  tiledLayout = Tall nmaster delta ratio
+  mirrorLayout = Mirror tiledLayout
+  gridLayout = Grid
   nmaster = 1 -- The default number of windows in the master pane.
   ratio = 1 / 2 -- Default proportion of screen occupied by master pane.
   delta = 3 / 100 -- Percent of screen to increment by when resizing panes.
@@ -275,7 +277,7 @@ myPP hXmobar = xmobarPP { ppOutput = hPutStrLn hXmobar
                         , ppHidden = ppHidden xmobarPP . xmobarWorkspace
                         , ppHiddenNoWindows = ppHiddenNoWindows xmobarPP . xmobarWorkspace
                         , ppUrgent = ppUrgent xmobarPP . xmobarWorkspace
-                        , ppLayout = ppLayout xmobarPP . xmobarLayout . reverse . takeWhile (/= ' ') . reverse
+                        , ppLayout = ppLayout xmobarPP . xmobarLayout
                         , ppTitle = ppTitle xmobarPP . xmobarTitle
                         }
 
