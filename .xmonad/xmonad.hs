@@ -2,48 +2,51 @@
 
 import Control.Monad
 import Control.Applicative
-import Data.Char
+import Data.Char (isDigit)
 import qualified Data.Map as M
 import Data.Monoid
-import System.Exit
-import System.Posix.Process
-import System.Posix.Signals
-import System.Posix.Types
-import XMonad hiding ((|||))
-import XMonad.Layout.Spacing
-import qualified XMonad.StackSet as W
-import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.EwmhDesktops
-import XMonad.Actions.GridSelect
-import XMonad.Layout.NoBorders
-import XMonad.Hooks.UrgencyHook hiding (Never)
-import XMonad.Prompt
-import XMonad.Prompt.Shell
-import XMonad.Prompt.ConfirmPrompt
-import XMonad.Hooks.PerWindowKbdLayout
-import XMonad.Util.NamedWindows
-import XMonad.Actions.CopyWindow
-import XMonad.Actions.Plane
-import XMonad.Actions.SwapWorkspaces
-import XMonad.Actions.WindowMenu
 import Graphics.X11.ExtraTypes.XF86
-import XMonad.Layout.DwmStyle
-import XMonad.Layout.Minimize
-import XMonad.Layout.Maximize
-import XMonad.Actions.UpdatePointer
-import XMonad.Layout.Grid
-import XMonad.Layout.Named
-import XMonad.Layout.LayoutCombinators
-import XMonad.Util.Compton
-import XMonad.Hooks.InsertPosition
-import XMonad.Hooks.ManageHelpers
-import XMonad.Layout.TrackFloating
-import XMonad.Hooks.FadeInactive
-import XMonad.Hooks.DynamicLog
-import XMonad.Util.Run
-import XMonad.Hooks.IgnoreNetActiveWindow
+import System.Exit (exitSuccess)
+import System.Posix.Signals (signalProcess)
+import System.Posix.Types (ProcessID)
+import XMonad hiding ((|||))
+import XMonad.Actions.CopyWindow (copy, copyToAll, killAllOtherCopies)
+import XMonad.Actions.GridSelect (gridselect, gridselectWorkspace, GSConfig(..), HasColorizer)
+import XMonad.Actions.Minimize (maximizeWindow, minimizeWindow, withLastMinimized)
+import XMonad.Actions.Plane (planeKeys, Limits(..), Lines(..))
+import XMonad.Actions.SwapWorkspaces (swapWithCurrent)
+import XMonad.Actions.UpdatePointer (updatePointer)
+import XMonad.Actions.WindowMenu (windowMenu)
+import XMonad.Hooks.DynamicLog (dynamicLogWithPP, xmobarPP, PP(..))
+import XMonad.Hooks.EwmhDesktops (ewmh, fullscreenEventHook)
+import XMonad.Hooks.FadeInactive (fadeInactiveLogHook)
+import XMonad.Hooks.IgnoreNetActiveWindow (ignoreNetActiveWindow)
+import XMonad.Hooks.InsertPosition (insertPosition, Focus(..), Position(..))
+import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, docksStartupHook, manageDocks, ToggleStruts(..))
+import XMonad.Hooks.ManageHelpers (doFullFloat, isDialog, isFullscreen, pid)
+import XMonad.Hooks.Minimize (minimizeEventHook)
+import XMonad.Hooks.PerWindowKbdLayout (perWindowKbdLayout)
+import XMonad.Hooks.UrgencyHook (focusUrgent, withUrgencyHook, NoUrgencyHook(..))
+import XMonad.Layout.BoringWindows (boringWindows, focusDown, focusMaster, focusUp)
+import XMonad.Layout.Decoration (shrinkText, Theme(..))
+import XMonad.Layout.DwmStyle (dwmStyle)
+import XMonad.Layout.Grid (Grid(..))
+import XMonad.Layout.LayoutCombinators ((|||), JumpToLayout(..))
+import XMonad.Layout.Maximize (maximize)
+import XMonad.Layout.Minimize (minimize)
+import XMonad.Layout.Named (named)
+import XMonad.Layout.NoBorders (smartBorders)
+import XMonad.Layout.Spacing (smartSpacing)
+import XMonad.Layout.Tabbed (tabbedBottom)
+import XMonad.Layout.TrackFloating (trackFloating)
+import XMonad.Prompt (XPConfig(..), XPPosition(..))
+import XMonad.Prompt.ConfirmPrompt (confirmPrompt)
+import XMonad.Prompt.Shell (shellPrompt)
+import qualified XMonad.StackSet as SS
+import XMonad.Util.Compton (inversionStatus, invert)
+import XMonad.Util.NamedWindows (getName)
+import XMonad.Util.Run (hPutStrLn, spawnPipe)
 import XMonad.Xmobar.Actions (stripActions)
-import XMonad.Layout.Tabbed
 
 myTerminal = "st -e tmux"
 
@@ -76,7 +79,7 @@ withPid w f = do
 
 kill9Window :: Window -> X ()
 kill9Window w = withWindowSet $ \ws ->
-  when (W.member w ws) $ withPid w (io . signalProcess 9)
+  when (SS.member w ws) $ withPid w (io . signalProcess 9)
 
 kill9 :: X ()
 kill9 = withFocused kill9Window
@@ -86,19 +89,19 @@ killSafe = withFocused killWindowSafe
 
 killWindowSafe :: Window -> X ()
 killWindowSafe w = withWindowSet $ \ws ->
-  when (W.member w ws) $ killWindow w
+  when (SS.member w ws) $ killWindow w
 
 decorateName' :: Window -> X String
 decorateName' w = show <$> getName w
 
 goToSelectedOnWorkspace gsConfig = do
   let keyValuePair w = flip (,) w `fmap` decorateName' w
-  wins <- gets (W.index . windowset)
+  wins <- gets (SS.index . windowset)
   when (length wins > 1) $ do
     namedWindows <- mapM keyValuePair wins
     maybeWindow <- gridselect gsConfig namedWindows
     case maybeWindow of
-      Just window -> windows $ W.focusWindow window
+      Just window -> windows $ SS.focusWindow window
       Nothing     -> return ()
 
 myKeys conf@XConfig { XMonad.modMask = modm } = M.union (planeKeys modm (Lines 3) Linear) $ M.fromList $
@@ -121,23 +124,23 @@ myKeys conf@XConfig { XMonad.modMask = modm } = M.union (planeKeys modm (Lines 3
   -- Resize viewed windows to the correct size.
   , ((modm, xK_n), refresh)
   -- Move focus to the next window.
-  , ((modm, xK_Tab), windows W.focusDown)
+  , ((modm, xK_Tab), focusDown)
   -- Move focus to the previous window.
-  , ((modm .|. shiftMask, xK_Tab), windows W.focusUp)
+  , ((modm .|. shiftMask, xK_Tab), focusUp)
   -- Move focus to the master window.
-  , ((modm, xK_Return), windows W.focusMaster)
+  , ((modm, xK_Return), focusMaster)
   -- Swap the focused window and the master window.
-  , ((modm .|. shiftMask, xK_Return), windows W.swapMaster)
+  , ((modm .|. shiftMask, xK_Return), windows SS.swapMaster)
   -- Swap the focused window with the previous window.
-  , ((modm .|. controlMask, xK_comma), windows W.swapUp)
+  , ((modm .|. controlMask, xK_comma), windows SS.swapUp)
   -- Swap the focused window with the next window.
-  , ((modm .|. controlMask, xK_period), windows W.swapDown)
+  , ((modm .|. controlMask, xK_period), windows SS.swapDown)
   -- Shrink the master area.
   , ((modm, xK_comma), sendMessage Shrink)
   -- Expand the master area.
   , ((modm, xK_period), sendMessage Expand)
   -- Push window back into tiling.
-  , ((modm, xK_t), withFocused $ windows . W.sink)
+  , ((modm, xK_t), withFocused $ windows . SS.sink)
   -- Increment the number of windows in the master area.
   , ((modm .|. shiftMask, xK_comma), sendMessage (IncMasterN (-1)))
   -- Decrement the number of windows in the master area.
@@ -145,7 +148,7 @@ myKeys conf@XConfig { XMonad.modMask = modm } = M.union (planeKeys modm (Lines 3
   -- Toggle the status bar gap.
   , ((modm, xK_b), sendMessage ToggleStruts)
   -- Select workspace.
-  , ((modm, xK_z), gridselectWorkspace myGSConfig W.greedyView)
+  , ((modm, xK_z), gridselectWorkspace myGSConfig SS.greedyView)
   -- Select window on current workspace.
   , ((modm, xK_x), goToSelectedOnWorkspace myGSConfig)
   -- Quit xmonad.
@@ -178,7 +181,7 @@ myKeys conf@XConfig { XMonad.modMask = modm } = M.union (planeKeys modm (Lines 3
   , ((modm, xK_o), windowMenu)
   -- Minimize focused window.
   , ((modm, xK_m), withFocused minimizeWindow)
-  , ((modm .|. shiftMask, xK_m), sendMessage RestoreNextMinimizedWin)
+  , ((modm .|. shiftMask, xK_m), withLastMinimized maximizeWindow)
   , ((modm, xK_w), withDisplay $ \dpy -> withFocused $ io . raiseWindow dpy)
   , ((modm, xK_f), sendMessage $ JumpToLayout "Full")
   , ((modm, xK_g), sendMessage $ JumpToLayout "Grid")
@@ -193,9 +196,9 @@ myKeys conf@XConfig { XMonad.modMask = modm } = M.union (planeKeys modm (Lines 3
   [ ((m .|. modm, k), windows $ f i)
   | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
   , (f, m) <- -- mod-[1..9], Switch to workspace N.
-              [ (W.greedyView, 0)
+              [ (SS.greedyView, 0)
               -- mod-shift-[1..9], Move client to workspace N.
-              , (W.shift, shiftMask)
+              , (SS.shift, shiftMask)
               -- mod-ctrl-[1..9], Copy client to workspace N.
               , (copy, controlMask)
               -- mod-ctrl-shift-[1..9], Swap workspace with workspace N.
@@ -206,25 +209,25 @@ myKeys conf@XConfig { XMonad.modMask = modm } = M.union (planeKeys modm (Lines 3
   [ ((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
   | (key, sc) <- zip [xK_a, xK_s, xK_d] [0..]
   , (f, m) <- -- mod-{a,s,d}, Switch to physical/Xinerama screens 1, 2, or 3.
-              [ (W.view, 0)
+              [ (SS.view, 0)
               -- mod-shift-{a,s,d}, Move client to screen 1, 2, or 3.
-              , (W.shift, shiftMask)
+              , (SS.shift, shiftMask)
               ]
   ]
 
 myMouseBindings XConfig { XMonad.modMask = modm } = M.fromList
   -- Set the window to floating mode and move by dragging.
-  [ ((modm, button1), \w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster)
+  [ ((modm, button1), \w -> focus w >> mouseMoveWindow w >> windows SS.shiftMaster)
   -- Close window.
   , ((modm, button2), killWindowSafe)
   -- Kill window.
   , ((modm .|. shiftMask, button2), kill9Window)
   -- Set the window to floating mode and resize by dragging.
-  , ((modm, button3), \w -> focus w >> mouseResizeWindow w >> windows W.shiftMaster)
+  , ((modm, button3), \w -> focus w >> mouseResizeWindow w >> windows SS.shiftMaster)
   -- Close window.
   , ((0, 8), killWindowSafe)
   -- Open window menu.
-  , ((0, 9), \w -> windows (W.focusWindow w) >> windowMenu)
+  , ((0, 9), \w -> windows (SS.focusWindow w) >> windowMenu)
   ]
 
 myTheme = def { activeColor = "#000000"
@@ -244,10 +247,10 @@ myLayout = fullLayoutModifiers fullLayout |||
            tiledLayoutModifiers tiledLayout |||
            mirrorLayoutModifiers mirrorLayout |||
            gridLayoutModifiers gridLayout where
-  fullLayoutModifiers = named "Full" . smartBorders . avoidStruts . maximize . minimize . trackFloating
-  tiledLayoutModifiers = named "Tiled" . dwmStyle shrinkText def . smartBorders . smartSpacing 2 . avoidStruts . maximize . minimize
-  mirrorLayoutModifiers = named "Mirror" . dwmStyle shrinkText def . smartBorders . smartSpacing 2 . avoidStruts . maximize . minimize
-  gridLayoutModifiers = named "Grid" . dwmStyle shrinkText def . smartBorders . smartSpacing 2 . avoidStruts . maximize . minimize
+  fullLayoutModifiers = named "Full" . smartBorders . avoidStruts . maximize . minimize . boringWindows . trackFloating
+  tiledLayoutModifiers = named "Tiled" . dwmStyle shrinkText def . smartBorders . smartSpacing 2 . avoidStruts . maximize . minimize . boringWindows
+  mirrorLayoutModifiers = named "Mirror" . dwmStyle shrinkText def . smartBorders . smartSpacing 2 . avoidStruts . maximize . minimize . boringWindows
+  gridLayoutModifiers = named "Grid" . dwmStyle shrinkText def . smartBorders . smartSpacing 2 . avoidStruts . maximize . minimize . boringWindows
   fullLayout = tabbedBottom shrinkText myTheme
   tiledLayout = Tall nmaster delta ratio
   mirrorLayout = Mirror tiledLayout
@@ -259,7 +262,7 @@ myLayout = fullLayoutModifiers fullLayout |||
 -- To find the property name associated with a program, use > xprop | grep WM_CLASS.
 myManageHook = manageDocks <> (isFullscreen --> doFullFloat) <> (fmap not isDialog --> insertPosition Master Newer)
 
-myEventHook e = perWindowKbdLayout e <> fullscreenEventHook e <> docksEventHook e
+myEventHook e = perWindowKbdLayout e <> minimizeEventHook e <> fullscreenEventHook e <> docksEventHook e
 
 xmobarWorkspace :: String -> String
 xmobarWorkspace [ws] | isDigit ws = "<action=xdotool key super+" ++ [ws] ++ ">" ++ [ws] ++ "</action>"
@@ -287,11 +290,10 @@ myLogHook hXmobar = do
   dynamicLogWithPP $ myPP hXmobar
 
 myGSConfig :: HasColorizer a => GSConfig a
-myGSConfig = defaultGSConfig
-  { gs_cellheight = 200
-  , gs_cellwidth = 400
-  , gs_font = "xft:Sans-16"
-  }
+myGSConfig = def { gs_cellheight = 200
+                 , gs_cellwidth = 400
+                 , gs_font = "xft:Sans-16"
+                 }
 
 myStartupHook = do
   docksStartupHook
@@ -300,7 +302,7 @@ myStartupHook = do
   spawn "feh --bg-fill ~/Images/pic-3909-1920x1200.jpg"
   spawn "sleep 1; xscreensaver -no-splash"
 
-myConfig hXmobar = ignoreNetActiveWindow (return True) $ withUrgencyHook NoUrgencyHook $ ewmh defaultConfig
+myConfig hXmobar = ignoreNetActiveWindow (return True) $ withUrgencyHook NoUrgencyHook $ ewmh def
   { terminal           = myTerminal
   , focusFollowsMouse  = myFocusFollowsMouse
   , clickJustFocuses   = myClickJustFocuses
@@ -320,6 +322,7 @@ myConfig hXmobar = ignoreNetActiveWindow (return True) $ withUrgencyHook NoUrgen
 
 myBar = "xmobar ~/.xmonad/xmobar.hs"
 
+main :: IO ()
 main = do
   hXmobar <- spawnPipe myBar
   xmonad $ myConfig hXmobar
