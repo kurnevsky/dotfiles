@@ -11,7 +11,7 @@ protocol unix,inet,inet6,netlink
 seccomp
 shell none
 
-private-bin skypeforlinux,sh,electron
+private-bin skypeforlinux,sh,bash,electron
 private-etc resolv.conf,localtime,fonts,gtk-3.0,pulse
 private-tmp
 
