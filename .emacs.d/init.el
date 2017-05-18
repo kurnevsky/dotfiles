@@ -337,8 +337,10 @@
   :init
   (add-hook 'ensime-mode-hook (lambda () (auto-complete-mode -1)))
   :config
-  (setq ensime-ac-enable-argument-placeholders -1)
-  (setq ensime-ac-override-settings -1))
+  (setq ensime-ac-enable-argument-placeholders nil)
+  (setq ensime-ac-override-settings nil)
+  (setq ensime-startup-notification nil)
+  (setq ensime-startup-snapshot-notification nil))
 
 ;; Haskell mode.
 (use-package haskell-mode
