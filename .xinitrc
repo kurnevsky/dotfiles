@@ -27,7 +27,7 @@ parcellite &
 
 nm-applet &
 
-trayer --edge top --align left --SetDockType true --SetPartialStrut false --expand true --height 25 --transparent true --alpha 0 --tint 0x000000 --widthtype request --monitor 0 &
+trayer --edge top --align left --SetDockType true --SetPartialStrut false --expand true --height 25 --transparent true --alpha 0 --tint 0x000000 --widthtype request --monitor primary &
 
 compton -b -f -I 0.10 -O 0.10 --backend glx --vsync opengl --dbus --glx-fshader-win "$(cat ~/.glsl/negative.glsl)"
 
