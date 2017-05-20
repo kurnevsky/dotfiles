@@ -1,6 +1,8 @@
 {-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, OverloadedStrings #-}
 
 import Control.Monad
+import Control.Monad.Trans.Class
+import Control.Monad.Trans.Maybe
 import Control.Applicative
 import Data.Char (isDigit)
 import qualified Data.Map as M
@@ -13,6 +15,7 @@ import XMonad hiding ((|||))
 import XMonad.Actions.CopyWindow (copy, copyToAll, killAllOtherCopies)
 import XMonad.Actions.GridSelect (gridselect, gridselectWorkspace, GSConfig(..), HasColorizer)
 import XMonad.Actions.Minimize (maximizeWindow, minimizeWindow, withLastMinimized)
+import XMonad.Actions.PhysicalScreens (getScreen, PhysicalScreen(..))
 import XMonad.Actions.Plane (planeKeys, Limits(..), Lines(..))
 import XMonad.Actions.SwapWorkspaces (swapWithCurrent)
 import XMonad.Actions.UpdatePointer (updatePointer)
@@ -206,7 +209,7 @@ myKeys conf@XConfig { XMonad.modMask = modm } = M.union (planeKeys modm (Lines 3
               ]
   ]
   ++
-  [ ((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
+  [ ((m .|. modm, key), void $ runMaybeT $ (MaybeT . getScreen) sc >>= MaybeT . screenWorkspace >>= lift . windows . f)
   | (key, sc) <- zip [xK_a, xK_s, xK_d] [0..]
   , (f, m) <- -- mod-{a,s,d}, Switch to physical/Xinerama screens 1, 2, or 3.
               [ (SS.view, 0)
