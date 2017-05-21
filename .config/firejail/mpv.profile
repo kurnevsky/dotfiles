@@ -12,7 +12,7 @@ protocol unix
 seccomp
 shell none
 
-private-bin mpv,xdg-screensaver,sh,sed,hostname,echo,grep,xset,xscreensaver-command
+private-bin mpv,xdg-screensaver,sh,bash,sed,hostname,echo,grep,xset,xscreensaver-command
 private-dev
 private-etc mpv,fonts,pulse
 private-tmp
