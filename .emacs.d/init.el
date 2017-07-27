@@ -290,6 +290,10 @@
           :map magit-blame-mode-map
           ("C-g b" . magit-blame-quit)))
 
+;; Yaml mode.
+(use-package yaml-mode
+  :mode ("\\.yml\\'" . yaml-mode))
+
 ;; Scala mode.
 (use-package scala-mode
   :mode ("\\.scala\\'" . scala-mode)
