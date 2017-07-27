@@ -113,7 +113,10 @@
     (package-install package)))
 
 ;; ========== Unset keys ==========
-(dolist (key '("\C-a" "\C-g"))
+
+(define-key input-decode-map [?\C-m] [C-m])
+
+(dolist (key '("\C-a" "\C-n" "\C-s"))
   (global-unset-key key))
 
 ;; ========== Configure plugins ==========
@@ -286,9 +289,9 @@
 ;; Magit.
 (use-package magit
   :demand t
-  :bind (("C-g b" . magit-blame)
+  :bind (("<C-m> b" . magit-blame)
           :map magit-blame-mode-map
-          ("C-g b" . magit-blame-quit)))
+          ("<C-m> b" . magit-blame-quit)))
 
 ;; Yaml mode.
 (use-package yaml-mode
