@@ -24,5 +24,7 @@ mkdir ~/.password-store
 whitelist ~/.password-store
 mkdir ~/.gnupg
 whitelist ~/.gnupg
+mkdir ~/.vimperator
+whitelist ~/.vimperator
 mkdir ~/Downloads
 whitelist ~/Downloads
