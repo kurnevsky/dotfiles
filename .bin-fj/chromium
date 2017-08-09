@@ -1,0 +1,5 @@
+#!/bin/sh
+
+APP=$(basename "$0")
+
+firejail --profile=~/.config/firejail/chromium.profile /bin/chromium --no-sandbox "$@"
