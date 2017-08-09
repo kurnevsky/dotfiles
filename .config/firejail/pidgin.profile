@@ -11,7 +11,7 @@ protocol unix,inet,inet6
 seccomp
 shell none
 
-private-bin pidgin
+private-bin pidgin,firefox
 private-dev
 private-etc resolv.conf,localtime,fonts,gtk-2.0,gtk-3.0,pulse,ssl,ca-certificates
 private-tmp
