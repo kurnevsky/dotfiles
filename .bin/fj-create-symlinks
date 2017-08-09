@@ -6,6 +6,6 @@ APPS=$(find ~/.config/firejail -maxdepth 1 -type f -printf "%f\n" | egrep '\.pro
 
 for APP in $APPS; do
     if [ -e "/bin/$APP" ]; then
-        ln -s ~/.bin/fj-run ~/.bin-fj/"$APP"
+        ln -sr ~/.bin/fj-run ~/.bin-fj/"$APP"
     fi
 done
