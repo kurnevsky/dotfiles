@@ -28,3 +28,5 @@ whitelist /dev/video0
 
 mkdir ~/.config/tox
 whitelist ~/.config/tox
+mkdir ~/.cache/Tox
+whitelist ~/.cache/Tox
