@@ -12,7 +12,7 @@ seccomp
 shell none
 
 private-bin qtox
-private-etc fonts
+private-etc fonts,localtime,pulse
 private-tmp
 
 # private-dev doesn't fit because of video0 device
