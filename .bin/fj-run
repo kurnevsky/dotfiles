@@ -1,5 +1,5 @@
 #!/bin/sh
 
-APP=$(basename "$0")
+APP=$(basename -- "$0")
 
 firejail --profile=~/.config/firejail/"$APP".profile /bin/"$APP" "$@"
