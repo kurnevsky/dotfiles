@@ -142,7 +142,14 @@
   :config
   (ido-mode t)
   (setq ido-everywhere t)
-  (setq ido-enable-flex-matching t))
+  (setq ido-enable-flex-matching t)
+  (defun ends-with-/ (s)
+    (eq (aref s (1- (length s))) ?/))
+  (defun ido-file-lessp (a b)
+    (cond
+      ((and (ends-with-/ a) (not (ends-with-/ b))) t)
+      ((and (not (ends-with-/ a)) (ends-with-/ b)) nil)
+      (t (string-lessp a b)))))
 
 ;; TODO: (mapcar 'window-buffer (window-list))
 (use-package ediff
