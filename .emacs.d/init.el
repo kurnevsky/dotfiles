@@ -134,7 +134,9 @@
   :config
   (line-number-mode t)
   (column-number-mode t)
-  (global-linum-mode t))
+  (global-linum-mode t)
+  ;; Fix linum scaling.
+  (set-face-attribute 'linum nil :height 100))
 
 ;; Ido - smart file choosing (default).
 (use-package ido
@@ -143,6 +145,7 @@
   (ido-mode t)
   (setq ido-everywhere t)
   (setq ido-enable-flex-matching t)
+  ;; Show directories first.
   (defun ends-with-/ (s)
     (eq (aref s (1- (length s))) ?/))
   (defun ido-file-lessp (a b)
