@@ -95,7 +95,6 @@
 (setq package-list '(use-package
                       rust-mode
                       racer
-                      company
                       helm))
 (require 'package)
 (add-to-list 'package-archives
@@ -246,11 +245,15 @@
   :config
   (projectile-global-mode))
 
-;; Autocomplete.
-(use-package auto-complete
+;; Company mode - autocompletion.
+(use-package company
+  :demand t
+  :bind (:map company-mode-map
+          ("TAB" . company-indent-or-complete-common))
   :config
-  (ac-config-default)
-  (ac-linum-workaround))
+  (global-company-mode 1)
+  (setq company-dabbrev-downcase nil)
+  (setq company-tooltip-align-annotations t))
 
 ;; Multiple cursors.
 (use-package multiple-cursors-core
@@ -276,7 +279,6 @@
   (setq undo-tree-enable-undo-in-region nil)
   (defun undo-tree-overridden-undo-bindings-p () nil))
 
-;; TODO: check if it's better than AC and maybe use it.
 (use-package helm
   :defer t)
 
@@ -296,7 +298,7 @@
   :mode ("\\.org\\'" . org-mode)
   :config
   (setq org-support-shift-select t)
-  (require 'ox-reveal))
+  (use-package ox-reveal))
 
 ;; Export to reveal.js.
 (use-package ox-reveal
@@ -371,8 +373,6 @@
           ("C-l b" . ensime-sbt-do-compile)
           ("C-l r" . ensime-sbt-do-run)
           ("C-l i" . ensime-import-type-at-point))
-  :init
-  (add-hook 'ensime-mode-hook (lambda () (auto-complete-mode -1)))
   :config
   (setq ensime-ac-enable-argument-placeholders nil)
   (setq ensime-ac-override-settings nil)
@@ -399,11 +399,6 @@
   :config
   (setq jdee-server-dir "~/jdee"))
 
-;; Company mode.
-(require 'company)
-(setq company-tooltip-align-annotations t)
-(define-key company-mode-map (kbd "TAB") 'company-indent-or-complete-common)
-
 (require 'eldoc)
 (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
 
@@ -417,7 +412,6 @@
 (setq racer-rust-src-path "~/rust-nightly-src/src")
 (add-hook 'rust-mode-hook 'racer-mode)
 (add-hook 'racer-mode-hook 'eldoc-mode)
-(add-hook 'racer-mode-hook 'company-mode)
 
 ;; Agda.
 (when (executable-find "agda-mode")
