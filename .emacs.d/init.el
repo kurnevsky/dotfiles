@@ -135,7 +135,14 @@
   (column-number-mode t)
   (global-linum-mode t)
   ;; Fix linum scaling.
-  (set-face-attribute 'linum nil :height 100))
+  (set-face-attribute 'linum nil :height 100)
+  (setq linum-disabled-modes
+    '(mu4e-main-mode mu4e-headers-mode mu4e-view-mode mu4e-compose-mode))
+  (defun linum-on ()
+    (unless (or (minibufferp)
+              (member major-mode linum-disabled-modes)
+              (> (buffer-size) 3000000)) ;; disable linum on buffer greater than 3MB, otherwise it's unbearably slow
+      (linum-mode 1))))
 
 ;; Ido - smart file choosing (default).
 (use-package ido
@@ -291,7 +298,37 @@
 
 ;; Projectile speedbar.
 (use-package projectile-speedbar
-  :bind ("M-<f2>" . projectile-speedbar-open-current-buffer-in-tree))
+  :bind ("M-<f2>" . projectile-speedbar-open-current-buffer-in-tree)
+  :config
+  ;; https://github.com/anshulverma/projectile-speedbar/pull/12
+  (defun projectile-speedbar-project-refresh (root-dir)
+    "Refresh the context of speedbar based on project root"
+    (when (and (not (equal root-dir sr-speedbar-last-refresh-dictionary))
+            (not (sr-speedbar-window-p)))
+      (setq sr-speedbar-last-refresh-dictionary root-dir))
+    (sr-speedbar-select-window)
+    (setq default-directory root-dir)
+    (speedbar-refresh)))
+
+;; Org mode.
+(use-package org
+  :mode ("\\.org\\'" . org-mode)
+  :config
+  (setq org-support-shift-select t)
+  (use-package ox-reveal))
+
+;; Export to reveal.js.
+(use-package ox-reveal
+  :ensure org
+  :commands (org-reveal-export-to-html org-reveal-export-to-html-and-browse))
+
+;; Htmlize.
+(use-package htmlize
+  :commands (htmlize-buffer
+              htmlize-file
+              htmlize-many-files
+              htmlize-many-files-dired
+              htmlize-region))
 
 ;; Org mode.
 (use-package org
@@ -435,6 +472,56 @@
     '(agda2-highlight-string-face ((t (:foreground "brightred"))))
     '(agda2-highlight-symbol-face ((t (:foreground "brightblue"))))
     '(custom-themed ((t (:background "blue1" :foreground "white"))))))
+
+;; mu4e - mail.
+(use-package mu4e
+  :ensure nil ;; https://github.com/jwiegley/use-package/issues/190
+  :load-path "/usr/share/emacs/site-lisp/mu4e"
+  :commands mu4e
+  :config
+  (setq mu4e-maildir "~/Mail")
+  (setq mu4e-headers-full-search t)
+  (setq mu4e-headers-results-limit -1)
+  (setq mu4e-change-filenames-when-moving t)
+  (setq mu4e-get-mail-command "mbsync --all")
+  (defun mu4e-shr2text ()
+    "Html to text using the shr engine."
+    (interactive)
+    (let ((shr-inhibit-images t)
+           (shr-width (- (window-body-width) 4)))
+      (shr-render-region (point-min) (point-max))
+      (goto-char (point-min))))
+  (setq mu4e-contexts
+    `( ,(make-mu4e-context
+          :name "Gmail"
+          :enter-func (lambda () (mu4e-message "Entering gmail context"))
+          :leave-func (lambda () (mu4e-message "Leaving gmail context"))
+          :match-func (lambda (msg) (when msg
+                                      (string-prefix-p "/gmail" (mu4e-message-field msg :maildir))))
+          :vars '((mu4e-sent-folder . "/gmail/[Gmail]/.Sent Mail")
+                   (mu4e-drafts-folder . "/gmail/[Gmail]/.Drafts")
+                   (mu4e-trash-folder . "/gmail/[Gmail]/.Trash")
+                   (mu4e-refile-folder . "/gmail/[Gmail]/.Archive")))
+       ,(make-mu4e-context
+          :name "Yandex"
+          :enter-func (lambda () (mu4e-message "Entering yandex context"))
+          :leave-func (lambda () (mu4e-message "Leaving yandex context"))
+          :match-func (lambda (msg) (when msg
+                                      (string-prefix-p "/yandex" (mu4e-message-field msg :maildir))))
+          :vars '((mu4e-sent-folder . "/yandex/Sent")
+                   (mu4e-drafts-folder . "/yandex/Drafts")
+                   (mu4e-trash-folder . "/yandex/Trash")
+                   (mu4e-refile-folder . "/yandex/Archive")))
+       ,(make-mu4e-context
+          :name "Adform"
+          :enter-func (lambda () (mu4e-message "Entering adform context"))
+          :leave-func (lambda () (mu4e-message "Leaving adform context"))
+          :match-func (lambda (msg) (when msg
+                                      (string-prefix-p "/adform" (mu4e-message-field msg :maildir))))
+          :vars '((mu4e-sent-folder . "/adform/Sent Items")
+                   (mu4e-drafts-folder . "/adform/Drafts")
+                   (mu4e-trash-folder . "/adform/Deleted Items")
+                   (mu4e-refile-folder . "/adform/Archive"))))))
 
 ;; ========== Key bindings ==========
 
