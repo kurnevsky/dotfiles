@@ -144,6 +144,19 @@
               (> (buffer-size) 3000000)) ;; disable linum on buffer greater than 3MB, otherwise it's unbearably slow
       (linum-mode 1))))
 
+;; hl-line - highlight current line.
+(use-package hl-line
+  :config
+  (hl-line-mode 1))
+
+;; Highlight word under point.
+(use-package highlight-thing
+  :config
+  (global-highlight-thing-mode)
+  (setq highlight-thing-what-thing 'word)
+  (custom-set-faces
+    '(highlight-thing ((t (:background "dark slate blue" :foreground "gray"))))))
+
 ;; Ido - smart file choosing (default).
 (use-package ido
   :bind ("C-o" . ido-find-file)
