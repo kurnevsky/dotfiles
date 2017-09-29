@@ -147,7 +147,7 @@
 ;; hl-line - highlight current line.
 (use-package hl-line
   :config
-  (hl-line-mode 1))
+  (global-hl-line-mode 1))
 
 ;; Highlight word under point.
 (use-package highlight-thing
