@@ -157,6 +157,18 @@
   (custom-set-faces
     '(highlight-thing ((t (:background "dark slate blue" :foreground "gray"))))))
 
+;; highlight-indent-guides - highlight indentation levels
+(use-package highlight-indent-guides
+  :config
+  (setq highlight-indent-guides-method 'character)
+  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode))
+
+;; minmap - graphical scroll
+(use-package minimap
+  :commands minimap-mode
+  :config
+  (setq minimap-window-location 'right))
+
 ;; Ido - smart file choosing (default).
 (use-package ido
   :bind ("C-o" . ido-find-file)
@@ -436,8 +448,8 @@
 
 ;; GHC mod.
 (use-package ghc
-  :commands ghc-init
-  :init
+  :commands ghc-init-interactive
+  :config
   (defun ghc-init-interactive ()
     "Initialize ghc module"
     (interactive)
@@ -493,6 +505,8 @@
   :commands mu4e
   :config
   (setq mu4e-maildir "~/Mail")
+  (setq mu4e-update-interval 300)
+  (setq mu4e-view-show-addresses t)
   (setq mu4e-headers-full-search t)
   (setq mu4e-headers-results-limit -1)
   (setq mu4e-change-filenames-when-moving t)
@@ -501,7 +515,7 @@
     "Html to text using the shr engine."
     (interactive)
     (let ((shr-inhibit-images t)
-           (shr-width (- (window-body-width) 4)))
+           (shr-width (- (window-body-width) 8)))
       (shr-render-region (point-min) (point-max))
       (goto-char (point-min))))
   (setq mu4e-contexts
@@ -535,6 +549,21 @@
                    (mu4e-drafts-folder . "/adform/Drafts")
                    (mu4e-trash-folder . "/adform/Deleted Items")
                    (mu4e-refile-folder . "/adform/Archive"))))))
+
+;; zone mode - screensaver
+(use-package zone
+  :commands zone)
+
+;; fireplace
+(use-package fireplace
+  :commands fireplace)
+
+;; wttrin - weather
+(use-package wttrin
+  :commands wttrin
+  :config
+  (setq wttrin-default-cities '("Minsk"))
+  (setq wttrin-default-accept-language '("Accept-Language" . "en-EN")))
 
 ;; ========== Key bindings ==========
 
