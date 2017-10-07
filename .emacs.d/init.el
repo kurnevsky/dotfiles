@@ -165,6 +165,12 @@
   (setq highlight-indent-guides-method 'character)
   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode))
 
+;; flyspell - spell checking
+(use-package flyspell
+  :config
+  (add-hook 'text-mode-hook 'flyspell-mode)
+  (add-hook 'prog-mode-hook 'flyspell-prog-mode))
+
 ;; minmap - graphical scroll
 (use-package minimap
   :commands minimap-mode
