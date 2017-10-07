@@ -31,4 +31,6 @@ trayer --edge top --align left --SetDockType true --SetPartialStrut false --expa
 
 compton -b -f -I 0.10 -O 0.10 --backend glx --vsync opengl --dbus --glx-fshader-win "$(cat ~/.glsl/negative.glsl)"
 
+export _JAVA_AWT_WM_NONREPARENTING=1
+
 exec xmonad 2>> ~/.xsession-errors
