@@ -171,6 +171,15 @@
   (add-hook 'text-mode-hook 'flyspell-mode)
   (add-hook 'prog-mode-hook 'flyspell-prog-mode))
 
+(use-package guess-language
+  :config
+  (setq guess-language-langcodes
+    '((en . ("en" "English"))
+       (ru . ("ru" "Russian"))))
+  (setq guess-language-languages '(en ru))
+  (setq guess-language-min-paragraph-length 15)
+  (add-hook 'text-mode-hook (lambda () (guess-language-mode 1))))
+
 ;; minmap - graphical scroll
 (use-package minimap
   :commands minimap-mode
