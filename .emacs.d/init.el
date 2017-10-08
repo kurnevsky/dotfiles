@@ -533,10 +533,10 @@
           :leave-func (lambda () (mu4e-message "Leaving gmail context"))
           :match-func (lambda (msg) (when msg
                                       (string-prefix-p "/gmail" (mu4e-message-field msg :maildir))))
-          :vars '((mu4e-sent-folder . "/gmail/[Gmail]/.Sent Mail")
-                   (mu4e-drafts-folder . "/gmail/[Gmail]/.Drafts")
-                   (mu4e-trash-folder . "/gmail/[Gmail]/.Trash")
-                   (mu4e-refile-folder . "/gmail/[Gmail]/.Archive")))
+          :vars '((mu4e-sent-folder . "/gmail/[Gmail]/Sent Mail")
+                   (mu4e-drafts-folder . "/gmail/[Gmail]/Drafts")
+                   (mu4e-trash-folder . "/gmail/[Gmail]/Trash")
+                   (mu4e-refile-folder . "/gmail/[Gmail]/Archive")))
        ,(make-mu4e-context
           :name "Yandex"
           :enter-func (lambda () (mu4e-message "Entering yandex context"))
