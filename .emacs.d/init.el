@@ -186,6 +186,11 @@
   :config
   (setq minimap-window-location 'right))
 
+;; clipmon - sync kill ring with clipboard
+(use-package clipmon
+  :config
+  (clipmon-mode-start))
+
 ;; Ido - smart file choosing (default).
 (use-package ido
   :bind ("C-o" . ido-find-file)
@@ -404,6 +409,23 @@
           :map magit-blame-mode-map
           ("<C-m> b" . magit-blame-quit)))
 
+;; Treemacs - side bar.
+(use-package treemacs
+  :commands treemacs-toggle treemacs-select-window treemacs-delete-other-windows treemacs treemacs-find-file
+  :config
+  (setq treemacs-show-hidden-files t)
+  (setq treemacs-never-persist t)
+  (setq treemacs-is-never-other-window nil)
+  (setq treemacs-position 'right)
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t))
+
+;; Treemacs-projectile - projectile support for treemacs.
+(use-package treemacs-projectile
+  :bind ("<f8>" . treemacs-projectile-toggle)
+  :config
+  (setq treemacs-header-function #'treemacs-projectile-create-header))
+
 ;; Yaml mode.
 (use-package yaml-mode
   :mode ("\\.yml\\'" . yaml-mode))
@@ -524,8 +546,7 @@
   (setq mu4e-maildir "~/Mail")
   (setq mu4e-update-interval 300)
   (setq mu4e-view-show-addresses t)
-  (setq mu4e-headers-full-search t)
-  (setq mu4e-headers-results-limit -1)
+  (setq mu4e-headers-results-limit 1000)
   (setq mu4e-change-filenames-when-moving t)
   (setq mu4e-get-mail-command "mbsync --all")
   (defun mu4e-shr2text ()
