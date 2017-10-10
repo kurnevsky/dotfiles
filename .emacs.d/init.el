@@ -409,6 +409,13 @@
           :map magit-blame-mode-map
           ("<C-m> b" . magit-blame-quit)))
 
+;; diff-hl - indicate uncommited changes on the fringe.
+(use-package diff-hl
+  :config
+  (global-diff-hl-mode)
+  (diff-hl-flydiff-mode)
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
+
 ;; Treemacs - side bar.
 (use-package treemacs
   :commands treemacs-toggle treemacs-select-window treemacs-delete-other-windows treemacs treemacs-find-file
