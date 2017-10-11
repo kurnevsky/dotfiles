@@ -163,7 +163,10 @@
 (use-package highlight-indent-guides
   :config
   (setq highlight-indent-guides-method 'character)
-  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode))
+  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  ;; Don't know why it's needed but it seems something overwrites font-lock-extra-managed-props in emacs-lisp-mode.
+  ;; See https://github.com/DarthFennec/highlight-indent-guides/issues/15#issuecomment-280505591
+  (add-hook 'emacs-lisp-mode-hook (lambda () (add-to-list 'font-lock-extra-managed-props 'display))))
 
 ;; flyspell - spell checking
 (use-package flyspell
