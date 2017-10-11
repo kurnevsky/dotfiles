@@ -380,26 +380,6 @@
               htmlize-many-files-dired
               htmlize-region))
 
-;; Org mode.
-(use-package org
-  :mode ("\\.org\\'" . org-mode)
-  :config
-  (setq org-support-shift-select t)
-  (use-package ox-reveal))
-
-;; Export to reveal.js.
-(use-package ox-reveal
-  :ensure org
-  :commands (org-reveal-export-to-html org-reveal-export-to-html-and-browse))
-
-;; Htmlize.
-(use-package htmlize
-  :commands (htmlize-buffer
-              htmlize-file
-              htmlize-many-files
-              htmlize-many-files-dired
-              htmlize-region))
-
 ;; Yasnippet.
 ;; TODO: do I need it?
 (use-package yasnippet
