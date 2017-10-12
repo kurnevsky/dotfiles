@@ -161,27 +161,32 @@
 
 ;; highlight-indent-guides - highlight indentation levels
 (use-package highlight-indent-guides
-  :config
-  (setq highlight-indent-guides-method 'character)
+  :commands highlight-indent-guides-mode
+  :init
   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
   ;; Don't know why it's needed but it seems something overwrites font-lock-extra-managed-props in emacs-lisp-mode.
   ;; See https://github.com/DarthFennec/highlight-indent-guides/issues/15#issuecomment-280505591
-  (add-hook 'emacs-lisp-mode-hook (lambda () (add-to-list 'font-lock-extra-managed-props 'display))))
+  (add-hook 'emacs-lisp-mode-hook (lambda () (add-to-list 'font-lock-extra-managed-props 'display)))
+  :config
+  (setq highlight-indent-guides-method 'character))
 
 ;; flyspell - spell checking
 (use-package flyspell
-  :config
+  :commands (flyspell-mode flyspell-prog-mode)
+  :init
   (add-hook 'text-mode-hook 'flyspell-mode)
   (add-hook 'prog-mode-hook 'flyspell-prog-mode))
 
 (use-package guess-language
+  :commands guess-language-mode
+  :init
+  (add-hook 'text-mode-hook (lambda () (guess-language-mode 1)))
   :config
   (setq guess-language-langcodes
     '((en . ("en" "English"))
        (ru . ("ru" "Russian"))))
   (setq guess-language-languages '(en ru))
-  (setq guess-language-min-paragraph-length 15)
-  (add-hook 'text-mode-hook (lambda () (guess-language-mode 1))))
+  (setq guess-language-min-paragraph-length 15))
 
 ;; minmap - graphical scroll
 (use-package minimap
@@ -401,7 +406,7 @@
 
 ;; Treemacs - side bar.
 (use-package treemacs
-  :commands treemacs-toggle treemacs-select-window treemacs-delete-other-windows treemacs treemacs-find-file
+  :commands (treemacs-toggle treemacs-select-window treemacs-delete-other-windows treemacs treemacs-find-file)
   :config
   (setq treemacs-show-hidden-files t)
   (setq treemacs-never-persist t)
@@ -444,7 +449,7 @@
 
 ;; Sbt mode.
 (use-package sbt-mode
-  :commands sbt-start sbt-command
+  :commands (sbt-start sbt-command)
   :config
   ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
   ;; allows using SPACE when in the minibuffer
