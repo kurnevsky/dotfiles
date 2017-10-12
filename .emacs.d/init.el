@@ -194,11 +194,6 @@
   :config
   (setq minimap-window-location 'right))
 
-;; clipmon - sync kill ring with clipboard
-(use-package clipmon
-  :config
-  (clipmon-mode-start))
-
 ;; Ido - smart file choosing (default).
 (use-package ido
   :bind ("C-o" . ido-find-file)
