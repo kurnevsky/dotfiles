@@ -275,7 +275,16 @@
 
 ;; The Silver Searcher.
 (use-package ag
-  :defer t)
+  :commands (ag
+              ag-files
+              ag-regexp
+              ag-project
+              ag-project-files
+              ag-project-regexp
+              ag-dired
+              ag-dired-regexp
+              ag-project-dired
+              ag-project-dired-regexp))
 
 ;; Anzu - smart find.
 (use-package anzu
