@@ -343,6 +343,10 @@
 
 (use-package helm)
 
+(use-package helm-ag
+  :config
+  (setq helm-ag-insert-at-point 'word))
+
 (use-package helm-projectile
   :after projectile
   :config
