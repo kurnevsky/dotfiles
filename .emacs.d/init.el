@@ -96,8 +96,7 @@
 ;; List of necessary packages.
 (setq package-list '(use-package
                       rust-mode
-                      racer
-                      helm))
+                      racer))
 (require 'package)
 (add-to-list 'package-archives
   '("melpa" . "https://melpa.org/packages/"))
@@ -122,7 +121,7 @@
 
 ;; ========== Configure plugins ==========
 
-;; Use package - lazy plugins loading.
+;; Lazy packages loading.
 (require 'use-package)
 (setq use-package-always-ensure t)
 
@@ -130,7 +129,7 @@
 ;; (use-package darcula-theme)
 (use-package atom-one-dark-theme)
 
-;; Linum - line numbers (default).
+;; Line numbers.
 (use-package linum
   :config
   (line-number-mode t)
@@ -146,7 +145,7 @@
               (> (buffer-size) 3000000)) ;; disable linum on buffer greater than 3MB, otherwise it's unbearably slow
       (linum-mode 1))))
 
-;; hl-line - highlight current line.
+;; Highlight current line.
 (use-package hl-line
   :config
   (global-hl-line-mode 1))
@@ -159,7 +158,7 @@
   (custom-set-faces
     '(highlight-thing ((t (:background "dark slate blue" :foreground "gray"))))))
 
-;; highlight-indent-guides - highlight indentation levels
+;; Highlight indentation levels.
 (use-package highlight-indent-guides
   :commands highlight-indent-guides-mode
   :init
@@ -170,13 +169,14 @@
   :config
   (setq highlight-indent-guides-method 'character))
 
-;; flyspell - spell checking
+;; Spell checking.
 (use-package flyspell
   :commands (flyspell-mode flyspell-prog-mode)
   :init
   (add-hook 'text-mode-hook 'flyspell-mode)
   (add-hook 'prog-mode-hook 'flyspell-prog-mode))
 
+;; Automatically change language for spell checking.
 (use-package guess-language
   :commands guess-language-mode
   :init
@@ -188,13 +188,13 @@
   (setq guess-language-languages '(en ru))
   (setq guess-language-min-paragraph-length 15))
 
-;; minmap - graphical scroll
+;; Graphical scroll.
 (use-package minimap
   :commands minimap-mode
   :config
   (setq minimap-window-location 'right))
 
-;; Ido - smart file choosing (default).
+;; Smart file choosing.
 (use-package ido
   :bind ("C-o" . ido-find-file)
   :config
@@ -229,20 +229,18 @@
     '(ediff-even-diff-B ((t (:background "darkred" :foreground "white"))))
     '(ediff-even-diff-C ((t (:background "darkred" :foreground "white"))))))
 
-;; Buffer switcher (default).
+;; Buffer switcher.
 (use-package bs
   :bind (("<f2>" . bs-show)
           :map bs-mode-map
           ("<f2>" . bs-abort)
           ("<escape>" . bs-abort)))
 
-;; Speedbar (default).
 (use-package speedbar
   :defer t
   :config
   (setq speedbar-show-unknown-files t))
 
-;; Cedet (default).
 (require 'cedet)
 (require 'semantic/ia)
 (require 'semantic/bovine/gcc)
@@ -259,13 +257,12 @@
 (semantic-mode t)
 (global-ede-mode t)
 
-;; Tramp (default).
 (use-package tramp
   :defer t
   :config
   (setq tramp-default-method "ssh"))
 
-;; Smex - smart M-x command line.
+;; Smart M-x command line.
 (use-package smex
   :bind (("M-x" . smex)
           ("M-X" . smex-major-mode-commands)
@@ -286,7 +283,7 @@
               ag-project-dired
               ag-project-dired-regexp))
 
-;; Anzu - smart find.
+;; Smart find.
 (use-package anzu
   :demand t
   :bind (([remap query-replace] . anzu-query-replace)
@@ -300,7 +297,7 @@
   (setq sml/no-confirm-load-theme t)
   (sml/setup))
 
-;; Projectile - project management.
+;; Project management.
 (use-package projectile
   :demand t
   :bind (:map projectile-mode-map
@@ -311,7 +308,7 @@
   :config
   (projectile-global-mode))
 
-;; Company mode - autocompletion.
+;; Autocompletion.
 (use-package company
   :demand t
   :bind (:map company-mode-map
@@ -329,7 +326,6 @@
           :map mc/keymap
           ("C-S-b" . mc/keyboard-quit)))
 
-;; Undo tree.
 ;; TODO: undo-tree-visualize hotkey
 (use-package undo-tree
   :demand t
@@ -345,10 +341,14 @@
   (setq undo-tree-enable-undo-in-region nil)
   (defun undo-tree-overridden-undo-bindings-p () nil))
 
-(use-package helm
-  :defer t)
+(use-package helm)
 
-;; Sr speedbar - speedbar in the current frame.
+(use-package helm-projectile
+  :after projectile
+  :config
+  (helm-projectile-on))
+
+;; Speedbar in the current frame.
 (use-package sr-speedbar
   :bind ("M-S-<f2>" . sr-speedbar-close)
   :config
@@ -369,19 +369,16 @@
     (setq default-directory root-dir)
     (speedbar-refresh)))
 
-;; Org mode.
 (use-package org
   :mode ("\\.org\\'" . org-mode)
   :config
-  (setq org-support-shift-select t)
-  (use-package ox-reveal))
+  (setq org-support-shift-select t))
 
-;; Export to reveal.js.
+;; Export org to reveal.js.
 (use-package ox-reveal
-  :ensure org
+  :after org
   :commands (org-reveal-export-to-html org-reveal-export-to-html-and-browse))
 
-;; Htmlize.
 (use-package htmlize
   :commands (htmlize-buffer
               htmlize-file
@@ -389,26 +386,24 @@
               htmlize-many-files-dired
               htmlize-region))
 
-;; Yasnippet.
 ;; TODO: do I need it?
 (use-package yasnippet
   :defer t)
 
-;; Magit.
 (use-package magit
   :demand t
   :bind (("<C-m> b" . magit-blame)
           :map magit-blame-mode-map
           ("<C-m> b" . magit-blame-quit)))
 
-;; diff-hl - indicate uncommited changes on the fringe.
+;; Indicate uncommited changes on the fringe.
 (use-package diff-hl
   :config
   (global-diff-hl-mode)
   (diff-hl-flydiff-mode)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
-;; Treemacs - side bar.
+;; Side bar.
 (use-package treemacs
   :commands (treemacs-toggle treemacs-select-window treemacs-delete-other-windows treemacs treemacs-find-file)
   :config
@@ -419,17 +414,15 @@
   (treemacs-follow-mode t)
   (treemacs-filewatch-mode t))
 
-;; Treemacs-projectile - projectile support for treemacs.
+;; Projectile support for treemacs.
 (use-package treemacs-projectile
   :bind ("<f8>" . treemacs-projectile-toggle)
   :config
   (setq treemacs-header-function #'treemacs-projectile-create-header))
 
-;; Yaml mode.
 (use-package yaml-mode
   :mode ("\\.yml\\'" . yaml-mode))
 
-;; Scala mode.
 (use-package scala-mode
   :mode ("\\.scala\\'" . scala-mode)
   :interpreter ("scala" . scala-mode)
@@ -451,7 +444,6 @@
                                 (local-set-key (kbd "-") 'left-arrow)
                                 (local-set-key (kbd ">") 'right-arrow))))
 
-;; Sbt mode.
 (use-package sbt-mode
   :commands (sbt-start sbt-command)
   :config
@@ -462,7 +454,6 @@
     'self-insert-command
     minibuffer-local-completion-map))
 
-;; Ensime.
 (use-package ensime
   ;; :pin melpa-stable
   :bind (:map ensime-mode-map
@@ -479,12 +470,10 @@
   (setq ensime-startup-notification nil)
   (setq ensime-startup-snapshot-notification nil))
 
-;; Haskell mode.
 (use-package haskell-mode
   :mode ("\\.hs\\'" . haskell-mode)
   :interpreter ("ghci" . haskell-mode))
 
-;; GHC mod.
 (use-package ghc
   :commands ghc-init-interactive
   :config
@@ -493,7 +482,7 @@
     (interactive)
     (ghc-init)))
 
-;; Jdee - java mode.
+;; Java mode.
 (use-package jdee
   :mode ("\\.java\\'" . jdee-mode)
   :config
@@ -502,11 +491,9 @@
 (require 'eldoc)
 (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
 
-;; Rust mode.
 (require 'rust-mode)
 (setq rust-indent-offset 2)
 
-;; Racer.
 (require 'racer)
 (setq racer-cmd "/bin/racer")
 (setq racer-rust-src-path "~/rust-nightly-src/src")
@@ -536,7 +523,7 @@
     '(agda2-highlight-symbol-face ((t (:foreground "brightblue"))))
     '(custom-themed ((t (:background "blue1" :foreground "white"))))))
 
-;; mu4e - mail.
+;; Mail.
 (use-package mu4e
   :ensure nil ;; https://github.com/jwiegley/use-package/issues/190
   :load-path "/usr/share/emacs/site-lisp/mu4e"
@@ -587,15 +574,14 @@
                    (mu4e-trash-folder . "/adform/Deleted Items")
                    (mu4e-refile-folder . "/adform/Archive"))))))
 
-;; zone mode - screensaver
+;; Screensaver.
 (use-package zone
   :commands zone)
 
-;; fireplace
 (use-package fireplace
   :commands fireplace)
 
-;; wttrin - weather
+;; Weather.
 (use-package wttrin
   :commands wttrin
   :config
