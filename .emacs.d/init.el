@@ -344,6 +344,9 @@
 (use-package helm)
 
 (use-package helm-ag
+  :bind (:map helm-ag-map
+          ("<left>" . backward-char)
+          ("<right>" . forward-char))
   :config
   (setq helm-ag-insert-at-point 'word))
 
