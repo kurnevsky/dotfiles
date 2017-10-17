@@ -94,9 +94,7 @@
 ;; ========== Install packages ==========
 
 ;; List of necessary packages.
-(setq package-list '(use-package
-                      rust-mode
-                      racer))
+(setq package-list '(use-package))
 (require 'package)
 (add-to-list 'package-archives
   '("melpa" . "https://melpa.org/packages/"))
@@ -498,14 +496,20 @@
 (require 'eldoc)
 (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
 
-(require 'rust-mode)
-(setq rust-indent-offset 2)
+(use-package rust-mode
+  :mode ("\\.rs\\'" . rust-mode)
+  :config
+  (setq rust-indent-offset 2))
 
-(require 'racer)
-(setq racer-cmd "/bin/racer")
-(setq racer-rust-src-path "~/rust-nightly-src/src")
-(add-hook 'rust-mode-hook 'racer-mode)
-(add-hook 'racer-mode-hook 'eldoc-mode)
+(use-package racer
+  :after rust-mode
+  :commands racer-mode
+  :init
+  (add-hook 'rust-mode-hook 'racer-mode)
+  :config
+  (setq racer-cmd "/bin/racer")
+  (setq racer-rust-src-path "~/rust-nightly-src/src")
+  (add-hook 'racer-mode-hook 'eldoc-mode))
 
 ;; Agda.
 (when (executable-find "agda-mode")
