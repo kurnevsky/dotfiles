@@ -493,8 +493,10 @@
   :config
   (setq jdee-server-dir "~/jdee"))
 
-(require 'eldoc)
-(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+(use-package eldoc
+  :commands (eldoc-mode turn-on-eldoc-mode)
+  :init
+  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode))
 
 (use-package rust-mode
   :mode ("\\.rs\\'" . rust-mode)
@@ -509,7 +511,7 @@
   :config
   (setq racer-cmd "/bin/racer")
   (setq racer-rust-src-path "~/rust-nightly-src/src")
-  (add-hook 'racer-mode-hook 'eldoc-mode))
+  (add-hook 'racer-mode-hook 'turn-on-eldoc-mode))
 
 ;; Agda.
 (when (executable-find "agda-mode")
