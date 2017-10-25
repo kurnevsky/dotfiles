@@ -3,22 +3,11 @@
 
 * xmonad - windows manager
 
-Consists of 3 packages:
-
-- xmonad
-- xmonad-contrib
-- xmonad-extras
-
-Install them from git [[https://github.com/xmonad][repositories]] with command ~cabal install --enable-optimisation=2~.
-
-Before the installation apply patches:
-
-- For xmonad: ~git apply ~/.xmonad/patches/optimise.patch~
-- For xmonad-contrib: ~git apply ~/.xmonad/patches/fullscrean.patch~
+Install it with command ~pacaur -S haskell-regex-compat haskell-dbus xmonad xmonad-contrib~.
 
 * xmobar - top bar
 
-Install it from git [[https://github.com/jaor/xmobar][repository]] with command ~cabal install --enable-optimisation=2 --flags=all_extensions~.
+Install it with command ~pacaur -S xmobar~.
 
 * trayer-srg - system tray
 
