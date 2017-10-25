@@ -45,14 +45,15 @@ Config { font = "xft:DejaVu Sans:pixelsize=14:antialias=true:autohint=false"
                                      , "--normal", "darkorange"
                                      , "--high", "darkred"
                                      ] 10
-                    , Run Mpris2 "DeaDBeeF" [ "--template", "<artist> <title>"
-                                            , "--maxtwidth", "50"
-                                            ] 10
+                    -- , Run Mpris2 "DeaDBeeF" [ "--template", "<artist> <title>"
+                    --                         , "--maxtwidth", "50"
+                    --                         ] 10
                     , Run UnsafeStdinReader
                     , Run Com "/bin/bash" [ "-c", "~/.xmonad/trayer-pad-icon.sh"
                                           ] "trayer" 10
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%trayer% : %UnsafeStdinReader%}{%mpris2% : %dynnetwork% : %diskio% : %cpu% : %memory% : %swap% : %battery% : %UMMS% : <action=`alacritty -e zsh -c 'cal -m -y; sleep infinity'`>%date%</action>"
+       -- , template = "%trayer% : %UnsafeStdinReader%}{%mpris2% : %dynnetwork% : %diskio% : %cpu% : %memory% : %swap% : %battery% : %UMMS% : <action=`alacritty -e zsh -c 'cal -m -y; sleep infinity'`>%date%</action>"
+       , template = "%trayer% : %UnsafeStdinReader%}{%dynnetwork% : %diskio% : %cpu% : %memory% : %swap% : %battery% : %UMMS% : <action=`alacritty -e zsh -c 'cal -m -y; sleep infinity'`>%date%</action>"
        }

@@ -14,7 +14,8 @@ import System.Posix.Types (ProcessID)
 import XMonad hiding ((|||))
 import XMonad.Actions.CopyWindow (copy, copyToAll, killAllOtherCopies)
 import XMonad.Actions.GridSelect (gridselect, gridselectWorkspace, GSConfig(..), HasColorizer)
-import XMonad.Actions.Minimize (maximizeWindow, minimizeWindow, withLastMinimized)
+-- 0.14
+-- import XMonad.Actions.Minimize (maximizeWindow, minimizeWindow, withLastMinimized)
 import XMonad.Actions.PhysicalScreens (getScreen, PhysicalScreen(..))
 import XMonad.Actions.Plane (planeKeys, Limits(..), Lines(..))
 import XMonad.Actions.SwapWorkspaces (swapWithCurrent)
@@ -28,7 +29,6 @@ import XMonad.Hooks.InsertPosition (insertPosition, Focus(..), Position(..))
 import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, docksStartupHook, manageDocks, ToggleStruts(..))
 import XMonad.Hooks.ManageHelpers (doFullFloat, isDialog, isFullscreen, pid)
 import XMonad.Hooks.Minimize (minimizeEventHook)
-import XMonad.Hooks.PerWindowKbdLayout (perWindowKbdLayout)
 import XMonad.Hooks.UrgencyHook (focusUrgent, withUrgencyHook, NoUrgencyHook(..))
 import XMonad.Layout.BoringWindows (boringWindows, focusDown, focusMaster, focusUp)
 import XMonad.Layout.Decoration (shrinkText, Theme(..))
@@ -36,7 +36,9 @@ import XMonad.Layout.DwmStyle (dwmStyle)
 import XMonad.Layout.Grid (Grid(..))
 import XMonad.Layout.LayoutCombinators ((|||), JumpToLayout(..))
 import XMonad.Layout.Maximize (maximize)
-import XMonad.Layout.Minimize (minimize)
+-- 0.14
+-- import XMonad.Layout.Minimize (minimize)
+import XMonad.Layout.Minimize (minimize, minimizeWindow, MinimizeMsg(..))
 import XMonad.Layout.Named (named)
 import XMonad.Layout.NoBorders (smartBorders)
 import XMonad.Layout.Spacing (smartSpacing)
@@ -184,7 +186,9 @@ myKeys conf@XConfig { XMonad.modMask = modm } = M.union (planeKeys modm (Lines 3
   , ((modm, xK_o), windowMenu)
   -- Minimize focused window.
   , ((modm, xK_m), withFocused minimizeWindow)
-  , ((modm .|. shiftMask, xK_m), withLastMinimized maximizeWindow)
+  -- 0.14
+  --   , ((modm .|. shiftMask, xK_m), withLastMinimized maximizeWindow)
+  , ((modm .|. shiftMask, xK_m), sendMessage RestoreNextMinimizedWin)
   , ((modm, xK_w), withDisplay $ \dpy -> withFocused $ io . raiseWindow dpy)
   , ((modm, xK_f), sendMessage $ JumpToLayout "Full")
   , ((modm, xK_g), sendMessage $ JumpToLayout "Grid")
@@ -265,7 +269,7 @@ myLayout = fullLayoutModifiers fullLayout |||
 -- To find the property name associated with a program, use > xprop | grep WM_CLASS.
 myManageHook = manageDocks <> (isFullscreen --> doFullFloat) <> (fmap not isDialog --> insertPosition Master Newer)
 
-myEventHook e = perWindowKbdLayout e <> minimizeEventHook e <> fullscreenEventHook e <> docksEventHook e
+myEventHook e = minimizeEventHook e <> fullscreenEventHook e <> docksEventHook e
 
 xmobarWorkspace :: String -> String
 xmobarWorkspace [ws] | isDigit ws = "<action=xdotool key super+" ++ [ws] ++ ">" ++ [ws] ++ "</action>"
