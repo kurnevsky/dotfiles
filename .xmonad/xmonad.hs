@@ -320,6 +320,7 @@ addEWMHFullscreen = do
   mapM_ addNETSupported [wms, wfs]
 
 myStartupHook = do
+  addEWMHFullscreen
   docksStartupHook
   spawn "setxkbmap -model pc101 -layout us,ru -option grp:caps_toggle -option grp:switch -option grp_led:caps -option lv3:ralt_switch"
   spawn "sleep 1; xmodmap ~/.Xmodmap"
