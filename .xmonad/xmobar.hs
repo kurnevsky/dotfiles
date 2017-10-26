@@ -54,6 +54,6 @@ Config { font = "xft:DejaVu Sans:pixelsize=14:antialias=true:autohint=false"
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       -- , template = "%trayer% : %UnsafeStdinReader%}{%mpris2% : %dynnetwork% : %diskio% : %cpu% : %memory% : %swap% : %battery% : %UMMS% : <action=`alacritty -e zsh -c 'cal -m -y; sleep infinity'`>%date%</action>"
-       , template = "%trayer% : %UnsafeStdinReader%}{%dynnetwork% : %diskio% : %cpu% : %memory% : %swap% : %battery% : %UMMS% : <action=`alacritty -e zsh -c 'cal -m -y; sleep infinity'`>%date%</action>"
+       -- , template = "%trayer% : %UnsafeStdinReader%}{%mpris2% : %dynnetwork% : %diskio% : %cpu% : %memory% : %swap% : %battery% : %UMMS% : <action=`st -e zsh -c 'cal -m -y; sleep infinity'`>%date%</action>"
+       , template = "%trayer% : %UnsafeStdinReader%}{%dynnetwork% : %diskio% : %cpu% : %memory% : %swap% : %battery% : %UMMS% : <action=`st -e zsh -c 'cal -m -y; sleep infinity'`>%date%</action>"
        }
