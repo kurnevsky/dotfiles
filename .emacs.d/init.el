@@ -234,11 +234,6 @@
           ("<f2>" . bs-abort)
           ("<escape>" . bs-abort)))
 
-(use-package speedbar
-  :defer t
-  :config
-  (setq speedbar-show-unknown-files t))
-
 (require 'cedet)
 (require 'semantic/ia)
 (require 'semantic/bovine/gcc)
@@ -352,27 +347,6 @@
   :after projectile
   :config
   (helm-projectile-on))
-
-;; Speedbar in the current frame.
-(use-package sr-speedbar
-  :bind ("M-S-<f2>" . sr-speedbar-close)
-  :config
-  (setq sr-speedbar-right-side t)
-  (setq sr-speedbar-auto-refresh nil))
-
-;; Projectile speedbar.
-(use-package projectile-speedbar
-  :bind ("M-<f2>" . projectile-speedbar-open-current-buffer-in-tree)
-  :config
-  ;; https://github.com/anshulverma/projectile-speedbar/pull/12
-  (defun projectile-speedbar-project-refresh (root-dir)
-    "Refresh the context of speedbar based on project root"
-    (when (and (not (equal root-dir sr-speedbar-last-refresh-dictionary))
-            (not (sr-speedbar-window-p)))
-      (setq sr-speedbar-last-refresh-dictionary root-dir))
-    (sr-speedbar-select-window)
-    (setq default-directory root-dir)
-    (speedbar-refresh)))
 
 (use-package org
   :mode ("\\.org\\'" . org-mode)
