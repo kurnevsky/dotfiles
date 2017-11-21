@@ -16,6 +16,9 @@ user_pref("browser.newtabpage.introShown", true);
 user_pref("browser.newtabpage.directory.source", "");
 user_pref("browser.newtabpage.activity-stream.enabled", false);
 
+// Disable Pocket
+user_pref("extensions.pocket.enabled", false);
+
 // Always ask me where to save download files
 user_pref("browser.download.useDownloadDir", false);
 
