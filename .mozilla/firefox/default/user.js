@@ -21,3 +21,6 @@ user_pref("browser.download.useDownloadDir", false);
 
 // Request that sites not track me
 user_pref("privacy.donottrackheader.enabled", true);
+
+// Enable OpenGL Off-Main-Thread Compositing (OMTC)
+user_pref("layers.acceleration.force-enabled", true);
