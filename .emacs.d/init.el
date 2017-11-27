@@ -433,22 +433,6 @@
     'self-insert-command
     minibuffer-local-completion-map))
 
-(use-package ensime
-  ;; :pin melpa-stable
-  :bind (:map ensime-mode-map
-          ("C-l e" . ensime-print-errors-at-point)
-          ("C-l t" . ensime-inspect-type-at-point)
-          ("C-l u" . ensime-show-uses-of-symbol-at-point)
-          ("C-l f" . ensime-search)
-          ("C-l b" . ensime-sbt-do-compile)
-          ("C-l r" . ensime-sbt-do-run)
-          ("C-l i" . ensime-import-type-at-point))
-  :config
-  (setq ensime-ac-enable-argument-placeholders nil)
-  (setq ensime-ac-override-settings nil)
-  (setq ensime-startup-notification nil)
-  (setq ensime-startup-snapshot-notification nil))
-
 (use-package haskell-mode
   :mode ("\\.hs\\'" . haskell-mode)
   :interpreter ("ghci" . haskell-mode))
