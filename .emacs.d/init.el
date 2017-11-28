@@ -388,6 +388,7 @@
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
 ;; Side bar.
+;; TODO: try to display in side window: (display-buffer-in-side-window buffer `((side . , 'right)))
 (use-package treemacs
   :commands (treemacs-toggle treemacs-select-window treemacs-delete-other-windows treemacs treemacs-find-file)
   :config
