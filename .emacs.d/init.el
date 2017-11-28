@@ -549,9 +549,6 @@
 (use-package zone
   :commands zone)
 
-(use-package fireplace
-  :commands fireplace)
-
 ;; Weather.
 (use-package wttrin
   :commands wttrin
