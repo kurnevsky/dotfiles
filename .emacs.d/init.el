@@ -65,8 +65,6 @@
 (setq-default cursor-in-non-selected-windows nil)
 ;; Lisp indent - 2 spaces.
 (setq lisp-indent-offset 2)
-;; JS indent - 2 spaces.
-(setq js-indent-level 2)
 ;; Enable scroll while searching.
 (setq isearch-allow-scroll t)
 ;; Don't exit search mode on navigation.
