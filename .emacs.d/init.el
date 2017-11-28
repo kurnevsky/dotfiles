@@ -396,7 +396,8 @@
   (setq treemacs-is-never-other-window nil)
   (setq treemacs-position 'right)
   (treemacs-follow-mode t)
-  (treemacs-filewatch-mode t))
+  (treemacs-filewatch-mode t)
+  (add-hook 'treemacs-mode-hook (lambda () (setq cursor-type 'bar))))
 
 ;; Projectile support for treemacs.
 (use-package treemacs-projectile
