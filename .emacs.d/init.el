@@ -70,10 +70,9 @@
 ;; Don't exit search mode on navigation.
 (setq search-exit-option nil)
 ;; File to write custom-set-variables.
-(defconst custom-el "~/.emacs.d/custom.el")
-(unless (file-exists-p custom-el)
-  (write-region "" nil custom-el))
-(setq custom-file custom-el)
+(setq custom-file "~/.emacs.d/custom.el")
+(unless (file-exists-p custom-file)
+  (write-region "" nil custom-file))
 (load custom-file)
 ;; Ask before killing new buffer.
 (setq-default new-untitled nil)
