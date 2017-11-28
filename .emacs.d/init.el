@@ -334,6 +334,12 @@
   (setq undo-tree-enable-undo-in-region nil)
   (defun undo-tree-overridden-undo-bindings-p () nil))
 
+(use-package hideshow
+  :init
+  (add-hook 'prog-mode-hook 'hs-minor-mode)
+  :bind
+  (("C-`" . hs-toggle-hiding)))
+
 (use-package helm)
 
 (use-package helm-ag
