@@ -588,7 +588,7 @@
     (beginning-of-line)))
 ;; Go to line ending.
 (defun point-in-comment ()
-  "Determine if the point is inside a comment"
+  "Determine if the point is inside a comment."
   (interactive)
   (let ((syn (syntax-ppss)))
     (and (nth 8 syn)
@@ -596,7 +596,7 @@
 (defun end-of-code-or-line (arg)
   "Move to end of line, or before start of comments depending on situation.
 Toggle back and forth positions if we are already at one.
-Comments are recognized in any mode that sets syntax-ppss
+Comments are recognized in any mode that sets 'syntax-ppss'
 properly."
   (interactive "^P")
   (when (catch 'bol 
