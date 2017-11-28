@@ -399,6 +399,10 @@
   :config
   (setq treemacs-header-function #'treemacs-projectile-create-header))
 
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
+
 (use-package yaml-mode
   :mode ("\\.yml\\'" . yaml-mode))
 
