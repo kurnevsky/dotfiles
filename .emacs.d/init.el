@@ -299,7 +299,7 @@
           ("C-p g" . projectile-ag)
           ("C-p G" . projectile-grep))
   :config
-  (projectile-global-mode))
+  (projectile-mode))
 
 ;; Autocompletion.
 (use-package company
@@ -412,14 +412,14 @@
   :config
   (defun right-arrow ()
     (interactive)
-    (cond ((looking-back "=")
+    (cond ((looking-back "=" nil)
             (backward-delete-char 1) (insert "⇒"))
-      ((looking-back "-")
+      ((looking-back "-" nil)
         (backward-delete-char 1) (insert "→"))
       (t (insert ">"))))
   (defun left-arrow ()
     (interactive)
-    (if (looking-back "<") 
+    (if (looking-back "<" nil)
       (progn (backward-delete-char 1)
         (insert "←"))
       (insert "-")))
