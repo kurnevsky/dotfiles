@@ -232,22 +232,6 @@
           ("<f2>" . bs-abort)
           ("<escape>" . bs-abort)))
 
-(require 'cedet)
-(require 'semantic/ia)
-(require 'semantic/bovine/gcc)
-(require 'ede/generic)
-(add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
-(add-to-list 'semantic-default-submodes 'global-semantic-mru-bookmark-mode)
-(add-to-list 'semantic-default-submodes 'global-semantic-highlight-func-mode)
-(add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
-(add-to-list 'semantic-default-submodes 'global-semantic-decoration-mode)
-(add-to-list 'semantic-default-submodes 'global-semantic-idle-local-symbol-highlight-mode)
-(add-to-list 'semantic-default-submodes 'global-semantic-idle-scheduler-mode)
-(add-to-list 'semantic-default-submodes 'global-semantic-idle-completions-mode)
-(add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode)
-(semantic-mode t)
-(global-ede-mode t)
-
 (use-package tramp
   :defer t
   :config
