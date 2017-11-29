@@ -324,7 +324,8 @@
 
 (use-package helm
   :config
-  (helm-mode 1))
+  (helm-mode 1)
+  (helm-autoresize-mode t))
 
 (use-package helm-ag
   :bind (:map helm-ag-map
