@@ -322,7 +322,9 @@
   :bind
   (("C-`" . hs-toggle-hiding)))
 
-(use-package helm)
+(use-package helm
+  :config
+  (helm-mode 1))
 
 (use-package helm-ag
   :bind (:map helm-ag-map
