@@ -277,11 +277,14 @@
   :demand t
   :bind (:map projectile-mode-map
           ("C-p f" . projectile-find-file)
-          ("C-p o" . projectile-find-file)
-          ("C-p g" . projectile-ag)
-          ("C-p G" . projectile-grep))
+          ("C-p o" . projectile-find-file))
   :config
   (projectile-mode))
+
+(use-package projectile-ripgrep
+  :after projectile
+  :bind (:map projectile-mode-map
+          ("C-p g" . projectile-ripgrep)))
 
 ;; Autocompletion.
 (use-package company
