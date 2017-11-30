@@ -206,6 +206,12 @@
       ((and (not (ends-with-/ a)) (ends-with-/ b)) nil)
       (t (string-lessp a b)))))
 
+(use-package flx-ido
+  :after ido
+  :config
+  (flx-ido-mode 1)
+  (setq flx-ido-use-faces nil))
+
 ;; TODO: (mapcar 'window-buffer (window-list))
 (use-package ediff
   :config
@@ -326,9 +332,14 @@
   (("C-`" . hs-toggle-hiding)))
 
 (use-package helm
+  :demand t
+  :bind (:map helm-map
+          ("<tab>" . helm-execute-persistent-action)
+          ("<left>" . backward-char)
+          ("<right>" . forward-char))
   :config
-  (helm-mode 1)
-  (helm-autoresize-mode t))
+  (helm-autoresize-mode t)
+  (add-hook 'helm-minibuffer-set-up-hook (lambda () (cua-mode 1))))
 
 (use-package helm-ag
   :bind (:map helm-ag-map
@@ -339,6 +350,9 @@
 
 (use-package helm-projectile
   :after projectile
+  :bind (:map helm-projectile-find-file-map
+          ("<left>" . backward-char)
+          ("<right>" . forward-char))
   :config
   (helm-projectile-on))
 
