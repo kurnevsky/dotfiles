@@ -35,6 +35,7 @@ XTerm.vt100.saveLines: 0
 XTerm.vt100.reverseVideo: true
 XTerm.vt100.faceName: xft:DejaVu Sans Mono:pixelsize=13:antialias=true:autohint=false
 XTerm.vt100.bellIsUrgent: true
+XTerm.vt100.metaSendsEscape: true
 
 ! Urxvt
 
