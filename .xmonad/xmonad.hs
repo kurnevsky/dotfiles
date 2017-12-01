@@ -54,7 +54,7 @@ import XMonad.Util.NamedWindows (getName)
 import XMonad.Util.Run (hPutStrLn, spawnPipe)
 import XMonad.Xmobar.Actions (stripActions)
 
-myTerminal = "st -e tmux"
+myTerminal = "xterm -e tmux"
 
 myFocusFollowsMouse = True
 
@@ -114,9 +114,9 @@ myKeys conf@XConfig { XMonad.modMask = modm } = M.union (planeKeys modm (Lines 3
   -- Launch terminal.
   [ ((modm, xK_r), spawn $ XMonad.terminal conf)
   -- Launch terminal.
-  , ((modm .|. shiftMask, xK_r), spawn "st")
+  , ((modm .|. shiftMask, xK_r), spawn "xterm")
   -- Launch mc.
-  , ((modm, xK_e), spawn "st -e tmux new-session mc")
+  , ((modm, xK_e), spawn "xterm -e tmux new-session mc")
   -- Launch application.
   , ((modm, xK_F2), shellPrompt myXPConfig)
   -- Close the focused window.
