@@ -14,7 +14,7 @@ xscreensaver.dpmsQuickOff: True
 xscreensaver.dpmsStandby: 0:15:00
 xscreensaver.dpmsSuspend: 0:20:00
 xscreensaver.dpmsOff: 0:30:00
-xscreensaver.mode: one
+xscreensaver.mode: blank
 xscreensaver.selected: 206
 xscreensaver.pointerHysteresis: 10
 xscreensaver.procInterrupts: True
