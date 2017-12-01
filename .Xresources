@@ -54,30 +54,3 @@ URxvt.url-select.underline: true
 URxvt.scrollBar: false
 ! Disable glyphs - it increases tmux performance
 URxvt.skipBuiltinGlyphs: true
-! Background/foreground colors
-URxvt.background: #282c34
-URxvt.foreground: #abb2bf
-! Black colors
-URxvt.color0: #282c34
-URxvt.color8: #282c34
-! Red colors
-URxvt.color1: #e06c75
-URxvt.color9: #e06c75
-! Green colors
-URxvt.color2: #98c379
-URxvt.color10: #98c379
-! Yellow colors
-URxvt.color3: #d19a66
-URxvt.color11: #d19a66
-! Blue colors
-URxvt.color4: #61afef
-URxvt.color12: #61afef
-! Magenta colors
-URxvt.color5: #c678dd
-URxvt.color13: #c678dd
-! Cyan colors
-URxvt.color6: #56b6c2
-URxvt.color14: #56b6c2
-! White colors
-URxvt.color7: #abb2bf
-URxvt.color15: #abb2bf
