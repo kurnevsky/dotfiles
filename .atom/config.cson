@@ -1,0 +1,19 @@
+"*":
+  "advanced-open-file":
+    fuzzyMatch: true
+    helmDirSwitch: true
+  core:
+    automaticallyUpdate: false
+    disabledPackages: [
+      "exception-reporting"
+      "metrics"
+      "github"
+      "open-on-github"
+      "welcome"
+    ]
+    restorePreviousWindowsOnStart: "no"
+    telemetryConsent: "no"
+  editor:
+    showIndentGuide: true
+  welcome:
+    showOnStartup: false
