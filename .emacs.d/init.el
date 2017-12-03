@@ -87,6 +87,13 @@
         (apply orig-fun args))
       (apply orig-fun args))))
 (advice-add 'kill-buffer :around 'kill-buffer-ask-first)
+;; Fix hotkeys for Russian keyboard layout.
+(cl-loop
+  for from across "йцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖ\ЭЯЧСМИТЬБЮ№"
+  for to   across "qwertyuiop[]asdfghjkl;'zxcvbnm,.QWERTYUIOP{}ASDFGHJKL:\"ZXCVBNM<>#"
+  do
+  (eval `(define-key key-translation-map (kbd ,(concat "C-" (string from))) (kbd ,(concat "C-" (string to)))))
+  (eval `(define-key key-translation-map (kbd ,(concat "M-" (string from))) (kbd ,(concat "M-" (string to))))))
 
 ;; ========== Install packages ==========
 
