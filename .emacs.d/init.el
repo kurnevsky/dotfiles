@@ -122,7 +122,8 @@
 
 ;; ========== Unset keys ==========
 
-(define-key input-decode-map [?\C-m] [C-m])
+(when (display-graphic-p)
+  (define-key input-decode-map [?\C-m] [C-m]))
 
 (dolist (key '("\C-a" "\C-n" "\C-s"))
   (global-unset-key key))
