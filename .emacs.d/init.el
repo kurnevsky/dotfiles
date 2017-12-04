@@ -87,6 +87,12 @@
         (apply orig-fun args))
       (apply orig-fun args))))
 (advice-add 'kill-buffer :around 'kill-buffer-ask-first)
+;; Add possibility to use C-m as hotkey in graphic mode.
+(when (display-graphic-p)
+  (define-key input-decode-map [?\C-m] [C-m]))
+;; Unbind keys.
+(dolist (key '("\C-a" "\C-n" "\C-s"))
+  (global-unset-key key))
 
 ;; ========== Install packages ==========
 
@@ -106,14 +112,6 @@
 (dolist (package package-list)
   (unless (package-installed-p package)
     (package-install package)))
-
-;; ========== Unset keys ==========
-
-(when (display-graphic-p)
-  (define-key input-decode-map [?\C-m] [C-m]))
-
-(dolist (key '("\C-a" "\C-n" "\C-s"))
-  (global-unset-key key))
 
 ;; ========== Configure plugins ==========
 
