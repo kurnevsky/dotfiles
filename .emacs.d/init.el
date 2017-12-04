@@ -702,10 +702,8 @@ properly."
 (global-set-key (kbd "<end>") 'end-of-code-or-line)
 (global-set-key (kbd "C-/") 'comment-or-uncomment-region-or-line)
 (global-set-key (kbd "C-k") 'kill-buffer)
-
-;; Cx0 = ???, C|-
-;; clone-indirect-buffer
-;; undo tree show
+(global-set-key (kbd "C-|") 'split-window-horizontally)
+(global-set-key (kbd "C-_") 'split-window-vertically)
 
 ;;https://stackoverflow.com/questions/4918707/in-emacs-how-to-go-back-to-previous-line-position-after-using-semantic-jump-to
 ;; pop-global-mark
