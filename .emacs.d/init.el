@@ -491,6 +491,9 @@
   (setq racer-rust-src-path "~/rust-nightly-src/src")
   (add-hook 'racer-mode-hook 'turn-on-eldoc-mode))
 
+(use-package csharp-mode
+  :mode ("\\.cs\\'" . csharp-mode))
+
 ;; Agda.
 (when (executable-find "agda-mode")
   (load-file (let ((coding-system-for-read 'utf-8))
