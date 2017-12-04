@@ -87,19 +87,6 @@
         (apply orig-fun args))
       (apply orig-fun args))))
 (advice-add 'kill-buffer :around 'kill-buffer-ask-first)
-;; Fix hotkeys for Russian keyboard layout.
-(cl-loop
-  for from across "йцукенгшщзхъфывапролджэячсмитьбю"
-  for to   across "qwertyuiop[]asdfghjkl;'zxcvbnm,."
-  do
-  (eval `(define-key key-translation-map (kbd ,(concat "C-" (string from))) (kbd ,(concat "C-" (string to)))))
-  (eval `(define-key key-translation-map (kbd ,(concat "M-" (string from))) (kbd ,(concat "M-" (string to))))))
-(cl-loop
-  for from across "ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ"
-  for to   across "qwertyuiop[]asdfghjkl;'zxcvbnm,."
-  do
-  (eval `(define-key key-translation-map (kbd ,(concat "C-" (string from))) (kbd ,(concat "C-S-" (string to)))))
-  (eval `(define-key key-translation-map (kbd ,(concat "M-" (string from))) (kbd ,(concat "M-S-" (string to))))))
 
 ;; ========== Install packages ==========
 
@@ -137,6 +124,23 @@
 ;; Dark theme.
 ;; (use-package darcula-theme)
 (use-package atom-one-dark-theme)
+
+(use-package cl-macs
+  :ensure cl
+  :config
+  ;; Fix hotkeys for Russian keyboard layout.
+  (cl-loop
+    for from across "йцукенгшщзхъфывапролджэячсмитьбю"
+    for to   across "qwertyuiop[]asdfghjkl;'zxcvbnm,."
+    do
+    (eval `(define-key key-translation-map (kbd ,(concat "C-" (string from))) (kbd ,(concat "C-" (string to)))))
+    (eval `(define-key key-translation-map (kbd ,(concat "M-" (string from))) (kbd ,(concat "M-" (string to))))))
+  (cl-loop
+    for from across "ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ"
+    for to   across "qwertyuiop[]asdfghjkl;'zxcvbnm,."
+    do
+    (eval `(define-key key-translation-map (kbd ,(concat "C-" (string from))) (kbd ,(concat "C-S-" (string to)))))
+    (eval `(define-key key-translation-map (kbd ,(concat "M-" (string from))) (kbd ,(concat "M-S-" (string to)))))))
 
 ;; Line numbers.
 (use-package linum
