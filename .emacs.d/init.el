@@ -90,6 +90,12 @@
 ;; Add possibility to use C-m as hotkey in graphic mode.
 (when (display-graphic-p)
   (define-key input-decode-map [?\C-m] [C-m]))
+(when (daemonp)
+  (add-hook 'after-make-frame-functions
+    (lambda (frame)
+      (when (display-graphic-p frame)
+        (with-selected-frame frame
+          (define-key input-decode-map [?\C-m] [C-m]))))))
 ;; Unbind keys.
 (dolist (key '("\C-a" "\C-n" "\C-s"))
   (global-unset-key key))
