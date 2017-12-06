@@ -1,0 +1,11 @@
+[Unit]
+Description=Secret key management for GnuPG
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/gpg-agent --daemon
+ExecStop=/usr/bin/gpgconf --kill gpg-agent
+Restart=always
+
+[Install]
+WantedBy=default.target

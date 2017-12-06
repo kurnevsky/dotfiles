@@ -15,8 +15,6 @@ syndaemon -d -t -k -R
 
 numlockx
 
-gpg-agent --daemon
-
 gnome-keyring-daemon
 
 dunst &
