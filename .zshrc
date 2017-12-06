@@ -56,7 +56,9 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
 export PATH=~/.bin-fj:~/.bin:~/.cabal/bin:$PATH
-export EDITOR=emacsnw
+
+export ALTERNATE_EDITOR=nano
+export EDITOR=emacsclient
 
 # Fix del key for st
 if [[ -n ${terminfo[smkx]} ]] && [[ -n ${terminfo[rmkx]} ]]; then
