@@ -59,11 +59,3 @@ export PATH=~/.bin-fj:~/.bin:~/.cabal/bin:$PATH
 
 export ALTERNATE_EDITOR=nano
 export EDITOR=emacsclient
-
-# Fix del key for st
-if [[ -n ${terminfo[smkx]} ]] && [[ -n ${terminfo[rmkx]} ]]; then
-    function zle-line-init () { echoti smkx }
-    function zle-line-finish () { echoti rmkx }
-    zle -N zle-line-init
-    zle -N zle-line-finish
-fi
