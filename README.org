@@ -3,11 +3,15 @@
 
 * xmonad - windows manager
 
-Install it with command ~pacaur -S haskell-regex-compat haskell-dbus xmonad xmonad-contrib~.
+Install it with command ~pacman -S haskell-regex-compat haskell-dbus xmonad xmonad-contrib~.
 
 * xmobar - top bar
 
-Install it with command ~pacaur -S xmobar~.
+Install it with command ~pacman -S xmobar~.
+
+* xterm - terminal emulator
+
+Install it with command ~pacman -S xterm~.
 
 * trayer-srg - system tray
 
