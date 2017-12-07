@@ -13,6 +13,12 @@ Install it with command ~pacman -S xmobar~.
 
 Install it with command ~pacman -S xterm~.
 
+* zsh - command interpreter
+
+Install it with command ~pacman -S zsh~.
+
+Also install modules: ~pacman -S zsh-syntax-highlighting pkgfile~ and ~pacaur -S zsh-autosuggestions~.
+
 * trayer-srg - system tray
 
 Install it from aur with command ~pacaur -S trayer-srg~.
