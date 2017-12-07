@@ -38,6 +38,8 @@ source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Autocompletion with an arrow-key driven interface
 zstyle ':completion:*' menu select
+# Rehash automatically
+zstyle ':completion:*' rehash true
 # Sets autocompletion
 autoload -Uz compinit && compinit
 
