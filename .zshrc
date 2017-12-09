@@ -101,11 +101,14 @@ setopt notify
 setopt prompt_subst
 
 # Syntax highlighting
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
+  source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # Automatically search the official repositories through pkgfile, when entering an unrecognized command
-source /usr/share/doc/pkgfile/command-not-found.zsh
+[ -f /usr/share/doc/pkgfile/command-not-found.zsh ] && \
+  source /usr/share/doc/pkgfile/command-not-found.zsh
 # Autocomplete with history.
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ] && \
+  source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Autocompletion with an arrow-key driven interface
 zstyle ':completion:*' menu select
