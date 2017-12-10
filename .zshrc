@@ -99,6 +99,8 @@ setopt nomatch
 setopt notify
 # Allow parameter expansion, command substitution and arithmetic expansion for prompt string
 setopt prompt_subst
+# File completion after =
+setopt magic_equal_subst
 
 # Syntax highlighting
 [ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
