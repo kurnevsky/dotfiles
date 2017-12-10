@@ -117,9 +117,11 @@ zstyle ':completion:*' menu select
 # Rehash automatically
 zstyle ':completion:*' rehash true
 # Sets autocompletion
-autoload -Uz compinit && compinit
+autoload -Uz compinit && mkdir -p ~/.cache/zsh && compinit -d ~/.cache/zsh/zcompdump-$ZSH_VERSION
 # Enable colors in prompt
 autoload -Uz colors && colors
+# Massive rename
+autoload -Uz zmv
 
 # Many programs change the terminal state, and often do not restore terminal settings on exiting abnormally
 # This avoids the need to manually reset the terminal
@@ -136,6 +138,7 @@ bindkey '^ ' autosuggest-accept
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
+alias zmv='noglob zmv -W'
 
 export PATH=~/.bin-fj:~/.bin:~/.cabal/bin:$PATH
 
