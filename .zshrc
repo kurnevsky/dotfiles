@@ -99,6 +99,8 @@ setopt nomatch
 setopt notify
 # Allow parameter expansion, command substitution and arithmetic expansion for prompt string
 setopt prompt_subst
+# Remove any right prompt from display when accepting a command line
+setopt transient_rprompt
 # File completion after =
 setopt magic_equal_subst
 
