@@ -70,6 +70,8 @@
 (setq isearch-allow-scroll t)
 ;; Don't exit search mode on navigation.
 (setq search-exit-option nil)
+;; Make prompts uneditable.
+(setq comint-prompt-read-only t)
 ;; File to write custom-set-variables.
 (setq custom-file "~/.emacs.d/custom.el")
 (unless (file-exists-p custom-file)
