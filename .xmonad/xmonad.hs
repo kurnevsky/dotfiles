@@ -60,7 +60,7 @@ myFocusFollowsMouse = True
 
 myClickJustFocuses = False
 
-myBorderWidth = 1
+myBorderWidth = 0
 
 myModMask = mod4Mask
 
