@@ -26,6 +26,8 @@ whitelist /dev/urandom
 whitelist /dev/shm
 whitelist /dev/video0
 
+whitelist ~/.config/gtk-3.0/settings.ini
+
 mkdir ~/.config/Riot
 whitelist ~/.config/Riot
 mkdir ~/Riot
