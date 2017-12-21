@@ -16,6 +16,13 @@ Config { font = "xft:DejaVu Sans:pixelsize=14:antialias=true:autohint=false"
                                   , "-i", "<fc=darkgreen>∞</fc>"
                                   , "-o", "<left>% (<timeleft>)"
                                   ] 1000
+                    , Run CoreTemp [ "--template", "<core0>|<core1>°C"
+                                   , "--Low", "60"
+                                   , "--High", "80"
+                                   , "--low", "darkgreen"
+                                   , "--normal", "darkorange"
+                                   , "--high", "darkred"
+                                   ] 10
                     , Run Swap [ "--template", "swap <used>M"
                                , "--Low", "100"
                                , "--High", "500"
@@ -54,5 +61,5 @@ Config { font = "xft:DejaVu Sans:pixelsize=14:antialias=true:autohint=false"
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%trayer% : %UnsafeStdinReader%}{%mpris2% : %dynnetwork% : %diskio% : %cpu% : %memory% : %swap% : %battery% : %UMMS% : <action=`xterm -e zsh -c 'cal -m -y; sleep infinity'`>%date%</action>"
+       , template = "%trayer% : %UnsafeStdinReader%}{%mpris2% : %dynnetwork% : %diskio% : %cpu% : %memory% : %swap% : %coretemp% : %battery% : %UMMS% : <action=`xterm -e zsh -c 'cal -m -y; sleep infinity'`>%date%</action>"
        }
