@@ -10,6 +10,7 @@ noroot
 protocol unix,inet,inet6
 seccomp
 shell none
+writable-run-user
 
 private-bin firefox,env,sh,bash,python3,python3.6,getopt,tail,tree,sed,gpg,gpg2,pass
 private-dev
