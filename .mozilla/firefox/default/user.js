@@ -27,3 +27,6 @@ user_pref("privacy.donottrackheader.enabled", true);
 
 // Enable OpenGL Off-Main-Thread Compositing (OMTC)
 user_pref("layers.acceleration.force-enabled", true);
+
+// Set dark theme
+user_pref("lightweightThemes.selectedThemeID", "firefox-compact-dark@mozilla.org");
