@@ -26,6 +26,7 @@
                url-prefix("about:rights"),
                url-prefix("about:robots"),
                url-prefix("about:serviceworkers"),
+               url-prefix("about:sessionrestore"),
                url-prefix("about:studies"),
                url-prefix("about:support"),
                url-prefix("about:sync-log"),
