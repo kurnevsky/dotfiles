@@ -353,11 +353,9 @@
 (use-package hideshow
   :init
   (add-hook 'prog-mode-hook 'hs-minor-mode)
-  :bind
-  (("C-`" . hs-toggle-hiding)))
+  :bind (("C-`" . hs-toggle-hiding)))
 
 (use-package helm
-  :demand t
   :bind (:map helm-map
           ("<tab>" . helm-execute-persistent-action)
           ("<left>" . backward-char)
@@ -375,6 +373,7 @@
 
 (use-package helm-projectile
   :after projectile
+  :demand t
   :bind (:map helm-projectile-find-file-map
           ("<left>" . backward-char)
           ("<right>" . forward-char))
