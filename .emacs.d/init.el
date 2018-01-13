@@ -217,9 +217,9 @@
 
 ;; Smart file choosing.
 (use-package ido
-  :bind ("C-o" . ido-find-file)
   :config
-  (ido-mode t)
+  ;; Don't enable it since using helm-mode.
+  ;; (ido-mode t)
   (setq ido-everywhere t)
   (setq ido-enable-flex-matching t)
   ;; Show directories first.
@@ -356,11 +356,16 @@
   :bind (("C-`" . hs-toggle-hiding)))
 
 (use-package helm
+  :demand t
   :bind (:map helm-map
           ("<tab>" . helm-execute-persistent-action)
           ("<left>" . backward-char)
           ("<right>" . forward-char))
   :config
+  (helm-mode 1)
+  (add-to-list 'helm-completing-read-handlers-alist '(basic-save-buffer . ido))
+  (add-to-list 'helm-completing-read-handlers-alist '(find-file . ido))
+  (add-to-list 'helm-completing-read-handlers-alist '(find-file-read-only . ido))
   (helm-autoresize-mode t)
   (add-hook 'helm-minibuffer-set-up-hook (lambda () (cua-mode 1))))
 
@@ -703,6 +708,7 @@ properly."
 (define-key isearch-mode-map (kbd "<escape>") 'isearch-abort)
 (global-set-key (kbd "C-r") 'query-replace)
 (global-set-key (kbd "C-n") 'new-empty-buffer)
+(global-set-key (kbd "C-o") 'find-file)
 (global-set-key (kbd "C-s") 'save-buffer)
 (global-set-key (kbd "C-a") 'mark-whole-buffer)
 (global-set-key (kbd "C-=") 'text-scale-increase)
