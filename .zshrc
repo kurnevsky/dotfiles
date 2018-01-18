@@ -125,6 +125,12 @@ autoload -Uz colors && colors
 # Massive rename
 autoload -Uz zmv
 
+# Autocompletion for kubernetes
+if command -v kubectl > /dev/null
+then
+  source <(kubectl completion zsh)
+fi
+
 # Many programs change the terminal state, and often do not restore terminal settings on exiting abnormally
 # This avoids the need to manually reset the terminal
 ttyctl -f
