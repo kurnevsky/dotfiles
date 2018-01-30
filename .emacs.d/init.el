@@ -218,9 +218,9 @@
 ;; Smart file choosing.
 (use-package ido
   :config
-  ;; Don't enable it since using helm-mode.
-  ;; (ido-mode t)
-  (setq ido-everywhere t)
+  (ido-mode t)
+  ;; Don't enable ido-everywhere since ido-ubiquitous-mode will be used.
+  ;; (ido-everywhere t)
   (setq ido-enable-flex-matching t)
   ;; Show directories first.
   (defun ends-with-/ (s)
@@ -231,11 +231,25 @@
       ((and (not (ends-with-/ a)) (ends-with-/ b)) nil)
       (t (string-lessp a b)))))
 
+(use-package ido-completing-read+
+  :after ido
+  :config
+  (add-to-list 'ido-cr+-function-blacklist 'save-buffer)
+  (ido-ubiquitous-mode 1))
+
 (use-package flx-ido
   :after ido
   :config
   (flx-ido-mode 1)
-  (setq flx-ido-use-faces nil))
+  (setq flx-ido-use-faces t)
+  (setq ido-use-faces nil)
+  (defun remove-wrong-flx-highlighting ()
+    (let ((inhibit-read-only t))
+      (remove-text-properties (point-min) (point) '(face flx-highlight-face))
+      (when (= 1 (length ido-matches))
+        (dolist (str ido-matches)
+          (remove-text-properties 0 (length str) '(face flx-highlight-face) str)))))
+  (advice-add 'ido-complete :after 'remove-wrong-flx-highlighting))
 
 ;; TODO: (mapcar 'window-buffer (window-list))
 (use-package ediff
@@ -362,10 +376,9 @@
           ("<left>" . backward-char)
           ("<right>" . forward-char))
   :config
-  (helm-mode 1)
-  (add-to-list 'helm-completing-read-handlers-alist '(basic-save-buffer . ido))
-  (add-to-list 'helm-completing-read-handlers-alist '(find-file . ido))
-  (add-to-list 'helm-completing-read-handlers-alist '(find-file-read-only . ido))
+  ;; Don't enable helm-mode since ido-ubiquitous-mode is used instead.
+  ;; (helm-mode 1)
+  ;; (add-to-list 'helm-completing-read-handlers-alist '(basic-save-buffer . nil))
   (helm-autoresize-mode t)
   (add-hook 'helm-minibuffer-set-up-hook (lambda () (cua-mode 1))))
 
