@@ -491,12 +491,6 @@
     (interactive)
     (ghc-init)))
 
-;; Java mode.
-(use-package jdee
-  :mode ("\\.java\\'" . jdee-mode)
-  :config
-  (setq jdee-server-dir "~/jdee"))
-
 (use-package eldoc
   :commands (eldoc-mode turn-on-eldoc-mode)
   :init
