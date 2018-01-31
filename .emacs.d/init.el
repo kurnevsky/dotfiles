@@ -401,18 +401,6 @@
   :config
   (setq org-support-shift-select t))
 
-;; Export org to reveal.js.
-(use-package ox-reveal
-  :after org
-  :commands (org-reveal-export-to-html org-reveal-export-to-html-and-browse))
-
-(use-package htmlize
-  :commands (htmlize-buffer
-              htmlize-file
-              htmlize-many-files
-              htmlize-many-files-dired
-              htmlize-region))
-
 ;; TODO: do I need it?
 (use-package yasnippet
   :defer t)
