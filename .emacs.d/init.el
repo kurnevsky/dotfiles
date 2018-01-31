@@ -243,13 +243,12 @@
   (flx-ido-mode 1)
   (setq flx-ido-use-faces t)
   (setq ido-use-faces nil)
-  (defun remove-wrong-flx-highlighting ()
-    (let ((inhibit-read-only t))
-      (remove-text-properties (point-min) (point) '(face flx-highlight-face))
-      (when (= 1 (length ido-matches))
-        (dolist (str ido-matches)
-          (remove-text-properties 0 (length str) '(face flx-highlight-face) str)))))
-  (advice-add 'ido-complete :after 'remove-wrong-flx-highlighting))
+  (advice-add 'ido-complete :before (lambda ()
+                                      (dolist (str ido-matches)
+                                        (remove-text-properties 0 (length str) '(face flx-highlight-face) str))))
+  (advice-add 'ido-complete :after (lambda ()
+                                     (let ((inhibit-read-only t))
+                                       (remove-text-properties (point-min) (point) '(face flx-highlight-face))))))
 
 ;; TODO: (mapcar 'window-buffer (window-list))
 (use-package ediff
@@ -278,7 +277,6 @@
           ("<escape>" . bs-abort)))
 
 (use-package tramp
-  :defer t
   :config
   (setq tramp-default-method "ssh"))
 
