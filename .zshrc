@@ -103,6 +103,8 @@ setopt prompt_subst
 setopt transient_rprompt
 # File completion after =
 setopt magic_equal_subst
+# Apply globbing to hidden files
+setopt glob_dots
 
 # Syntax highlighting
 [ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
