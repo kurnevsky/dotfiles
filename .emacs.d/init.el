@@ -500,6 +500,9 @@
 (use-package dockerfile-mode
   :mode ("Dockerfile'" . dockerfile-mode))
 
+(use-package go-mode
+  :mode ("\\.go\\'" . go-mode))
+
 (use-package csharp-mode
   :mode ("\\.cs\\'" . csharp-mode))
 
