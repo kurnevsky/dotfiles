@@ -497,6 +497,9 @@
   (setq racer-rust-src-path "~/rust-nightly-src/src")
   (add-hook 'racer-mode-hook 'turn-on-eldoc-mode))
 
+(use-package dockerfile-mode
+  :mode ("Dockerfile'" . dockerfile-mode))
+
 (use-package csharp-mode
   :mode ("\\.cs\\'" . csharp-mode))
 
