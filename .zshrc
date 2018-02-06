@@ -126,6 +126,8 @@ autoload -Uz compinit && mkdir -p ~/.cache/zsh && compinit -d ~/.cache/zsh/zcomp
 autoload -Uz colors && colors
 # Massive rename
 autoload -Uz zmv
+# Calculator
+autoload -U zcalc
 
 # Autocompletion for kubernetes
 if command -v kubectl > /dev/null
@@ -149,6 +151,7 @@ bindkey '^ ' autosuggest-accept
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias zmv='noglob zmv -W'
+aliases[=]='noglob zcalc -e'
 
 export PATH=~/.bin-fj:~/.bin:~/.cabal/bin:$PATH
 
