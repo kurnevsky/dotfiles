@@ -503,8 +503,6 @@
 (use-package racer
   :after rust-mode
   :commands racer-mode
-  :init
-  (add-hook 'rust-mode-hook 'racer-mode)
   :config
   (setq racer-cmd "/bin/racer")
   (setq racer-rust-src-path "~/rust-nightly-src/src")
