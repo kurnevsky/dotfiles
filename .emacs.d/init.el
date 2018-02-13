@@ -102,6 +102,19 @@
 ;; Unbind keys.
 (dolist (key '("\C-a" "\C-n" "\C-s"))
   (global-unset-key key))
+;; Disable bell on scroll.
+(setq ring-bell-function (lambda ()
+                           (unless (memq this-command
+                                     '(mwheel-scroll
+                                        down
+                                        up
+                                        next-line
+                                        previous-line
+                                        backward-char
+                                        left-char
+                                        right-char
+                                        forward-char))
+                             (ding))))
 
 ;; ========== Install packages ==========
 
