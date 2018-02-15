@@ -434,6 +434,7 @@ If CLEAR is specified, clear them instead."
 (use-package magit
   :demand t
   :bind (("<C-m> b" . magit-blame)
+          ("<C-m> s" . magit-show-commit)
           :map magit-blame-mode-map
           ("<C-m> b" . magit-blame-quit)))
 
