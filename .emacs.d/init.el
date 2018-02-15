@@ -261,7 +261,20 @@
                                         (remove-text-properties 0 (length str) '(face flx-highlight-face) str))))
   (advice-add 'ido-complete :after (lambda ()
                                      (let ((inhibit-read-only t))
-                                       (remove-text-properties (point-min) (point) '(face flx-highlight-face))))))
+                                       (remove-text-properties (point-min) (point) '(face flx-highlight-face)))))
+  ;; Remove ido-max-prospects limit from flx-ido-decorate since we can use ido-prev-match and ido-next-match.
+  (defun flx-ido-decorate (things &optional clear)
+    "Add ido text properties to THINGS.
+If CLEAR is specified, clear them instead."
+    (if flx-ido-use-faces
+      (cl-loop for thing in things
+        for i from 0 below (length things)
+        collect (if clear
+                  (flx-propertize thing nil)
+                  (flx-propertize (car thing) (cdr thing))))
+      (if clear
+        things
+        (mapcar 'car things)))))
 
 ;; TODO: (mapcar 'window-buffer (window-list))
 (use-package ediff
