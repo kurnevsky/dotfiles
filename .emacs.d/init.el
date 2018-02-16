@@ -247,7 +247,6 @@
 (use-package ido-completing-read+
   :after ido
   :config
-  (add-to-list 'ido-cr+-function-blacklist 'save-buffer)
   (ido-ubiquitous-mode 1)
   ;; Disable flx-ido-mode when function is used for provision of completion candidates.
   (add-variable-watcher 'ido-cr+-dynamic-collection (lambda (symbol newval operation where)
