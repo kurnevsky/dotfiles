@@ -1,3 +1,5 @@
+[commit]
+	gpgsign = true
 [user]
 	email = kurnevsky@gmail.com
 	name = Evgeny Kurnevsky
