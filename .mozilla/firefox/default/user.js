@@ -30,3 +30,6 @@ user_pref("layers.acceleration.force-enabled", true);
 
 // Set dark theme
 user_pref("lightweightThemes.selectedThemeID", "firefox-compact-dark@mozilla.org");
+
+// Disable saving passwords
+user_pref("signon.rememberSignons", false);
