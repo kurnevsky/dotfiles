@@ -157,3 +157,5 @@ export PATH=~/.bin-fj:~/.bin:~/.cabal/bin:$PATH
 
 export ALTERNATE_EDITOR=nano
 export EDITOR=emacsclient
+
+export GPG_TTY=$(tty)
