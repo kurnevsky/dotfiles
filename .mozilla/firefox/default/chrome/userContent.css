@@ -8,6 +8,7 @@
                url-prefix("about:blank"),
                url-prefix("about:buildconfig"),
                url-prefix("about:cache"),
+               url-prefix("about:certerror"),
                url-prefix("about:checkerboard"),
                url-prefix("about:config"),
                url-prefix("about:crashes"),
