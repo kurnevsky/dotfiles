@@ -2,4 +2,4 @@
 
 APP=$(basename -- "$0")
 
-firejail --profile=~/.config/firejail/"$APP".profile /bin/"$APP" "$@"
+exec firejail --profile=~/.config/firejail/"$APP".profile /bin/"$APP" "$@"
