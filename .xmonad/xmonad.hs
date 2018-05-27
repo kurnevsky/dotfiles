@@ -15,9 +15,8 @@ import System.Posix.Types (ProcessID)
 import XMonad hiding ((|||))
 import XMonad.Actions.CopyWindow (copy, copyToAll, killAllOtherCopies)
 import XMonad.Actions.GridSelect (gridselect, gridselectWorkspace, GSConfig(..), HasColorizer)
--- 0.14
--- import XMonad.Actions.Minimize (maximizeWindow, minimizeWindow, withLastMinimized)
-import XMonad.Actions.PhysicalScreens (getScreen, PhysicalScreen(..))
+import XMonad.Actions.Minimize (maximizeWindow, minimizeWindow, withLastMinimized)
+import XMonad.Actions.PhysicalScreens (getScreen, horizontalScreenOrderer, PhysicalScreen(..))
 import XMonad.Actions.Plane (planeKeys, Limits(..), Lines(..))
 import XMonad.Actions.SwapWorkspaces (swapWithCurrent)
 import XMonad.Actions.UpdatePointer (updatePointer)
@@ -37,9 +36,7 @@ import XMonad.Layout.DwmStyle (dwmStyle)
 import XMonad.Layout.Grid (Grid(..))
 import XMonad.Layout.LayoutCombinators ((|||), JumpToLayout(..))
 import XMonad.Layout.Maximize (maximize)
--- 0.14
--- import XMonad.Layout.Minimize (minimize)
-import XMonad.Layout.Minimize (minimize, minimizeWindow, MinimizeMsg(..))
+import XMonad.Layout.Minimize (minimize)
 import XMonad.Layout.Named (named)
 import XMonad.Layout.NoBorders (smartBorders)
 import XMonad.Layout.Spacing (smartSpacing)
@@ -187,9 +184,7 @@ myKeys conf@XConfig { XMonad.modMask = modm } = M.union (planeKeys modm (Lines 3
   , ((modm, xK_o), windowMenu)
   -- Minimize focused window.
   , ((modm, xK_m), withFocused minimizeWindow)
-  -- 0.14
-  --   , ((modm .|. shiftMask, xK_m), withLastMinimized maximizeWindow)
-  , ((modm .|. shiftMask, xK_m), sendMessage RestoreNextMinimizedWin)
+  , ((modm .|. shiftMask, xK_m), withLastMinimized maximizeWindow)
   , ((modm, xK_w), withDisplay $ \dpy -> withFocused $ io . raiseWindow dpy)
   , ((modm, xK_f), sendMessage $ JumpToLayout "Full")
   , ((modm, xK_g), sendMessage $ JumpToLayout "Grid")
@@ -214,7 +209,7 @@ myKeys conf@XConfig { XMonad.modMask = modm } = M.union (planeKeys modm (Lines 3
               ]
   ]
   ++
-  [ ((m .|. modm, key), void $ runMaybeT $ (MaybeT . getScreen) sc >>= MaybeT . screenWorkspace >>= lift . windows . f)
+  [ ((m .|. modm, key), void $ runMaybeT $ (MaybeT . getScreen horizontalScreenOrderer) sc >>= MaybeT . screenWorkspace >>= lift . windows . f)
   | (key, sc) <- zip [xK_a, xK_s, xK_d] [0..]
   , (f, m) <- -- mod-{a,s,d}, Switch to physical/Xinerama screens 1, 2, or 3.
               [ (SS.view, 0)
