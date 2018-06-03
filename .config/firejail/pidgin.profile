@@ -11,8 +11,6 @@ protocol unix,inet,inet6
 seccomp
 shell none
 
-rlimit-as 1073741824
-
 private-bin pidgin,firefox
 private-dev
 private-etc resolv.conf,localtime,fonts,gtk-2.0,gtk-3.0,pulse,ssl,ca-certificates

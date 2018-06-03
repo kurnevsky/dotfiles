@@ -12,8 +12,6 @@ seccomp
 shell none
 writable-run-user
 
-rlimit-as 4294967296
-
 private-bin firefox,env,sh,bash,python3,python3.6,getopt,tail,tree,sed,gpg,gpg2,pass
 private-dev
 private-etc resolv.conf,localtime,fonts,gtk-2.0,gtk-3.0,pulse

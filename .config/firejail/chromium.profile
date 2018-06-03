@@ -14,8 +14,6 @@ protocol unix,inet,inet6,netlink
 seccomp
 shell none
 
-rlimit-as 4294967296
-
 private-bin chromium,env,perl
 private-dev
 private-etc resolv.conf,localtime,fonts,gtk-2.0,pulse
