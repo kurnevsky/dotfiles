@@ -162,21 +162,9 @@
     (eval `(define-key key-translation-map (kbd ,(concat "C-" (string from))) (kbd ,(concat "C-S-" (string to)))))
     (eval `(define-key key-translation-map (kbd ,(concat "M-" (string from))) (kbd ,(concat "M-S-" (string to)))))))
 
-;; Line numbers.
-(use-package linum
+(use-package display-line-numbers
   :config
-  (line-number-mode t)
-  (column-number-mode t)
-  (global-linum-mode t)
-  ;; Fix linum scaling.
-  (set-face-attribute 'linum nil :height 100)
-  (setq linum-disabled-modes
-    '(mu4e-main-mode mu4e-headers-mode mu4e-view-mode mu4e-compose-mode))
-  (defun linum-on ()
-    (unless (or (minibufferp)
-              (member major-mode linum-disabled-modes)
-              (> (buffer-size) 3000000)) ;; disable linum on buffer greater than 3MB, otherwise it's unbearably slow
-      (linum-mode 1))))
+  (global-display-line-numbers-mode 1))
 
 ;; Highlight current line.
 (use-package hl-line
