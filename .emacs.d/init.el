@@ -72,6 +72,9 @@
 (setq search-exit-option nil)
 ;; Make prompts uneditable.
 (setq comint-prompt-read-only t)
+;; Show line and column numbers.
+(line-number-mode t)
+(column-number-mode t)
 ;; File to write custom-set-variables.
 (setq custom-file "~/.emacs.d/custom.el")
 (unless (file-exists-p custom-file)
