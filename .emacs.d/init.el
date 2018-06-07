@@ -49,9 +49,6 @@
 (setq scroll-margin 2)
 ;; Don't jump when scrolling.
 (setq scroll-conservatively 10000)
-;; Select expression between parens.
-(show-paren-mode t)
-(setq show-paren-style 'expression)
 ;; Don't show scratch message.
 (setq initial-scratch-message nil)
 ;; File size in percents.
@@ -168,6 +165,14 @@
 (use-package display-line-numbers
   :config
   (global-display-line-numbers-mode 1))
+
+(use-package paren
+  :config
+  (show-paren-mode t)
+  (setq show-paren-style 'parenthesis)
+  (set-face-background 'show-paren-match (face-background 'default))
+  (set-face-foreground 'show-paren-match "red")
+  (set-face-attribute 'show-paren-match nil :weight 'extra-bold))
 
 ;; Highlight current line.
 (use-package hl-line
