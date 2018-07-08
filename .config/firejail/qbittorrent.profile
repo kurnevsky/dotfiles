@@ -17,6 +17,8 @@ private-dev
 private-etc resolv.conf,localtime,fonts
 private-tmp
 
+include ~/.config/firejail/mem/1G.inc
+
 mkdir ~/.local/share/data/qBittorrent
 whitelist ~/.local/share/data/qBittorrent
 mkdir ~/.config/qBittorrent

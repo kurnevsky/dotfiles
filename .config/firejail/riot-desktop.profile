@@ -26,6 +26,8 @@ whitelist /dev/urandom
 whitelist /dev/shm
 whitelist /dev/video0
 
+include ~/.config/firejail/mem/1G.inc
+
 whitelist ~/.config/gtk-3.0/settings.ini
 
 mkdir ~/.config/Riot

@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -e
+
+dehumanise() {
+  echo "$1" | awk \
+    'BEGIN{IGNORECASE = 1}
+     function printpower(n,b,p) {printf "%u\n", n*b^p; next}
+     /[0-9]$/{print $1;next};
+     /K(iB)?$/{printpower($1,  2, 10)};
+     /M(iB)?$/{printpower($1,  2, 20)};
+     /G(iB)?$/{printpower($1,  2, 30)};
+     /T(iB)?$/{printpower($1,  2, 40)};
+     /KB$/{    printpower($1, 10,  3)};
+     /MB$/{    printpower($1, 10,  6)};
+     /GB$/{    printpower($1, 10,  9)};
+     /TB$/{    printpower($1, 10, 12)}'
+}
+
+awk -F: '/\/home/ && ($3 >= 1000) {printf "%s\n", $1}' /etc/passwd | while read -r user
+do
+  for size in {1..8}G
+  do
+    mkdir -p "/sys/fs/cgroup/memory/$user/$size"
+    dehumanise $size > "/sys/fs/cgroup/memory/$user/$size/memory.limit_in_bytes"
+    chown "$user:$user" "/sys/fs/cgroup/memory/$user/$size/tasks"
+  done
+done

@@ -26,6 +26,8 @@ whitelist /dev/urandom
 whitelist /dev/shm
 whitelist /dev/video0
 
+include ~/.config/firejail/mem/1G.inc
+
 mkdir ~/.config/skypeforlinux
 whitelist ~/.config/skypeforlinux
 mkdir ~/Skype

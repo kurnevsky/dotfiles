@@ -16,5 +16,7 @@ private-dev
 private-etc tor
 private-tmp
 
+include ~/.config/firejail/mem/1G.inc
+
 mkdir ~/.tor
 whitelist ~/.tor

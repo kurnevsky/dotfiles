@@ -17,5 +17,7 @@ private-dev
 private-etc resolv.conf,localtime,fonts,ssl,ca-certificates
 private-tmp
 
+include ~/.config/firejail/mem/1G.inc
+
 mkdir ~/.tkabber
 whitelist ~/.tkabber

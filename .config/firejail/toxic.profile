@@ -16,5 +16,7 @@ private-dev
 private-etc localtime
 private-tmp
 
+include ~/.config/firejail/mem/1G.inc
+
 mkdir ~/.config/tox
 whitelist ~/.config/tox

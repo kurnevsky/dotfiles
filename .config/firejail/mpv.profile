@@ -17,5 +17,7 @@ private-dev
 private-etc mpv,fonts,pulse
 private-tmp
 
+include ~/.config/firejail/mem/1G.inc
+
 blacklist ~/.ssh
 read-only ~

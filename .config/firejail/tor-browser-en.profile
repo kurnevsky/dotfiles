@@ -16,5 +16,7 @@ private-dev
 private-etc fonts,gtk-2.0
 private-tmp
 
+include ~/.config/firejail/mem/4G.inc
+
 mkdir ~/.tor-browser-en
 whitelist ~/.tor-browser-en

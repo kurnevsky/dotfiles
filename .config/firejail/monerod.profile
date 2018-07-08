@@ -16,5 +16,7 @@ private-dev
 private-etc _none_ # firejail requires non-empty list here so _none_ is a workaround.
 private-tmp
 
+include ~/.config/firejail/mem/4G.inc
+
 mkdir ~/.bitmonero
 whitelist ~/.bitmonero

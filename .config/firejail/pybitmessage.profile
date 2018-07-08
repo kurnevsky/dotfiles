@@ -16,5 +16,7 @@ private-dev
 private-etc resolv.conf,fonts
 private-tmp
 
+include ~/.config/firejail/mem/1G.inc
+
 mkdir ~/.config/PyBitmessage
 whitelist ~/.config/PyBitmessage

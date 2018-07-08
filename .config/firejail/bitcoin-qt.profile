@@ -16,5 +16,7 @@ private-dev
 private-etc fonts
 private-tmp
 
+include ~/.config/firejail/mem/1G.inc
+
 mkdir ~/.bitcoin
 whitelist ~/.bitcoin

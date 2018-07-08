@@ -17,4 +17,6 @@ private-dev
 private-etc fonts,gtk-2.0,gtk-3.0,libreoffice,passwd
 private-tmp
 
+include ~/.config/firejail/mem/4G.inc
+
 blacklist ~/.ssh

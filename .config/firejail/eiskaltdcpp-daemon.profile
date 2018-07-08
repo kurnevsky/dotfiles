@@ -16,6 +16,8 @@ private-dev
 private-etc resolv.conf,localtime,fonts,gtk-2.0,pulse
 private-tmp
 
+include ~/.config/firejail/mem/1G.inc
+
 mkdir ~/.local/share/eiskaltdc++
 whitelist ~/.local/share/eiskaltdc++
 mkdir ~/.config/eiskaltdc++

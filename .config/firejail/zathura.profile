@@ -17,6 +17,8 @@ private-dev
 private-etc fonts
 private-tmp
 
+include ~/.config/firejail/mem/1G.inc
+
 blacklist ~/.ssh
 read-only ~
 mkdir ~/.local/share/zathura

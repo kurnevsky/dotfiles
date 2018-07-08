@@ -17,6 +17,8 @@ private-dev
 private-etc fonts,gtk-2.0,gtk-3.0,pulse
 private-tmp
 
+include ~/.config/firejail/mem/1G.inc
+
 blacklist ~/.ssh
 read-only ~
 mkdir ~/.config/deadbeef

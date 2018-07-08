@@ -19,6 +19,8 @@ private-dev
 private-etc resolv.conf,localtime,fonts,gtk-2.0,pulse
 private-tmp
 
+include ~/.config/firejail/mem/4G.inc
+
 mkdir ~/.config/chromium
 whitelist ~/.config/chromium
 mkdir ~/.cache/chromium

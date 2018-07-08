@@ -12,6 +12,8 @@ protocol unix
 seccomp
 shell none
 
+include ~/.config/firejail/mem/4G.inc
+
 private-bin 7z,7za,7zr,sh,bash
 private-dev
 private-etc _none_ # firejail requires non-empty list here so _none_ is a workaround.

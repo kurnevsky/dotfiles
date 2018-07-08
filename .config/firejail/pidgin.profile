@@ -16,6 +16,8 @@ private-dev
 private-etc resolv.conf,localtime,fonts,gtk-2.0,gtk-3.0,pulse,ssl,ca-certificates
 private-tmp
 
+include ~/.config/firejail/mem/1G.inc
+
 whitelist ~/.gtkrc-2.0
 
 mkdir ~/.purple
