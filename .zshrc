@@ -153,7 +153,7 @@ alias grep='grep --color=auto'
 alias zmv='noglob zmv -W'
 aliases[=]='noglob zcalc -e'
 
-export PATH=~/.bin-fj:~/.bin:~/.cabal/bin:$PATH
+export PATH=~/.bin-bw:~/.bin-fj:~/.bin:~/.cabal/bin:$PATH
 
 export ALTERNATE_EDITOR=nano
 export EDITOR=emacsclient
