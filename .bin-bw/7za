@@ -1,0 +1,56 @@
+#!/bin/bash
+
+set -e
+
+echo $$ > "/sys/fs/cgroup/memory/$USER/4G/tasks"
+
+exec bwrap \
+     --ro-bind /usr/bin/7z /usr/bin/7za \
+     `# /usr/bin/7z* are scripts that run binaries from /usr/lib/p7zip` \
+     --ro-bind /usr/bin/sh /usr/bin/sh \
+     --ro-bind /usr/bin/bash /usr/bin/bash \
+     \
+     --ro-bind /usr/share /usr/share \
+     \
+     --ro-bind /usr/lib /usr/lib \
+     --tmpfs /usr/lib/modules \
+     --tmpfs /usr/lib/systemd \
+     --tmpfs /usr/lib/gcc \
+     \
+     --symlink /usr/lib /usr/lib64 \
+     --symlink /usr/lib /lib64 \
+     --symlink /usr/lib /lib \
+     --symlink /usr/bin /bin \
+     --symlink /usr/bin /sbin \
+     \
+     --proc /proc \
+     \
+     --dev /dev \
+     \
+     --tmpfs /run \
+     \
+     --bind ~ ~ \
+     --tmpfs ~/.gnupg \
+     --tmpfs ~/.ssh \
+     \
+     --unsetenv DBUS_SESSION_BUS_ADDRESS \
+     --unsetenv XDG_RUNTIME_DIR \
+     --unsetenv XAUTHORITY \
+     --unsetenv MAIL \
+     --setenv SHELL /bin/bash \
+     \
+     --unshare-user \
+     --unshare-ipc \
+     --unshare-pid \
+     --unshare-net \
+     --unshare-uts \
+     \
+     --new-session \
+     --die-with-parent \
+     \
+     --cap-drop ALL \
+     \
+     --seccomp 3 \
+     3< ~/.seccomp/seccomp.bpf \
+     \
+     /usr/bin/7za "$@"
