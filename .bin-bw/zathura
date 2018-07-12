@@ -5,9 +5,7 @@ set -e
 echo $$ > "/sys/fs/cgroup/memory/$USER/1G/tasks"
 
 exec bwrap \
-     --ro-bind /usr/bin/feh /usr/bin/feh \
-     --ro-bind /usr/bin/convert /usr/bin/convert \
-     --ro-bind /usr/bin/jpegtran /usr/bin/jpegtran \
+     --ro-bind /usr/bin/zathura /usr/bin/zathura \
      \
      --ro-bind /usr/share /usr/share \
      \
@@ -33,6 +31,8 @@ exec bwrap \
      --tmpfs /run \
      \
      --ro-bind ~ ~ \
+     --bind ~/.local/share/zathura ~/.local/share/zathura \
+     --bind ~/Print ~/Print \
      --tmpfs ~/.gnupg \
      --tmpfs ~/.ssh \
      \
@@ -55,4 +55,4 @@ exec bwrap \
      --seccomp 3 \
      3< ~/.seccomp/seccomp.bpf \
      \
-     /usr/bin/feh "$@"
+     /usr/bin/zathura "$@"
