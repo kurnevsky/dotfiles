@@ -319,7 +319,7 @@ myStartupHook = do
   docksStartupHook
   spawn "setxkbmap -model pc101 -layout us,ru -option grp:caps_toggle -option grp:switch -option grp_led:caps -option lv3:ralt_switch"
   spawn "sleep 1; xmodmap ~/.Xmodmap"
-  spawn "feh --bg-fill ~/Images/pic-3909-1920x1200.jpg"
+  spawn "feh --no-fehbg --bg-fill ~/Images/pic-3909-1920x1200.jpg"
   spawn "sleep 1; xscreensaver -no-splash"
 
 myConfig hXmobar = ignoreNetActiveWindow (return True) $ withUrgencyHook NoUrgencyHook $ ewmh def

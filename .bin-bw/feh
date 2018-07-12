@@ -35,7 +35,6 @@ exec bwrap \
      --ro-bind ~ ~ \
      --tmpfs ~/.gnupg \
      --tmpfs ~/.ssh \
-     --bind ~/.fehbg ~/.fehbg \
      \
      --unsetenv DBUS_SESSION_BUS_ADDRESS \
      --unsetenv XDG_RUNTIME_DIR \
