@@ -60,6 +60,7 @@ exec bwrap \
      \
      --bind ~/.mozilla ~/.mozilla \
      --bind ~/.cache/mozilla/firefox ~/.cache/mozilla/firefox \
+     --bind ~/Downloads ~/Downloads \
      --ro-bind ~/.password-store ~/.password-store \
      --bind ~/.gnupg ~/.gnupg \
      --bind ~/.config/pulse ~/.config/pulse \
