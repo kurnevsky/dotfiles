@@ -2,10 +2,20 @@
 
 set -e
 
-echo $$ > "/sys/fs/cgroup/memory/$USER/4G/tasks"
+echo $$ > "/sys/fs/cgroup/memory/$USER/1G/tasks"
 
 exec bwrap \
-     --ro-bind /usr/bin/chromium /usr/bin/chromium \
+     --ro-bind /usr/bin/vlc /usr/bin/vlc \
+     `# VLC uses xdg-screensaver script to disable screensaver` \
+     --ro-bind /usr/bin/xdg-screensaver /usr/bin/xdg-screensaver \
+     --ro-bind /usr/bin/sh /usr/bin/sh \
+     --ro-bind /usr/bin/bash /usr/bin/bash \
+     --ro-bind /usr/bin/sed /usr/bin/sed \
+     --ro-bind /usr/bin/hostname /usr/bin/hostname \
+     --ro-bind /usr/bin/echo /usr/bin/echo \
+     --ro-bind /usr/bin/grep /usr/bin/grep \
+     --ro-bind /usr/bin/xset /usr/bin/xset \
+     --ro-bind /usr/bin/xscreensaver-command /usr/bin/xscreensaver-command \
      \
      --ro-bind /usr/share /usr/share \
      \
@@ -35,28 +45,25 @@ exec bwrap \
      \
      --ro-bind /etc/fonts /etc/fonts \
      --ro-bind /etc/pulse /etc/pulse \
-     --ro-bind /etc/gtk-2.0 /etc/gtk-2.0 \
-     --ro-bind /etc/gtk-3.0 /etc/gtk-3.0 \
-     --ro-bind /etc/resolv.conf /etc/resolv.conf \
-     --ro-bind /etc/localtime /etc/localtime \
      \
      --tmpfs /run \
-     --bind /run/dbus/system_bus_socket /run/dbus/system_bus_socket \
      --bind "/run/user/$UID/bus" "/run/user/$UID/bus" \
      --bind "/run/user/$UID/pulse" "/run/user/$UID/pulse" \
      \
-     --bind ~/.config/chromium ~/.config/chromium \
-     --bind ~/.cache/chromium ~/.cache/chromium \
-     --bind ~/Downloads ~/Downloads \
+     --ro-bind ~ ~ \
+     --bind ~/.local/share/vlc ~/.local/share/vlc \
+     --tmpfs ~/.gnupg \
+     --tmpfs ~/.ssh \
      --bind ~/.config/pulse ~/.config/pulse \
-     --ro-bind ~/.Xauthority ~/.Xauthority \
      \
+     --unsetenv DBUS_SESSION_BUS_ADDRESS \
      --unsetenv MAIL \
      --setenv SHELL /bin/bash \
      \
      --unshare-user \
      --unshare-ipc \
      --unshare-pid \
+     --unshare-net \
      --unshare-uts \
      \
      --new-session \
@@ -68,4 +75,4 @@ exec bwrap \
      --seccomp 3 \
      3< ~/.seccomp/seccomp_name_to_handle_at.bpf \
      \
-     /usr/bin/chromium --no-sandbox "$@"
+     /usr/bin/vlc "$@"
