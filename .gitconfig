@@ -7,3 +7,5 @@
 	name = Evgeny Kurnevsky
 [push]
 	default = simple
+[merge]
+	conflictstyle = diff3
