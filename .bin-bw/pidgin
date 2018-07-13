@@ -1,0 +1,65 @@
+#!/bin/bash
+
+set -e
+
+echo $$ > "/sys/fs/cgroup/memory/$USER/1G/tasks"
+
+exec bwrap \
+     --ro-bind /usr/bin/pidgin /usr/bin/pidgin \
+     \
+     --ro-bind /usr/share /usr/share \
+     \
+     --ro-bind /usr/lib /usr/lib \
+     --tmpfs /usr/lib/modules \
+     --tmpfs /usr/lib/systemd \
+     --tmpfs /usr/lib/gcc \
+     \
+     --symlink /usr/lib /usr/lib64 \
+     --symlink /usr/lib /lib64 \
+     --symlink /usr/lib /lib \
+     --symlink /usr/bin /bin \
+     --symlink /usr/bin /sbin \
+     \
+     --proc /proc \
+     \
+     --dev /dev \
+     \
+     --ro-bind /var/lib/dbus/machine-id /var/lib/dbus/machine-id \
+     \
+     --ro-bind /tmp/.X11-unix /tmp/.X11-unix \
+     \
+     --ro-bind /etc/fonts /etc/fonts \
+     --ro-bind /etc/pulse /etc/pulse \
+     --ro-bind /etc/localtime /etc/localtime \
+     --ro-bind /etc/resolv.conf /etc/resolv.conf \
+     --ro-bind /etc/gtk-2.0 /etc/gtk-2.0 \
+     --ro-bind /etc/gtk-3.0 /etc/gtk-3.0 \
+     --ro-bind /etc/ssl /etc/ssl \
+     --ro-bind /etc/ca-certificates /etc/ca-certificates \
+     \
+     --tmpfs /run \
+     --bind "/run/user/$UID/bus" "/run/user/$UID/bus" \
+     --bind "/run/user/$UID/pulse" "/run/user/$UID/pulse" \
+     \
+     --bind ~/.purple ~/.purple \
+     --bind ~/.config/pulse ~/.config/pulse \
+     --ro-bind ~/.Xauthority ~/.Xauthority \
+     --ro-bind ~/.gtkrc-2.0 ~/.gtkrc-2.0 \
+     \
+     --unsetenv MAIL \
+     --unsetenv SHELL \
+     \
+     --unshare-user \
+     --unshare-ipc \
+     --unshare-pid \
+     --unshare-uts \
+     \
+     --new-session \
+     --die-with-parent \
+     \
+     --cap-drop ALL \
+     \
+     --seccomp 3 \
+     3< ~/.seccomp/seccomp.bpf \
+     \
+     /usr/bin/pidgin "$@"
