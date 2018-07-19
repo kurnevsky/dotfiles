@@ -1,0 +1,74 @@
+#!/bin/bash
+
+set -e
+
+echo $$ > "/sys/fs/cgroup/memory/$USER/1G/tasks"
+
+exec bwrap \
+     --ro-bind /usr/bin/skypeforlinux /usr/bin/skypeforlinux \
+     --ro-bind /usr/bin/sh /usr/bin/sh \
+     --ro-bind /usr/bin/bash /usr/bin/bash \
+     --ro-bind /usr/bin/pwd /usr/bin/pwd \
+     --ro-bind /usr/bin/mkdir /usr/bin/mkdir \
+     --ro-bind /usr/bin/readlink /usr/bin/readlink \
+     --ro-bind /usr/bin/dirname /usr/bin/dirname \
+     --ro-bind /usr/bin/nohup /usr/bin/nohup \
+     \
+     --ro-bind /usr/share /usr/share \
+     \
+     --ro-bind /usr/lib /usr/lib \
+     --tmpfs /usr/lib/modules \
+     --tmpfs /usr/lib/systemd \
+     --tmpfs /usr/lib/gcc \
+     \
+     --symlink /usr/lib /usr/lib64 \
+     --symlink /usr/lib /lib64 \
+     --symlink /usr/lib /lib \
+     --symlink /usr/bin /bin \
+     --symlink /usr/bin /sbin \
+     \
+     --proc /proc \
+     \
+     --dev /dev \
+     --dev-bind /dev/dri /dev/dri \
+     `# Necessary for camera access` \
+     --dev-bind /dev/video0 /dev/video0 \
+     `# Necessary for audio` \
+     --dev-bind /dev/snd /dev/snd \
+     \
+     `# Necessary for hardware acceleration` \
+     --ro-bind /sys/dev /sys/dev \
+     --ro-bind /sys/devices /sys/devices \
+     \
+     --ro-bind /tmp/.X11-unix /tmp/.X11-unix \
+     \
+     --ro-bind /etc/fonts /etc/fonts \
+     --ro-bind /etc/pulse /etc/pulse \
+     --ro-bind /etc/localtime /etc/localtime \
+     --ro-bind /etc/resolv.conf /etc/resolv.conf \
+     \
+     --tmpfs /run \
+     --bind "/run/user/$UID/pulse" "/run/user/$UID/pulse" \
+     \
+     --bind ~/.config/skypeforlinux ~/.config/skypeforlinux \
+     --bind ~/.config/pulse ~/.config/pulse \
+     --ro-bind ~/.config/gtk-3.0 ~/.config/gtk-3.0 \
+     --ro-bind ~/.Xauthority ~/.Xauthority \
+     \
+     --unsetenv DBUS_SESSION_BUS_ADDRESS \
+     --unsetenv MAIL \
+     --setenv SHELL /bin/bash \
+     \
+     --unshare-user \
+     --unshare-ipc \
+     --unshare-uts \
+     \
+     --new-session \
+     --die-with-parent \
+     \
+     --cap-drop ALL \
+     \
+     --seccomp 3 \
+     3< ~/.seccomp/seccomp_name_to_handle_at.bpf \
+     \
+     /usr/bin/skypeforlinux "$@"
