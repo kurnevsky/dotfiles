@@ -251,12 +251,13 @@
   (flx-ido-mode 1)
   (setq flx-ido-use-faces t)
   (setq ido-use-faces nil)
+  (defun clear-flx-highlight-face (str)
+    "Clear flx-highlight-face from str"
+    (remove-text-properties 0 (length str) '(face flx-highlight-face) str))
   (advice-add 'ido-complete :before (lambda ()
                                       (dolist (str ido-matches)
-                                        (remove-text-properties 0 (length str) '(face flx-highlight-face) str))))
-  (advice-add 'ido-complete :after (lambda ()
-                                     (let ((inhibit-read-only t))
-                                       (remove-text-properties (point-min) (point) '(face flx-highlight-face)))))
+                                        (clear-flx-highlight-face str))
+                                      (clear-flx-highlight-face ido-common-match-string)))
   ;; Remove ido-max-prospects limit from flx-ido-decorate since we can use ido-prev-match and ido-next-match.
   (defun flx-ido-decorate (things &optional clear)
     "Add ido text properties to THINGS.
