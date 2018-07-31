@@ -388,35 +388,6 @@ If CLEAR is specified, clear them instead."
   (add-hook 'prog-mode-hook 'hs-minor-mode)
   :bind (("C-`" . hs-toggle-hiding)))
 
-(use-package helm
-  :demand t
-  :bind (:map helm-map
-          ("<tab>" . helm-execute-persistent-action)
-          ("<left>" . backward-char)
-          ("<right>" . forward-char))
-  :config
-  ;; Don't enable helm-mode since ido-ubiquitous-mode is used instead.
-  ;; (helm-mode 1)
-  ;; (add-to-list 'helm-completing-read-handlers-alist '(basic-save-buffer . nil))
-  (helm-autoresize-mode t)
-  (add-hook 'helm-minibuffer-set-up-hook (lambda () (cua-mode 1))))
-
-(use-package helm-ag
-  :bind (:map helm-ag-map
-          ("<left>" . backward-char)
-          ("<right>" . forward-char))
-  :config
-  (setq helm-ag-insert-at-point 'word))
-
-(use-package helm-projectile
-  :after projectile
-  :demand t
-  :bind (:map helm-projectile-find-file-map
-          ("<left>" . backward-char)
-          ("<right>" . forward-char))
-  :config
-  (helm-projectile-on))
-
 (use-package org
   :mode ("\\.org\\'" . org-mode)
   :config
