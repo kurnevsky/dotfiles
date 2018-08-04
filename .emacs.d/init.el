@@ -272,6 +272,11 @@ If CLEAR is specified, clear them instead."
         things
         (mapcar 'car things)))))
 
+(use-package ido-grid
+  :load-path "~/.emacs.d/ido-grid"
+  :config
+  (ido-grid-enable))
+
 ;; TODO: (mapcar 'window-buffer (window-list))
 (use-package ediff
   :config
@@ -724,3 +729,4 @@ properly."
 
 ;; Kill scratch buffer.
 (kill-buffer "*scratch*")
+
