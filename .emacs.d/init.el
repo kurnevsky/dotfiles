@@ -422,19 +422,16 @@ If CLEAR is specified, clear them instead."
 (use-package treemacs
   :commands (treemacs-toggle treemacs-select-window treemacs-delete-other-windows treemacs treemacs-find-file)
   :config
-  (setq treemacs-show-hidden-files t)
-  (setq treemacs-never-persist t)
-  (setq treemacs-is-never-other-window nil)
+  (setq treemacs-collapse-dirs 3)
   (setq treemacs-position 'right)
+  (setq treemacs-project-follow-cleanup t)
   (treemacs-follow-mode t)
   (treemacs-filewatch-mode t)
   (add-hook 'treemacs-mode-hook (lambda () (setq cursor-type 'bar))))
 
 ;; Projectile support for treemacs.
 (use-package treemacs-projectile
-  :bind ("<f8>" . treemacs-projectile-toggle)
-  :config
-  (setq treemacs-header-function #'treemacs-projectile-create-header))
+  :bind ("<f8>" . treemacs-projectile))
 
 (use-package flycheck
   :ensure t
