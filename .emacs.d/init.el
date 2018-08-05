@@ -465,14 +465,6 @@ If CLEAR is specified, clear them instead."
   :mode ("\\.hs\\'" . haskell-mode)
   :interpreter ("ghci" . haskell-mode))
 
-(use-package ghc
-  :commands ghc-init-interactive
-  :config
-  (defun ghc-init-interactive ()
-    "Initialize ghc module"
-    (interactive)
-    (ghc-init)))
-
 (use-package eldoc
   :commands (eldoc-mode turn-on-eldoc-mode)
   :init
