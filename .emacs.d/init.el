@@ -718,4 +718,3 @@ properly."
 
 ;; Kill scratch buffer.
 (kill-buffer "*scratch*")
-
