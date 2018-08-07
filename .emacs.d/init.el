@@ -191,9 +191,8 @@
 
 ;; Highlight indentation levels.
 (use-package highlight-indent-guides
-  :commands highlight-indent-guides-mode
+  :hook (prog-mode . highlight-indent-guides-mode)
   :init
-  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
   ;; Don't know why it's needed but it seems something overwrites font-lock-extra-managed-props in emacs-lisp-mode.
   ;; See https://github.com/DarthFennec/highlight-indent-guides/issues/15#issuecomment-280505591
   (add-hook 'emacs-lisp-mode-hook (lambda () (add-to-list 'font-lock-extra-managed-props 'display)))
@@ -203,16 +202,12 @@
 
 ;; Spell checking.
 (use-package flyspell
-  :commands (flyspell-mode flyspell-prog-mode)
-  :init
-  (add-hook 'text-mode-hook 'flyspell-mode)
-  (add-hook 'prog-mode-hook 'flyspell-prog-mode))
+  :hook ((text-mode . flyspell-mode)
+          (prog-mode . flyspell-prog-mode)))
 
 ;; Automatically change language for spell checking.
 (use-package guess-language
-  :commands guess-language-mode
-  :init
-  (add-hook 'text-mode-hook (lambda () (guess-language-mode 1)))
+  :hook (text-mode . guess-language-mode)
   :config
   (setq guess-language-langcodes
     '((en . ("en" "English"))
@@ -393,8 +388,7 @@ If CLEAR is specified, clear them instead."
   (defun undo-tree-overridden-undo-bindings-p () nil))
 
 (use-package hideshow
-  :init
-  (add-hook 'prog-mode-hook 'hs-minor-mode)
+  :hook (prog-mode . hs-minor-mode)
   :bind (("C-`" . hs-toggle-hiding)))
 
 (use-package org
@@ -404,9 +398,11 @@ If CLEAR is specified, clear them instead."
 
 (use-package yasnippet
   :ensure yasnippet-snippets
+  :hook (prog-mode . yas-minor-mode)
+  :bind (:map yas-keymap
+          ("<return>" . yas-next-field-or-maybe-expand))
   :config
-  (yas-reload-all)
-  (add-hook 'prog-mode-hook #'yas-minor-mode))
+  (yas-reload-all))
 
 (use-package magit
   :demand t
