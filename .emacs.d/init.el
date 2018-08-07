@@ -303,7 +303,8 @@ If CLEAR is specified, clear them instead."
   :bind (("<f2>" . bs-show)
           :map bs-mode-map
           ("<f2>" . bs-abort)
-          ("<escape>" . bs-abort)))
+          ("<escape>" . bs-abort)
+          ("<mouse-1>" . bs-mouse-select)))
 
 (use-package tramp
   :config
