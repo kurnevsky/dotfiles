@@ -419,6 +419,33 @@ If CLEAR is specified, clear them instead."
   (diff-hl-flydiff-mode)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
+(use-package neotree
+  :init
+  (defun neotree-project-dir-toggle ()
+    "Open NeoTree using the project root, using find-file-in-project,
+or the current buffer directory."
+    (interactive)
+    (let ((project-dir
+            (ignore-errors
+              (projectile-project-root)))
+           (file-name (buffer-file-name))
+           (neo-smart-open t))
+      (if (and (fboundp 'neo-global--window-exists-p)
+            (neo-global--window-exists-p))
+        (neotree-hide)
+        (progn
+          (neotree-show)
+          (if project-dir
+            (neotree-dir project-dir))
+          (if file-name
+            (neotree-find file-name))))))
+  :bind ("<f8>" . neotree-project-dir-toggle)
+  :config
+  (setq neo-window-position 'right)
+  (setq neo-show-hidden-files t)
+  (setq neo-autorefresh t)
+  (setq projectile-switch-project-action 'neotree-projectile-action))
+
 ;; Side bar.
 ;; TODO: try to display in side window: (display-buffer-in-side-window buffer `((side . , 'right)))
 (use-package treemacs
@@ -433,7 +460,7 @@ If CLEAR is specified, clear them instead."
 
 ;; Projectile support for treemacs.
 (use-package treemacs-projectile
-  :bind ("<f8>" . treemacs-projectile))
+  :bind ("S-<f8>" . treemacs-projectile))
 
 (use-package flycheck
   :ensure t
