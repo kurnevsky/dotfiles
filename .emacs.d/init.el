@@ -401,9 +401,11 @@ If CLEAR is specified, clear them instead."
   :config
   (setq org-support-shift-select t))
 
-;; TODO: do I need it?
 (use-package yasnippet
-  :defer t)
+  :ensure yasnippet-snippets
+  :config
+  (yas-reload-all)
+  (add-hook 'prog-mode-hook #'yas-minor-mode))
 
 (use-package magit
   :demand t
