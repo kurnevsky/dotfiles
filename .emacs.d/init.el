@@ -559,7 +559,8 @@ or the current buffer directory."
   (dolist (hook '(mu4e-main-mode-hook mu4e-headers-mode-hook mu4e-view-mode-hook mu4e-compose-mode-hook))
     (add-hook hook '(lambda ()
                       (display-line-numbers-mode -1)
-                      (setq left-fringe-width 0))))
+                      (setq left-fringe-width 0)
+                      (setq show-trailing-whitespace nil))))
   (defun mu4e-shr2text ()
     "Html to text using the shr engine."
     (interactive)
