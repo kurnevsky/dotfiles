@@ -185,7 +185,7 @@
 (use-package highlight-thing
   :config
   (global-highlight-thing-mode)
-  (setq highlight-thing-what-thing 'word)
+  (setq highlight-thing-what-thing 'symbol)
   (custom-set-faces
     '(highlight-thing ((t (:background "dark slate blue" :foreground "gray"))))))
 
@@ -656,7 +656,7 @@ Toggle back and forth positions if we are already at one.
 Comments are recognized in any mode that sets 'syntax-ppss'
 properly."
   (interactive "^P")
-  (when (catch 'bol 
+  (when (catch 'bol
           (let ((start (point))
                  (bol (save-excursion
                         (beginning-of-line)
