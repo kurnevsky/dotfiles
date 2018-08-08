@@ -58,7 +58,7 @@
 ;; Add new line at the end of file if it doesn't exist.
 (setq require-final-newline t)
 ;; Highlight trailing whitespaces.
-(setq show-trailing-whitespace t)
+(setq-default show-trailing-whitespace t)
 ;; Easy transition between buffers: M-arrow-keys.
 (windmove-default-keybindings 'meta)
 ;; Don't show cursor in inactive buffers.
