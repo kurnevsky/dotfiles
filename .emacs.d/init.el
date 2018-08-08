@@ -555,6 +555,11 @@ or the current buffer directory."
   (setq mu4e-headers-results-limit 1000)
   (setq mu4e-change-filenames-when-moving t)
   (setq mu4e-get-mail-command "mbsync --all")
+  ;; Remove padding so that content won't be shifted comparing to the header
+  (dolist (hook '(mu4e-main-mode-hook mu4e-headers-mode-hook mu4e-view-mode-hook mu4e-compose-mode-hook))
+    (add-hook hook '(lambda ()
+                      (display-line-numbers-mode -1)
+                      (setq left-fringe-width 0))))
   (defun mu4e-shr2text ()
     "Html to text using the shr engine."
     (interactive)
