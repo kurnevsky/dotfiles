@@ -543,6 +543,20 @@ or the current buffer directory."
     '(agda2-highlight-symbol-face ((t (:foreground "brightblue"))))
     '(custom-themed ((t (:background "blue1" :foreground "white"))))))
 
+(use-package lsp-mode
+  :config
+  (add-hook 'lsp-mode-hook '(lambda () (highlight-thing-mode -1))))
+
+(use-package company-lsp
+  :config
+  (push 'company-lsp company-backends))
+
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode))
+
+(use-package lsp-rust
+  :commands lsp-rust-enable)
+
 ;; Mail.
 (use-package mu4e
   :ensure nil ;; https://github.com/jwiegley/use-package/issues/190
