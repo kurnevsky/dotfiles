@@ -18,6 +18,7 @@ exec bwrap \
      --ro-bind /usr/bin/sed /usr/bin/sed \
      --ro-bind /usr/bin/gpg /usr/bin/gpg \
      --ro-bind /usr/bin/gpg2 /usr/bin/gpg2 \
+     --ro-bind /usr/bin/base64 /usr/bin/base64 \
      --ro-bind /usr/bin/pass /usr/bin/pass \
      \
      --ro-bind /usr/share /usr/share \
