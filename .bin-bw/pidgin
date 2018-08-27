@@ -53,6 +53,7 @@ exec bwrap \
      --unshare-ipc \
      --unshare-pid \
      --unshare-uts \
+     --unshare-cgroup \
      \
      --new-session \
      --die-with-parent \
