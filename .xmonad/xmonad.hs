@@ -23,7 +23,6 @@ import XMonad.Actions.UpdatePointer (updatePointer)
 import XMonad.Actions.WindowMenu (windowMenu)
 import XMonad.Hooks.DynamicLog (dynamicLogWithPP, xmobarPP, PP(..))
 import XMonad.Hooks.EwmhDesktops (ewmh, fullscreenEventHook)
-import XMonad.Hooks.FadeInactive (fadeInactiveLogHook)
 import XMonad.Hooks.IgnoreNetActiveWindow (ignoreNetActiveWindow)
 import XMonad.Hooks.InsertPosition (insertPosition, Focus(..), Position(..))
 import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, docksStartupHook, manageDocks, ToggleStruts(..))
@@ -288,7 +287,6 @@ myPP hXmobar = xmobarPP { ppOutput = hPutStrLn hXmobar
                         }
 
 myLogHook hXmobar = do
-  fadeInactiveLogHook 0.9
   updatePointer (0.5, 0.5) (0, 0)
   dynamicLogWithPP $ myPP hXmobar
 
