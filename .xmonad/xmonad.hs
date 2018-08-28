@@ -4,7 +4,7 @@ import Control.Monad
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Maybe
 import Control.Applicative
-import Data.Char (isDigit)
+import Data.Char (ord)
 import qualified Data.Map as M
 import Data.Maybe
 import Data.Monoid
@@ -267,7 +267,9 @@ myManageHook = manageDocks <> (isFullscreen --> doFullFloat) <> (fmap not isDial
 myEventHook e = minimizeEventHook e <> fullscreenEventHook e <> docksEventHook e
 
 xmobarWorkspace :: String -> String
-xmobarWorkspace [ws] | isDigit ws = "<action=xdotool key super+" ++ [ws] ++ ">" ++ [ws] ++ "</action>"
+xmobarWorkspace [ws] | ws > '0' && ws <= '9' =
+  -- "<action=xdotool key super+" ++ [ws] ++ ">" ++ [ws] ++ "</action>"
+  let n = ord ws - ord '1' in "<action=wmctrl -s +" ++ show n ++ ">" ++ [ws] ++ "</action>"
 xmobarWorkspace ws = stripActions ws
 
 xmobarLayout :: String -> String
