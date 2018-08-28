@@ -1,4 +1,4 @@
-{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, OverloadedStrings #-}
+{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, OverloadedStrings, TupleSections #-}
 
 import Control.Monad
 import Control.Monad.Trans.Class
@@ -97,7 +97,7 @@ decorateName' :: Window -> X String
 decorateName' w = show <$> getName w
 
 goToSelectedOnWorkspace gsConfig = do
-  let keyValuePair w = flip (,) w `fmap` decorateName' w
+  let keyValuePair w = (, w) `fmap` decorateName' w
   wins <- gets (SS.index . windowset)
   when (length wins > 1) $ do
     namedWindows <- mapM keyValuePair wins
@@ -306,7 +306,7 @@ addNETSupported x = withDisplay $ \dpy -> do
   a_NET_SUPPORTED <- getAtom "_NET_SUPPORTED"
   a <- getAtom "ATOM"
   liftIO $ do
-    sup <- (join . maybeToList) <$> getWindowProperty32 dpy a_NET_SUPPORTED r
+    sup <- join . maybeToList <$> getWindowProperty32 dpy a_NET_SUPPORTED r
     when (fromIntegral x `notElem` sup) $
       changeProperty32 dpy r a_NET_SUPPORTED a propModeAppend [fromIntegral x]
 
