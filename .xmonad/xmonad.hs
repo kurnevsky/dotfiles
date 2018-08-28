@@ -262,7 +262,9 @@ myLayout = fullLayoutModifiers fullLayout |||
   delta = 3 / 100 -- Percent of screen to increment by when resizing panes.
 
 -- To find the property name associated with a program, use > xprop | grep WM_CLASS.
-myManageHook = manageDocks <> (isFullscreen --> doFullFloat) <> (fmap not isDialog --> insertPosition Master Newer)
+myManageHook = manageDocks <> (isFullscreen --> doFullFloat) <> (masterCondition --> insertPosition Master Newer)
+  where masterCondition = fmap (/= "Full") layoutName <&&> fmap not isDialog
+        layoutName = liftX $ withWindowSet $ return . description . SS.layout . SS.workspace . SS.current
 
 myEventHook e = minimizeEventHook e <> fullscreenEventHook e <> docksEventHook e
 
