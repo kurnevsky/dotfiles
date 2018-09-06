@@ -270,8 +270,7 @@ myEventHook e = minimizeEventHook e <> fullscreenEventHook e <> docksEventHook e
 
 xmobarWorkspace :: String -> String
 xmobarWorkspace [ws] | ws > '0' && ws <= '9' =
-  -- "<action=xdotool key super+" ++ [ws] ++ ">" ++ [ws] ++ "</action>"
-  let n = ord ws - ord '1' in "<action=wmctrl -s +" ++ show n ++ ">" ++ [ws] ++ "</action>"
+  let n = ord ws - ord '1' in "<action=`xdotool key super+" ++ [ws] ++ "` button=3><action=wmctrl -s +" ++ show n ++ ">" ++ [ws] ++ "</action></action>"
 xmobarWorkspace ws = stripActions ws
 
 xmobarLayout :: String -> String
