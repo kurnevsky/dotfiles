@@ -44,6 +44,7 @@ exec bwrap \
      --bind ~/.config/tox ~/.config/tox \
      --bind ~/.cache/Tox ~/.cache/Tox \
      --bind ~/.config/pulse ~/.config/pulse \
+     --ro-bind ~/.config/qt5ct ~/.config/qt5ct \
      --ro-bind ~/.Xauthority ~/.Xauthority \
      \
      --unsetenv DBUS_SESSION_BUS_ADDRESS \
