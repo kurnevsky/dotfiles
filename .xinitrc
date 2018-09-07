@@ -31,4 +31,6 @@ compton -b --config ~/.config/compton.conf --dbus --glx-fshader-win "$(cat ~/.gl
 
 export _JAVA_AWT_WM_NONREPARENTING=1
 
+export QT_QPA_PLATFORMTHEME=qt5ct
+
 exec xmonad 2>> ~/.xsession-errors
