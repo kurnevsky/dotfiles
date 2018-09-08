@@ -1,41 +1,41 @@
 module XMonad.Prompt.FuzzyShell where
 
 import Data.List
-import System.Directory
 import Text.EditDistance
 import XMonad
 import XMonad.Prompt
 import XMonad.Prompt.Shell
-import XMonad.Util.Run
 
-editCosts :: EditCosts
-editCosts = EditCosts {
-  deletionCosts = ConstantCost 3,
+-- | Defines the priority of completions that match only if the input contains a
+-- typo. Higher values mean that such completions will be placed farther
+-- compared to completions that that match without typos.
+scale :: Int
+scale = 5
+
+-- | Number of typos the input can have.
+typos :: Int
+typos = 1
+
+costs :: EditCosts
+costs = EditCosts {
+  deletionCosts = ConstantCost $ scale - typos,
   insertionCosts = ConstantCost 1,
-  substitutionCosts = ConstantCost 2,
-  transpositionCosts = ConstantCost 2
+  substitutionCosts = ConstantCost scale,
+  transpositionCosts = ConstantCost scale
 }
 
 fuzzyCompl :: [String] -> String -> [String]
 fuzzyCompl _ [] = []
 fuzzyCompl l s =
-  let weight = levenshteinDistance editCosts s
+  let weight = restrictedDamerauLevenshteinDistance costs s
       prefix = not . isPrefixOf s
   in map (\(_, _, e) -> e) $
        sort $
-       filter (\(p, d, e) -> not p || d <= length e) $
-       map (\e -> (prefix e, weight e, e)) l
-
-fzfCompl :: FilePath -> [String] -> String -> IO [String]
-fzfCompl _ _ [] = return []
-fzfCompl fzf l s =
-  fmap lines $ runProcessWithInput fzf ["-f", s] $ unlines l
+       filter (\(p, d, e) -> not p || d <= length e - length s + typos * scale) $
+       map (\e -> (prefix e, weight e, e)) $
+       filter (\e -> length e >= length s - typos) l
 
 fuzzyShellPrompt :: XPConfig -> X ()
 fuzzyShellPrompt c = do
   cmds <- io getCommands
-  maybeFzf <- io $ findExecutable "fzf"
-  let compl = case maybeFzf of
-        Just fzf -> fzfCompl fzf cmds
-        Nothing -> return . fuzzyCompl cmds
-  mkXPrompt Shell c compl spawn
+  mkXPrompt Shell c (return . fuzzyCompl cmds) spawn
