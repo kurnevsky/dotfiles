@@ -43,7 +43,7 @@ import XMonad.Layout.Tabbed (tabbedBottom)
 import XMonad.Layout.TrackFloating (trackFloating)
 import XMonad.Prompt (XPConfig(..), XPPosition(..))
 import XMonad.Prompt.ConfirmPrompt (confirmPrompt)
-import XMonad.Prompt.Shell (shellPrompt)
+import XMonad.Prompt.FuzzyShell (fuzzyShellPrompt)
 import qualified XMonad.StackSet as SS
 import XMonad.Util.Compton (inversionStatus, invert)
 import XMonad.Util.NamedWindows (getName)
@@ -114,7 +114,7 @@ myKeys conf@XConfig { XMonad.modMask = modm } = M.union (planeKeys modm (Lines 3
   -- Launch mc.
   , ((modm, xK_e), spawn "xterm -e tmux new-session mc")
   -- Launch application.
-  , ((modm, xK_F2), shellPrompt myXPConfig)
+  , ((modm, xK_F2), fuzzyShellPrompt myXPConfig)
   -- Close the focused window.
   , ((modm, xK_c), killSafe)
   -- Kill the focused window.
