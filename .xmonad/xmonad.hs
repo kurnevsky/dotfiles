@@ -43,7 +43,7 @@ import XMonad.Layout.Tabbed (tabbedBottom)
 import XMonad.Layout.TrackFloating (trackFloating)
 import XMonad.Prompt (XPConfig(..), XPPosition(..))
 import XMonad.Prompt.ConfirmPrompt (confirmPrompt)
-import XMonad.Prompt.FuzzyShell (fuzzyShellPrompt)
+import XMonad.Prompt.Fuzzy (fuzzyShellPrompt)
 import qualified XMonad.StackSet as SS
 import XMonad.Util.Compton (inversionStatus, invert)
 import XMonad.Util.NamedWindows (getName)
