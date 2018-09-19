@@ -45,7 +45,7 @@ import XMonad.Prompt (XPConfig(..), XPPosition(..))
 import XMonad.Prompt.ConfirmPrompt (confirmPrompt)
 import XMonad.Prompt.Fuzzy (fuzzyShellPrompt)
 import qualified XMonad.StackSet as SS
-import XMonad.Util.Compton (inversionStatus, invert)
+import XMonad.Util.Compton (invert)
 import XMonad.Util.NamedWindows (getName)
 import XMonad.Util.Run (hPutStrLn, spawnPipe)
 import XMonad.Xmobar.Actions (stripActions)
@@ -174,7 +174,7 @@ myKeys conf@XConfig { XMonad.modMask = modm } = M.union (planeKeys modm (Lines 3
   -- Set monitor backlight level to minimum value.
   , ((shiftMask, xF86XK_MonBrightnessDown), spawn "xbacklight = 1")
   -- dbus-send --dest=com.github.chjj.compton._0 / com.github.chjj.compton.win_set uint32:0x5a0000a string:invert_color_force uint16:1
-  , ((modm, xK_i), withDisplay $ \dpy -> withFocused $ \w -> inversionStatus dpy w >>= invert dpy w . not)
+  , ((modm, xK_i), withDisplay $ \dpy -> withFocused $ io . invert dpy)
   -- Invert colors.
   , ((modm .|. shiftMask, xK_i), spawn "xcalib -i -a")
   -- Clear invertions.
