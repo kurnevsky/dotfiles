@@ -121,7 +121,6 @@
 ;; ========== Install packages ==========
 
 ;; List of necessary packages.
-(setq package-list '(use-package))
 (require 'package)
 (add-to-list 'package-archives
   '("melpa" . "https://melpa.org/packages/"))
@@ -133,9 +132,8 @@
 (unless package-archive-contents
   (package-refresh-contents))
 ;; Install the missing packages.
-(dolist (package package-list)
-  (unless (package-installed-p package)
-    (package-install package)))
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
 
 ;; ========== Configure plugins ==========
 
