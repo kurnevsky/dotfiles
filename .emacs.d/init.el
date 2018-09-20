@@ -74,6 +74,9 @@
 ;; Show line and column numbers.
 (line-number-mode t)
 (column-number-mode t)
+;; Enable the downcase-region and upcase-region commands.
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
 ;; File to write custom-set-variables.
 (setq custom-file "~/.emacs.d/custom.el")
 (unless (file-exists-p custom-file)
@@ -772,11 +775,7 @@ properly."
 ;; pop-global-mark
 ;; C-x C-x (exchange-point-and-mark)
 
-;; shell-command
-;; shell
-
 ;; ========== Startup actions ==========
 
 ;; Kill scratch buffer.
 (kill-buffer "*scratch*")
-(put 'upcase-region 'disabled nil)
