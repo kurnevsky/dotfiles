@@ -463,7 +463,22 @@ or the current buffer directory."
 
 (use-package flycheck
   :ensure t
-  :init (global-flycheck-mode))
+  :init (global-flycheck-mode)
+  :config
+  (add-hook 'flycheck-after-syntax-check-hook
+    (lambda ()
+      (if flycheck-current-errors
+        (flycheck-list-errors)
+        (when (get-buffer "*Flycheck errors*")
+          (switch-to-buffer "*Flycheck errors*")
+          (kill-buffer (current-buffer))
+          (delete-window)))))
+  (add-to-list 'display-buffer-alist
+    `(,(rx bos "*Flycheck errors*" eos)
+       (display-buffer-reuse-window display-buffer-below-selected)
+       (reusable-frames . visible)
+       (side            . bottom)
+       (window-height   . 0.3))))
 
 (use-package yaml-mode
   :mode ("\\.yml\\'" . yaml-mode))
@@ -766,3 +781,4 @@ properly."
 
 ;; Kill scratch buffer.
 (kill-buffer "*scratch*")
+(put 'upcase-region 'disabled nil)
