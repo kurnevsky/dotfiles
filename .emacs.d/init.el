@@ -148,6 +148,14 @@
 ;; (use-package darcula-theme)
 (use-package atom-one-dark-theme)
 
+(use-package auto-package-update
+  :config
+  (setq auto-package-update-interval 3)
+  (setq auto-package-update-prompt-before-update t)
+  (setq auto-package-update-delete-old-versions t)
+  (setq auto-package-update-hide-results t)
+  (auto-package-update-maybe))
+
 (use-package cl-macs
   :ensure cl
   :config
