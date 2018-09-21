@@ -115,6 +115,9 @@ setopt glob_dots
 # Autocomplete with history.
 [ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ] && \
   source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+# History search widget with fuzzy matching.
+[ -f /usr/share/zsh/plugins/history-search-multi-word/history-search-multi-word.plugin.zsh ] && \
+  source /usr/share/zsh/plugins/history-search-multi-word/history-search-multi-word.plugin.zsh
 
 # Autocompletion with an arrow-key driven interface
 zstyle ':completion:*' menu select
