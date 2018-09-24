@@ -538,6 +538,9 @@ or the current buffer directory."
 (use-package dockerfile-mode
   :mode ("Dockerfile'" . dockerfile-mode))
 
+(use-package pkgbuild-mode
+  :mode ("PKGBUILD'" . pkgbuild-mode))
+
 (use-package go-mode
   :mode ("\\.go\\'" . go-mode))
 
