@@ -154,7 +154,8 @@
   (setq auto-package-update-prompt-before-update t)
   (setq auto-package-update-delete-old-versions t)
   (setq auto-package-update-hide-results t)
-  (auto-package-update-maybe))
+  (unless (daemonp)
+    (auto-package-update-maybe)))
 
 (use-package cl-macs
   :ensure cl
