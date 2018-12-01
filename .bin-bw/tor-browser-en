@@ -15,8 +15,6 @@ exec bwrap \
      --symlink /usr/lib /usr/lib64 \
      --symlink /usr/lib /lib64 \
      --symlink /usr/lib /lib \
-     --symlink /usr/bin /bin \
-     --symlink /usr/bin /sbin \
      \
      --proc /proc \
      \

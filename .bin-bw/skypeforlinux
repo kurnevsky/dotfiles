@@ -5,15 +5,6 @@ set -e
 echo $$ > "/sys/fs/cgroup/memory/$USER/1G/tasks"
 
 exec bwrap \
-     --ro-bind /usr/bin/skypeforlinux /usr/bin/skypeforlinux \
-     --ro-bind /usr/bin/sh /usr/bin/sh \
-     --ro-bind /usr/bin/bash /usr/bin/bash \
-     --ro-bind /usr/bin/pwd /usr/bin/pwd \
-     --ro-bind /usr/bin/mkdir /usr/bin/mkdir \
-     --ro-bind /usr/bin/readlink /usr/bin/readlink \
-     --ro-bind /usr/bin/dirname /usr/bin/dirname \
-     --ro-bind /usr/bin/nohup /usr/bin/nohup \
-     \
      --ro-bind /usr/share /usr/share \
      \
      --ro-bind /usr/lib /usr/lib \
@@ -24,8 +15,6 @@ exec bwrap \
      --symlink /usr/lib /usr/lib64 \
      --symlink /usr/lib /lib64 \
      --symlink /usr/lib /lib \
-     --symlink /usr/bin /bin \
-     --symlink /usr/bin /sbin \
      \
      --proc /proc \
      \
@@ -57,7 +46,7 @@ exec bwrap \
      \
      --unsetenv DBUS_SESSION_BUS_ADDRESS \
      --unsetenv MAIL \
-     --setenv SHELL /bin/bash \
+     --unsetenv SHELL \
      \
      --unshare-user \
      --unshare-ipc \
@@ -72,4 +61,4 @@ exec bwrap \
      --seccomp 3 \
      3< ~/.seccomp/seccomp_name_to_handle_at.bpf \
      \
-     /usr/bin/skypeforlinux "$@"
+     /usr/share/skypeforlinux/skypeforlinux --executed-from="$(pwd)" --pid=$$ "$@"
