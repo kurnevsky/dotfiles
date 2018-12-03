@@ -416,10 +416,16 @@ If CLEAR is specified, clear them instead."
 
 (use-package magit
   :demand t
-  :bind (("<C-m> b" . magit-blame)
+  :bind (("<C-m> <C-m>" . magit-status)
+          ("<C-m> b" . magit-blame-addition)
           ("<C-m> s" . magit-show-commit)
           :map magit-blame-mode-map
-          ("<C-m> b" . magit-blame-quit)))
+          ("<C-m> b" . magit-blame-quit)
+          :map magit-status-mode-map
+          ("TAB" . magit-section-cycle))
+  :config
+  (add-hook 'magit-status-mode-hook
+    (lambda () (company-mode -1))))
 
 ;; Indicate uncommited changes on the fringe.
 (use-package diff-hl
