@@ -47,7 +47,7 @@ import XMonad.Prompt.Fuzzy (fuzzyShellPrompt)
 import qualified XMonad.StackSet as SS
 import XMonad.Util.Compton (invert)
 import XMonad.Util.NamedWindows (getName)
-import XMonad.Util.Run (hPutStrLn, spawnPipe)
+import XMonad.Util.Run (hPutStrLn, runProcessWithInput, spawnPipe)
 import XMonad.Xmobar.Actions (stripActions)
 
 myTerminal = "xterm -e tmux"
@@ -76,7 +76,10 @@ myXPConfig = def
 
 withPid :: Window -> (ProcessID -> X ()) -> X ()
 withPid w f = do
-  maybePid <- runQuery pid w
+  maybePid <- runProcessWithInput "xcb-client-id" [show w] ""
+  maybePid <- if null maybePid
+              then runQuery pid w
+              else return $ Just $ read maybePid
   whenJust maybePid f
 
 kill9Window :: Window -> X ()
