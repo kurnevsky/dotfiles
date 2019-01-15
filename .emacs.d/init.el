@@ -532,7 +532,14 @@ or the current buffer directory."
 (use-package rust-mode
   :mode ("\\.rs\\'" . rust-mode)
   :config
-  (setq rust-indent-offset 2))
+  (setq rust-indent-offset 2)
+  (unless (getenv "RUST_SRC_PATH")
+    (when (executable-find "rustc")
+      (setenv "RUST_SRC_PATH" (concat
+                                (replace-regexp-in-string "\n$" ""
+                                  (shell-command-to-string "rustc --print sysroot"))
+                                "/lib/rustlib/src/rust/src"))))
+  (add-hook 'rust-mode-hook 'lsp))
 
 (use-package racer
   :after rust-mode
@@ -578,18 +585,25 @@ or the current buffer directory."
     '(custom-themed ((t (:background "blue1" :foreground "white"))))))
 
 (use-package lsp-mode
+  :ensure company-lsp
+  :ensure lsp-ui
+  :ensure yasnippet
+  :commands lsp
   :config
-  (add-hook 'lsp-mode-hook '(lambda () (highlight-thing-mode -1))))
-
-(use-package company-lsp
-  :config
-  (push 'company-lsp company-backends))
-
-(use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode))
-
-(use-package lsp-rust
-  :commands lsp-rust-enable)
+  (add-hook 'lsp-mode-hook '(lambda () (highlight-thing-mode -1)))
+  (setq lsp-auto-guess-root t)
+  (setq lsp-prefer-flymake nil)
+  (lsp-register-client
+    (make-lsp-client
+      :new-connection (lsp-stdio-connection '("rls"))
+      :major-modes '(rust-mode)
+      :priority 1
+      :server-id 'my-rls
+      :initialized-fn (lambda (workspace)
+                        (with-lsp-workspace workspace
+                          (lsp--set-configuration `(:rust (:clippy_preference "on"
+                                                            :build_on_save t)))))
+      :notification-handlers (lsp-ht ("window/progress" 'lsp-clients--rust-window-progress)))))
 
 ;; Mail.
 (use-package mu4e
