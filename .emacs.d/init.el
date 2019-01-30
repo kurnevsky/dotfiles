@@ -213,7 +213,10 @@
 ;; Spell checking.
 (use-package flyspell
   :hook ((text-mode . flyspell-mode)
-          (prog-mode . flyspell-prog-mode)))
+          (prog-mode . flyspell-prog-mode))
+  :config
+  (advice-add 'uncomment-region :before (lambda (BEG END &optional ARG)
+                                          (flyspell-delete-region-overlays BEG END))))
 
 ;; Automatically change language for spell checking.
 (use-package guess-language
