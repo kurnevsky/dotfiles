@@ -33,7 +33,7 @@ exec bwrap \
      \
      --tmpfs /run \
      \
-     --ro-bind ~ ~ \
+     --bind ~ ~ \
      --tmpfs ~/.gnupg \
      --tmpfs ~/.ssh \
      \
