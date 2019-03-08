@@ -1,8 +1,0 @@
-#!/bin/bash
-
-mkdir -p ~/.config/firejail/mem
-
-for size in {1..8}G
-do
-  echo "cgroup /sys/fs/cgroup/memory/$USER/$size/tasks" > ~/.config/firejail/mem/$size.inc
-done
