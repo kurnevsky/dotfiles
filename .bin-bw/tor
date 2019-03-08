@@ -1,0 +1,55 @@
+#!/bin/bash
+
+set -e
+
+echo $$ > "/sys/fs/cgroup/memory/$USER/1G/tasks"
+
+exec bwrap \
+     --ro-bind /usr/bin/tor /usr/bin/tor \
+     \
+     --ro-bind /usr/share /usr/share \
+     \
+     --ro-bind /usr/lib /usr/lib \
+     --tmpfs /usr/lib/modules \
+     --tmpfs /usr/lib/systemd \
+     --tmpfs /usr/lib/gcc \
+     \
+     --symlink /usr/lib /usr/lib64 \
+     --symlink /usr/lib /lib64 \
+     --symlink /usr/lib /lib \
+     --symlink /usr/bin /bin \
+     --symlink /usr/bin /sbin \
+     \
+     --proc /proc \
+     \
+     --dev /dev \
+     \
+     --ro-bind /etc/tor /etc/tor \
+     --ro-bind /etc/resolv.conf /etc/resolv.conf \
+     \
+     --tmpfs /run \
+     \
+     --bind ~/.tor ~/.tor \
+     --ro-bind ~/.torrc ~/.torrc \
+     \
+     --unsetenv DBUS_SESSION_BUS_ADDRESS \
+     --unsetenv XDG_RUNTIME_DIR \
+     --unsetenv XAUTHORITY \
+     --unsetenv MAIL \
+     --unsetenv SHELL \
+     \
+     --unshare-user \
+     --unshare-ipc \
+     --unshare-pid \
+     --unshare-uts \
+     --unshare-cgroup \
+     \
+     --new-session \
+     --die-with-parent \
+     \
+     --cap-drop ALL \
+     \
+     --seccomp 3 \
+     3< ~/.seccomp/seccomp.bpf \
+     \
+     /usr/bin/tor "$@"
