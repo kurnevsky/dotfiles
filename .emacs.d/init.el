@@ -152,8 +152,21 @@
 (setq use-package-always-ensure t)
 
 ;; Dark theme.
-;; (use-package darcula-theme)
-(use-package atom-one-dark-theme)
+(use-package base16-theme
+  :ensure t
+  :config
+  (setq base16-distinct-fringe-background nil)
+  (setq base16-theme-256-color-source "colors")
+  (defun set-theme ()
+    (if (display-graphic-p)
+      (load-theme 'base16-onedark t)
+      (load-theme 'base16-default-dark t)))
+  (if (daemonp)
+    (add-hook 'after-make-frame-functions
+      (lambda (frame)
+        (with-selected-frame frame
+          (set-theme))))
+    (set-theme)))
 
 (use-package auto-package-update
   :config
