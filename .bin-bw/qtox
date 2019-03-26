@@ -4,6 +4,8 @@ set -e
 
 echo $$ > "/sys/fs/cgroup/memory/$USER/1G/tasks"
 
+mapfile -t video < <(find /dev -maxdepth 1 -type c -regex '/dev/video[0-9]+' | sed 's/.*/--dev-bind\n&\n&/')
+
 exec bwrap \
      --ro-bind /usr/bin/qtox /usr/bin/qtox \
      \
@@ -25,7 +27,7 @@ exec bwrap \
      --dev /dev \
      --dev-bind /dev/dri /dev/dri \
      `# Necessary for camera access` \
-     --dev-bind /dev/video0 /dev/video0 \
+     "${video[@]}" \
      \
      `# Necessary for hardware acceleration` \
      --ro-bind /sys/dev /sys/dev \
