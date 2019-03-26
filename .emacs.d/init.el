@@ -19,7 +19,8 @@
 ;; Start in maximized window mode.
 (toggle-frame-maximized)
 ;; Disable tool bar.
-(tool-bar-mode -1)
+(when (window-system)
+  (tool-bar-mode -1))
 ;; Set font.
 (set-face-attribute 'default nil :font "DejaVu Sans Mono:pixelsize=15")
 (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono:pixelsize=15"))
