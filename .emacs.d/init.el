@@ -66,6 +66,7 @@
 (setq require-final-newline t)
 ;; Highlight trailing whitespaces.
 (setq-default show-trailing-whitespace t)
+(add-hook 'minibuffer-setup-hook (lambda () (setq show-trailing-whitespace nil)))
 ;; Easy transition between buffers: M-arrow-keys.
 (windmove-default-keybindings 'meta)
 ;; Don't show cursor in inactive buffers.
