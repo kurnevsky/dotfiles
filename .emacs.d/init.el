@@ -38,8 +38,6 @@
 (setq-default indent-tabs-mode nil)
 ;; Turn on parens auto closing.
 (electric-pair-mode 1)
-;; Cua mode.
-(cua-mode t)
 ;; Disable dialog boxes.
 (setq use-dialog-box nil)
 ;; Show clock.
@@ -188,6 +186,12 @@
     do
     (eval `(define-key key-translation-map (kbd ,(concat "C-" (string from))) (kbd ,(concat "C-S-" (string to)))))
     (eval `(define-key key-translation-map (kbd ,(concat "M-" (string from))) (kbd ,(concat "M-S-" (string to)))))))
+
+;; Cua mode.
+(use-package cua-base
+  :config
+  (cua-mode t)
+  (define-key cua-global-keymap [C-return] nil))
 
 (use-package display-line-numbers
   :config
