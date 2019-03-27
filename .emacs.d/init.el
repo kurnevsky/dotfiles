@@ -150,10 +150,31 @@
   :config
   (setq base16-distinct-fringe-background nil)
   (setq base16-theme-256-color-source "colors")
+  (defun modify-theme (theme)
+    (let* ((colors (symbol-value (intern (concat (symbol-name theme) "-colors"))))
+            (base02 (plist-get colors :base02))
+            (base03 (plist-get colors :base03))
+            (base05 (plist-get colors :base05))
+            (base09 (plist-get colors :base09))
+            (base0D (plist-get colors :base0D)))
+      (custom-theme-set-faces theme
+        ;; By default highlight has the same background as hl-line
+        `(highlight ((t (:background ,base02))))
+        ;; Not defined by default
+        `(highlight-thing ((t (:background ,base02 :foreground nil))))
+        ;; By default background isn't specified and it has the same
+        ;; value as foreground in onedark theme
+        `(company-preview ((t (:background ,base05))))
+        ;; By default it's too close to hl-line and looks too faint
+        ;; in onedark theme
+        `(region ((t (:background ,base03))))
+        ;; Highlight foreground instead of background
+        `(show-paren-match ((t (:foreground ,base0D :background nil :weight extra-bold))))
+        `(show-paren-mismatch ((t (:foreground ,base09 :background nil :weight extra-bold)))))))
   (defun set-theme ()
-    (if (display-graphic-p)
-      (load-theme 'base16-onedark t)
-      (load-theme 'base16-default-dark t)))
+    (let ((theme (if (display-graphic-p) 'base16-onedark 'base16-default-dark)))
+      (load-theme theme t)
+      (modify-theme theme)))
   (if (daemonp)
     (add-hook 'after-make-frame-functions
       (lambda (frame)
@@ -200,10 +221,7 @@
 (use-package paren
   :config
   (show-paren-mode t)
-  (setq show-paren-style 'parenthesis)
-  (set-face-background 'show-paren-match (face-background 'default))
-  (set-face-foreground 'show-paren-match "red")
-  (set-face-attribute 'show-paren-match nil :weight 'extra-bold))
+  (setq show-paren-style 'parenthesis))
 
 ;; Highlight current line.
 (use-package hl-line
@@ -214,9 +232,7 @@
 (use-package highlight-thing
   :config
   (global-highlight-thing-mode)
-  (setq highlight-thing-what-thing 'symbol)
-  (custom-set-faces
-    '(highlight-thing ((t (:background "dark slate blue" :foreground "gray"))))))
+  (setq highlight-thing-what-thing 'symbol))
 
 ;; Highlight indentation levels.
 (use-package highlight-indent-guides
