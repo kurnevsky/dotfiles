@@ -166,10 +166,11 @@
     (color-blend "#FFFFFF" color alpha))
   (defun modify-theme (theme)
     (let* ((colors (symbol-value (intern (concat (symbol-name theme) "-colors"))))
+            (base00 (plist-get colors :base00))
             (base01 (plist-get colors :base01)))
       (base16-set-faces theme (symbol-value (intern (concat (symbol-name theme) "-colors")))
-        `( ;; Make it slightly different from line highlighting
-           (highlight :background ,(color-lighten base01 0.05))
+        `( ;; Make it slightly different from highlighting
+           (hl-line :background ,(color-blend base00 base01 0.5))
            ;; Not defined by default
            (highlight-thing :foreground nil :background nil :inherit highlight)
            ;; By default background isn't specified and it has the same
