@@ -149,28 +149,39 @@
   :ensure t
   :config
   (setq base16-distinct-fringe-background nil)
-  (setq base16-theme-256-color-source "colors")
+  (setq base16-theme-256-color-source 'colors)
+  (defun color-blend (c1 c2 a)
+    "Combine A C1 with (1-a) C2."
+    (apply
+      'color-rgb-to-hex
+      (cl-mapcar
+        (lambda (c1 c2) (+ (* a c1) (* (- 1 a) c2)))
+        (color-name-to-rgb c1)
+        (color-name-to-rgb c2))))
+  (defun color-darken (color alpha)
+    "Darken given rgb string COLOR by ALPHA (0-1)."
+    (color-blend "#000000" color alpha))
+  (defun color-lighten (color alpha)
+    "Lighten given rgb string COLOR by ALPHA (0-1)."
+    (color-blend "#FFFFFF" color alpha))
   (defun modify-theme (theme)
     (let* ((colors (symbol-value (intern (concat (symbol-name theme) "-colors"))))
-            (base02 (plist-get colors :base02))
-            (base03 (plist-get colors :base03))
-            (base05 (plist-get colors :base05))
-            (base09 (plist-get colors :base09))
-            (base0D (plist-get colors :base0D)))
-      (custom-theme-set-faces theme
-        ;; By default highlight has the same background as hl-line
-        `(highlight ((t (:background ,base02))))
-        ;; Not defined by default
-        `(highlight-thing ((t (:background ,base02 :foreground nil))))
-        ;; By default background isn't specified and it has the same
-        ;; value as foreground in onedark theme
-        `(company-preview ((t (:background ,base05))))
-        ;; By default it's too close to hl-line and looks too faint
-        ;; in onedark theme
-        `(region ((t (:background ,base03))))
-        ;; Highlight foreground instead of background
-        `(show-paren-match ((t (:foreground ,base0D :background nil :weight extra-bold))))
-        `(show-paren-mismatch ((t (:foreground ,base09 :background nil :weight extra-bold)))))))
+            (base01 (plist-get colors :base01)))
+      (base16-set-faces theme (symbol-value (intern (concat (symbol-name theme) "-colors")))
+        `( ;; Make it slightly different from line highlighting
+           (highlight :background ,(color-lighten base01 0.05))
+           ;; Not defined by default
+           (highlight-thing :foreground nil :background nil :inherit highlight)
+           ;; By default background isn't specified and it has the same
+           ;; value as foreground in onedark theme
+           (company-preview :background base04)
+           ;; Highlight foreground instead of background
+           (show-paren-match :foreground base0D :background nil :weight extra-bold)
+           (show-paren-mismatch :foreground base09 :background nil :weight extra-bold)
+           ;; Make comments italic
+           (font-lock-comment-face :foreground base03 :slant italic)
+           ;; Apply string foreground for docstring and make it italic
+           (font-lock-doc-face :foreground base0B :slant italic)))))
   (defun set-theme ()
     (let ((theme (if (display-graphic-p) 'base16-onedark 'base16-default-dark)))
       (load-theme theme t)
