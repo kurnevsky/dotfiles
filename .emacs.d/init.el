@@ -171,11 +171,6 @@
       (base16-set-faces theme (symbol-value (intern (concat (symbol-name theme) "-colors")))
         `( ;; Make it slightly different from highlighting
            (hl-line :background ,(color-blend base00 base01 0.5))
-           ;; Not defined by default
-           (highlight-thing :foreground nil :background nil :inherit highlight)
-           ;; By default background isn't specified and it has the same
-           ;; value as foreground in onedark theme
-           (company-preview :background base04)
            ;; Highlight foreground instead of background
            (show-paren-match :foreground base0D :background nil :weight extra-bold)
            (show-paren-mismatch :foreground base09 :background nil :weight extra-bold)
