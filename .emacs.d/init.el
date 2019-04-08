@@ -189,14 +189,17 @@
           (set-theme))))
     (set-theme)))
 
-(use-package auto-package-update
-  :config
-  (setq auto-package-update-interval 3)
-  (setq auto-package-update-prompt-before-update t)
-  (setq auto-package-update-delete-old-versions t)
-  (setq auto-package-update-hide-results t)
-  (unless (daemonp)
-    (auto-package-update-maybe)))
+(use-package epm
+  :commands (epm-list
+              epm-install
+              epm-reinstall
+              epm-delete
+              epm-refresh
+              epm-info
+              epm-search
+              epm-outdated
+              epm-upgrade
+              epm-version))
 
 (use-package cl-macs
   :ensure cl

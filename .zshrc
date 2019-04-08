@@ -186,12 +186,15 @@ bindkey '^ ' autosuggest-accept # Ctrl+Space
 bindkey "^[[A" up-line-or-beginning-search # Up
 bindkey "^[[B" down-line-or-beginning-search # Down
 
+alias epm='~/.emacs.d/elpa/epm-*/epm'
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias zmv='noglob zmv -W'
 aliases[=]='noglob zcalc -e'
 
 export PATH=~/.bin-bw:~/.bin:~/.cabal/bin:$PATH
+
+export EPM_INIT_FILE=~/.emacs.d/epm.el
 
 export ALTERNATE_EDITOR=nano
 export EDITOR=emacsclient
