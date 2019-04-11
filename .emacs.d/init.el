@@ -279,12 +279,12 @@
   :config
   (setq minimap-window-location 'right))
 
-;; Smart file choosing.
 (use-package ido
+  :commands (ido-completing-read
+              ido-read-directory-name
+              ido-read-file-name
+              ido-read-buffer)
   :config
-  (ido-mode t)
-  ;; Don't enable ido-everywhere since ido-ubiquitous-mode will be used.
-  ;; (ido-everywhere t)
   (setq ido-enable-flex-matching t)
   ;; Show directories first.
   (defun ends-with-/ (s)
@@ -294,11 +294,6 @@
       ((and (ends-with-/ a) (not (ends-with-/ b))) t)
       ((and (not (ends-with-/ a)) (ends-with-/ b)) nil)
       (t (string-lessp a b)))))
-
-(use-package ido-completing-read+
-  :after ido
-  :config
-  (ido-ubiquitous-mode 1))
 
 (use-package flx-ido
   :after ido
@@ -327,10 +322,141 @@ If CLEAR is specified, clear them instead."
         things
         (mapcar 'car things)))))
 
-(use-package ido-grid
-  :load-path "~/.emacs.d/ido-grid"
+;; Smart M-x command line.
+(use-package smex
+  :commands (smex
+              smex-major-mode-commands)
   :config
-  (ido-grid-enable))
+  (smex-initialize))
+
+(use-package ivy
+  :demand t
+  :ensure flx
+  :ensure smex
+  :bind (:map ivy-minibuffer-map
+          ("RET" . ivy-alt-done)
+          ("<C-return>" . ivy-immediate-done))
+  :config
+  (ivy-mode 1)
+  (setq ivy-magic-tilde nil)
+  (setq ivy-extra-directories nil)
+  (setq ivy-fixed-height-minibuffer t)
+  (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
+  (setq ivy-format-function 'ivy-format-function-line))
+
+(use-package counsel
+  :config
+  (counsel-mode 1))
+
+(use-package all-the-icons
+  :config
+  (unless (member "all-the-icons" (font-family-list))
+    (all-the-icons-install-fonts t)))
+
+(use-package ivy-rich
+  :ensure all-the-icons
+  :init
+  (defun ivy-rich-switch-buffer-icon (candidate)
+    (with-current-buffer
+      (get-buffer candidate)
+      (let ((icon (all-the-icons-icon-for-mode major-mode :height 0.7 :v-adjust 0.05)))
+	(if (symbolp icon)
+	  (all-the-icons-icon-for-mode 'fundamental-mode :height 0.7 :v-adjust 0.05)
+	  icon))))
+  (defun ivy-rich-find-file-icon (candidate)
+    (all-the-icons-icon-for-file candidate :height 0.7 :v-adjust 0.05))
+  (defun ivy-rich-file-size (candidate)
+    (let ((candidate (expand-file-name candidate ivy--directory)))
+      (if (or (not (file-exists-p candidate)) (file-remote-p candidate))
+        ""
+        (let ((size (file-attribute-size (file-attributes candidate))))
+          (cond
+            ((> size 1000000) (format "%.1fM " (/ size 1000000.0)))
+            ((> size 1000) (format "%.1fk " (/ size 1000.0)))
+            (t (format "%d " size)))))))
+  (defun ivy-rich-file-modes (candidate)
+    (let ((candidate (expand-file-name candidate ivy--directory)))
+      (if (or (not (file-exists-p candidate)) (file-remote-p candidate))
+        ""
+        (format "%s" (file-attribute-modes (file-attributes candidate))))))
+  (defun ivy-rich-file-user (candidate)
+    (let ((candidate (expand-file-name candidate ivy--directory)))
+      (if (or (not (file-exists-p candidate)) (file-remote-p candidate))
+        ""
+        (let* ((user-id (file-attribute-user-id (file-attributes candidate)))
+                (user-name (user-login-name user-id)))
+          (format "%s" user-name)))))
+  (defun ivy-rich-file-group (candidate)
+    (let ((candidate (expand-file-name candidate ivy--directory)))
+      (if (or (not (file-exists-p candidate)) (file-remote-p candidate))
+        ""
+        (let* ((group-id (file-attribute-group-id (file-attributes candidate)))
+                (group-function (if (fboundp #'group-login-name) #'group-login-name #'identity))
+                (group-name (funcall group-function group-id)))
+          (format "%s" group-name)))))
+  (setq ivy-rich-display-transformers-list
+    '(ivy-switch-buffer
+       (:columns
+         ((ivy-rich-switch-buffer-icon :width 2)
+           (ivy-rich-candidate (:width 30 :highlight t))
+           (ivy-rich-switch-buffer-size (:width 7))
+           (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
+           (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
+           (ivy-rich-switch-buffer-project (:width 15 :face success))
+           (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
+         :predicate
+         (lambda (cand) (get-buffer cand)))
+       counsel-M-x
+       (:columns
+         ((counsel-M-x-transformer (:width 40 :highlight t))
+           (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
+       counsel-describe-function
+       (:columns
+         ((counsel-describe-function-transformer (:width 40 :highlight t))
+           (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
+       counsel-describe-variable
+       (:columns
+         ((counsel-describe-variable-transformer (:width 40 :highlight t))
+           (ivy-rich-counsel-variable-docstring (:face font-lock-doc-face))))
+       counsel-recentf
+       (:columns
+         ((ivy-rich-candidate (:width 0.8 :highlight t))
+           (ivy-rich-file-last-modified-time (:face font-lock-comment-face))))
+       counsel-find-file
+       (:columns
+         ((ivy-rich-find-file-icon :width 2)
+           (ivy-rich-candidate (:width 60 :highlight t))
+           (ivy-rich-file-user (:width 10 :face font-lock-doc-face))
+           (ivy-rich-file-group (:width 4 :face font-lock-doc-face))
+           (ivy-rich-file-modes (:width 11 :face font-lock-doc-face))
+           (ivy-rich-file-size (:width 6 :face font-lock-doc-face))
+           (ivy-rich-file-last-modified-time (:width 30 :face font-lock-doc-face))))))
+  :config
+  ;; Handle 'highlight' option to prevent highlighting helper columns
+  (defun ivy-rich-format-column (candidate column)
+    (let* ((fn (car column))
+            (props (cadr column))
+            (width (plist-get props :width))
+            (align (plist-get props :align))
+            (face (plist-get props :face))
+            (highlight (plist-get props :highlight))
+            (formated (funcall fn candidate)))
+      (when highlight
+        (setq formated (concat (char-to-string #x200B) formated (char-to-string #x200B))))
+      (when width
+        (if (functionp width)
+          (setq formated (funcall width formated))
+          (if (floatp width)
+            (setq width (floor (* (window-width (minibuffer-window)) width))))
+          (setq formated (ivy-rich-normailze-width formated width (eq align 'left)))))
+      (if face
+        (setq formated (propertize formated 'face face)))
+      formated))
+  (advice-add 'ivy--highlight-fuzzy :around (lambda (orig-fun &rest args)
+                                                (pcase (split-string (car args) (char-to-string #x200B))
+                                                  (`(,left ,candidate ,right) (concat left (apply orig-fun (list candidate)) right))
+                                                  (candidate (apply orig-fun candidate)))))
+  (ivy-rich-mode 1))
 
 ;; TODO: (mapcar 'window-buffer (window-list))
 (use-package ediff
@@ -362,14 +488,6 @@ If CLEAR is specified, clear them instead."
 (use-package tramp
   :config
   (setq tramp-default-method "ssh"))
-
-;; Smart M-x command line.
-(use-package smex
-  :bind (("M-x" . smex)
-          ("M-X" . smex-major-mode-commands)
-          ("C-c M-x" . execute-extended-command)) ;; This is old M-x. TODO: to init
-  :config
-  (smex-initialize))
 
 ;; The Silver Searcher.
 (use-package ag
@@ -405,7 +523,8 @@ If CLEAR is specified, clear them instead."
           ("C-p f" . projectile-find-file)
           ("C-p o" . projectile-find-file))
   :config
-  (projectile-mode))
+  (projectile-mode)
+  (setq projectile-completion-system 'ivy))
 
 (use-package projectile-ripgrep
   :after projectile
