@@ -330,6 +330,7 @@ If CLEAR is specified, clear them instead."
 
 (use-package ivy
   :demand t
+  :ensure t
   :ensure flx
   :ensure smex
   :bind (:map ivy-minibuffer-map
@@ -353,6 +354,7 @@ If CLEAR is specified, clear them instead."
     (all-the-icons-install-fonts t)))
 
 (use-package ivy-rich
+  :ensure t
   :ensure all-the-icons
   :init
   (defun ivy-rich-switch-buffer-icon (candidate)
@@ -573,6 +575,7 @@ If CLEAR is specified, clear them instead."
   (setq org-support-shift-select t))
 
 (use-package yasnippet
+  :ensure t
   :ensure yasnippet-snippets
   :hook (prog-mode . yas-minor-mode)
   :bind (:map yas-keymap
@@ -750,6 +753,7 @@ or the current buffer directory."
     '(custom-themed ((t (:background "blue1" :foreground "white"))))))
 
 (use-package lsp-mode
+  :ensure t
   :ensure company-lsp
   :ensure lsp-ui
   :ensure yasnippet
