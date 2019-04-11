@@ -178,7 +178,7 @@
            ;; Apply string foreground for docstring and make it italic
            (font-lock-doc-face :foreground base0B :slant italic)))))
   (defun set-theme ()
-    (let ((theme (if (display-graphic-p) 'base16-onedark 'base16-default-dark)))
+    (let ((theme (if (display-graphic-p) 'base16-onedark 'base16-isotope)))
       (load-theme theme t)
       (modify-theme theme)))
   (if (daemonp)
@@ -186,7 +186,12 @@
       (lambda (frame)
         (with-selected-frame frame
           (set-theme))))
-    (set-theme)))
+    (progn
+      (set-theme)
+      ;; color-name-to-rgb will work correctly only after tty initialization
+      (add-hook 'tty-setup-hook
+        (lambda ()
+          (set-theme))))))
 
 (use-package epm
   :commands (epm-list
