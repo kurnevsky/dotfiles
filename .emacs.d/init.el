@@ -146,7 +146,6 @@
 
 ;; Dark theme.
 (use-package base16-theme
-  :ensure t
   :config
   (setq base16-distinct-fringe-background nil)
   (setq base16-theme-256-color-source 'colors)
@@ -645,7 +644,6 @@ or the current buffer directory."
   :bind ("S-<f8>" . treemacs-projectile))
 
 (use-package flycheck
-  :ensure t
   :init (global-flycheck-mode)
   :config
   (add-hook 'flycheck-after-syntax-check-hook
