@@ -350,8 +350,9 @@ If CLEAR is specified, clear them instead."
 
 (use-package all-the-icons
   :config
-  (unless (member "all-the-icons" (font-family-list))
-    (all-the-icons-install-fonts t)))
+  (when (display-graphic-p)
+    (unless (member "all-the-icons" (font-family-list))
+      (all-the-icons-install-fonts t))))
 
 (use-package ivy-rich
   :ensure t
