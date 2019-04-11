@@ -441,8 +441,6 @@ If CLEAR is specified, clear them instead."
             (face (plist-get props :face))
             (highlight (plist-get props :highlight))
             (formated (funcall fn candidate)))
-      (when highlight
-        (setq formated (concat (char-to-string #x200B) formated (char-to-string #x200B))))
       (when width
         (if (functionp width)
           (setq formated (funcall width formated))
@@ -451,11 +449,13 @@ If CLEAR is specified, clear them instead."
           (setq formated (ivy-rich-normailze-width formated width (eq align 'left)))))
       (if face
         (setq formated (propertize formated 'face face)))
+      (when highlight
+        (setq formated (concat (char-to-string #x200B) formated (char-to-string #x200B))))
       formated))
   (advice-add 'ivy--highlight-fuzzy :around (lambda (orig-fun &rest args)
                                                 (pcase (split-string (car args) (char-to-string #x200B))
                                                   (`(,left ,candidate ,right) (concat left (apply orig-fun (list candidate)) right))
-                                                  (candidate (apply orig-fun candidate)))))
+                                                  (_ (apply orig-fun args)))))
   (ivy-rich-mode 1))
 
 ;; TODO: (mapcar 'window-buffer (window-list))
