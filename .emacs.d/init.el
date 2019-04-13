@@ -147,6 +147,7 @@
 ;; Dark theme.
 (use-package base16-theme
   :config
+  (setq base16-highlight-mode-line 'contrast)
   (setq base16-distinct-fringe-background nil)
   (setq base16-theme-256-color-source 'colors)
   (defun color-blend (c1 c2 a)
@@ -520,8 +521,10 @@ If CLEAR is specified, clear them instead."
 ;; Smart mode line.
 (use-package smart-mode-line
   :config
-  (setq sml/no-confirm-load-theme t)
-  (sml/setup))
+  (setq sml/theme nil)
+  (sml/setup)
+  ;; apply the theme for clock right after start
+  (sml/propertize-time-string))
 
 ;; Project management.
 (use-package projectile
