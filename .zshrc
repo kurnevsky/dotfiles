@@ -200,3 +200,6 @@ export ALTERNATE_EDITOR=nano
 export EDITOR=emacsclient
 
 export GPG_TTY=$(tty)
+
+# It causes segfaults
+export MAGICK_OCL_DEVICE=OFF
