@@ -171,6 +171,19 @@
       (base16-set-faces theme (symbol-value (intern (concat (symbol-name theme) "-colors")))
         `( ;; Make it slightly different from highlighting
            (hl-line :background ,(color-blend base00 base01 0.5))
+           ;; Ediff is not properly configured by default
+           (ediff-current-diff-A :foreground base08 :inverse-video t)
+           (ediff-current-diff-B :foreground base0B :inverse-video t)
+           (ediff-current-diff-C :foreground base0A :inverse-video t)
+           (ediff-even-diff-A :inverse-video t)
+           (ediff-even-diff-B :inverse-video t)
+           (ediff-even-diff-C :inverse-video t)
+           (ediff-fine-diff-A :foreground base0E :inverse-video t)
+           (ediff-fine-diff-B :foreground base0E :inverse-video t)
+           (ediff-fine-diff-C :foreground base0E :inverse-video t)
+           (ediff-odd-diff-A :foreground base04 :inverse-video t)
+           (ediff-odd-diff-B :foreground base04 :inverse-video t)
+           (ediff-odd-diff-C :foreground base04 :inverse-video t)
            ;; Highlight foreground instead of background
            (show-paren-match :foreground base0D :background nil :weight extra-bold)
            (show-paren-mismatch :foreground base09 :background nil :weight extra-bold)
@@ -470,20 +483,7 @@ If CLEAR is specified, clear them instead."
 (use-package ediff
   :config
   (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-  (setq ediff-split-window-function 'split-window-horizontally)
-  (custom-set-faces
-    '(ediff-current-diff-A ((t (:background "red" :foreground "white"))))
-    '(ediff-current-diff-B ((t (:background "red" :foreground "white"))))
-    '(ediff-current-diff-C ((t (:background "red" :foreground "white"))))
-    '(ediff-fine-diff-A ((t (:background "darkgoldenrod" :foreground "white"))))
-    '(ediff-fine-diff-B ((t (:background "darkgoldenrod" :foreground "white"))))
-    '(ediff-fine-diff-C ((t (:background "darkgoldenrod" :foreground "white"))))
-    '(ediff-odd-diff-A ((t (:background "darkred" :foreground "white"))))
-    '(ediff-odd-diff-B ((t (:background "darkred" :foreground "white"))))
-    '(ediff-odd-diff-C ((t (:background "darkred" :foreground "white"))))
-    '(ediff-even-diff-A ((t (:background "darkred" :foreground "white"))))
-    '(ediff-even-diff-B ((t (:background "darkred" :foreground "white"))))
-    '(ediff-even-diff-C ((t (:background "darkred" :foreground "white"))))))
+  (setq ediff-split-window-function 'split-window-horizontally))
 
 ;; Buffer switcher.
 (use-package bs
