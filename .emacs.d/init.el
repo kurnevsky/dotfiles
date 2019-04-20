@@ -738,6 +738,12 @@ or the current buffer directory."
 (use-package csharp-mode
   :mode ("\\.cs\\'" . csharp-mode))
 
+(use-package lua-mode
+  :mode ("\\.lua\\'" . lua-mode)
+  :interpreter ("lua" . lua-mode)
+  :config
+  (setq lua-indent-level 2))
+
 ;; Agda.
 (when (executable-find "agda-mode")
   (load-file (let ((coding-system-for-read 'utf-8))
