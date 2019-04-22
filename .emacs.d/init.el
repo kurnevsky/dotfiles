@@ -146,6 +146,7 @@
 
 ;; Dark theme.
 (use-package base16-theme
+  :after color
   :config
   (setq base16-highlight-mode-line 'contrast)
   (setq base16-distinct-fringe-background nil)
@@ -164,7 +165,10 @@
             (base01 (plist-get colors :base01))
             (base08 (plist-get colors :base08))
             (base0A (plist-get colors :base0A))
-            (base0B (plist-get colors :base0B)))
+            (base0B (plist-get colors :base0B))
+            (base08-highlight (color-darken-name (color-saturate-name base08 20) 10))
+            (base0A-highlight (color-darken-name (color-saturate-name base0A 20) 10))
+            (base0B-highlight (color-darken-name (color-saturate-name base0B 20) 10)))
       (base16-set-faces theme (symbol-value (intern (concat (symbol-name theme) "-colors")))
         `( ;; Make it slightly different from highlighting
            (hl-line :background ,(color-blend base00 base01 0.5))
@@ -175,9 +179,9 @@
            (ediff-even-diff-A :inverse-video t)
            (ediff-even-diff-B :inverse-video t)
            (ediff-even-diff-C :inverse-video t)
-           (ediff-fine-diff-A :foreground ,(color-saturate-name base08 100) :inverse-video t)
-           (ediff-fine-diff-B :foreground ,(color-saturate-name base0B 100) :inverse-video t)
-           (ediff-fine-diff-C :foreground ,(color-saturate-name base0A 100) :inverse-video t)
+           (ediff-fine-diff-A :foreground ,base08-highlight :inverse-video t)
+           (ediff-fine-diff-B :foreground ,base0B-highlight :inverse-video t)
+           (ediff-fine-diff-C :foreground ,base0A-highlight :inverse-video t)
            (ediff-odd-diff-A :foreground base04 :inverse-video t)
            (ediff-odd-diff-B :foreground base04 :inverse-video t)
            (ediff-odd-diff-C :foreground base04 :inverse-video t)
@@ -185,15 +189,15 @@
            (magit-diff-base :foreground base0A :inverse-video t)
            (magit-diff-added :foreground base0B :inverse-video t)
            (magit-diff-removed :foreground base08 :inverse-video t)
-           (magit-diff-base-highlight :foreground ,(color-saturate-name base0A 100) :inverse-video t)
-           (magit-diff-added-highlight :foreground ,(color-saturate-name base0B 100) :inverse-video t)
-           (magit-diff-removed-highlight :foreground ,(color-saturate-name base08 100) :inverse-video t)
+           (magit-diff-base-highlight :foreground ,base0A-highlight :inverse-video t)
+           (magit-diff-added-highlight :foreground ,base0B-highlight :inverse-video t)
+           (magit-diff-removed-highlight :foreground ,base08-highlight :inverse-video t)
            ;; Smerge
            (smerge-base :foreground base0A :inverse-video t)
            (smerge-upper :foreground base08 :inverse-video t)
            (smerge-lower :foreground base0B :inverse-video t)
-           (smerge-refined-added :foreground ,(color-saturate-name base0B 100) :inverse-video t)
-           (smerge-refined-removed :foreground ,(color-saturate-name base08 100) :inverse-video t)
+           (smerge-refined-added :foreground ,base0B-highlight :inverse-video t)
+           (smerge-refined-removed :foreground ,base08-highlight :inverse-video t)
            ;; Highlight foreground instead of background
            (show-paren-match :foreground base0D :background nil :weight extra-bold)
            (show-paren-mismatch :foreground base09 :background nil :weight extra-bold)
