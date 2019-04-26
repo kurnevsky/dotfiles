@@ -568,11 +568,43 @@ If CLEAR is specified, clear them instead."
 
 ;; Multiple cursors.
 (use-package multiple-cursors-core
+  :after cl-macs ;; for cl-letf
   :ensure multiple-cursors
-  :bind (("C-S-b" . mc/edit-lines)
-          ("C-S-<mouse-1>" . mc/add-cursor-on-click)
+  :commands mc/maybe-multiple-cursors-mode-interactive
+  :bind (("C-b" . mc/mark-all-like-this)
+          ("C-S-b" . mc/edit-lines)
+          ("C-S-<return>" . mc/multiple-cursors-mode-when-num-cursors>1)
           :map mc/keymap
-          ("C-S-b" . mc/keyboard-quit)))
+          ("C-S-b" . mc/keyboard-quit)
+          ("C-S-<return>" . (lambda ()
+                              (interactive)
+                              (cl-letf (((symbol-function 'mc/remove-fake-cursors)
+                                          (lambda ())))
+                                (multiple-cursors-mode 0)))))
+  :config
+  (defun mc/multiple-cursors-mode-when-num-cursors>1 ()
+    (interactive)
+    (when (> (mc/num-cursors) 1)
+      (multiple-cursors-mode 1)))
+  (defun mc/load-lists ())
+  (defun mc/save-lists ())
+  (setq mc/cmds-to-run-once '(mc/multiple-cursors-mode-when-num-cursors>1
+                               mc/toggle-fake-cursor))
+  (setq mc/cmds-to-run-for-all '(back-to-indentation-or-beginning
+                                  end-of-code-or-line)))
+
+(use-package mc-mark-more
+  :ensure multiple-cursors
+  :commands mc/toggle-fake-cursor
+  :bind (("C-S-<mouse-1>" . mc/add-cursor-on-click)
+          ("C-<return>" . mc/toggle-fake-cursor))
+  :config
+  (defun mc/toggle-fake-cursor ()
+    (interactive)
+    (let ((existing (mc/fake-cursor-at-point)))
+      (if existing
+        (mc/remove-fake-cursor existing)
+        (mc/create-fake-cursor-at-point)))))
 
 ;; TODO: undo-tree-visualize hotkey
 (use-package undo-tree
