@@ -814,6 +814,10 @@ or the current buffer directory."
     '(agda2-highlight-symbol-face ((t (:foreground "brightblue"))))
     '(custom-themed ((t (:background "blue1" :foreground "white"))))))
 
+(use-package editorconfig
+  :config
+  (editorconfig-mode 1))
+
 (use-package lsp-mode
   :ensure t
   :ensure company-lsp
