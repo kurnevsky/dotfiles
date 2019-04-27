@@ -296,6 +296,12 @@
   (advice-add 'uncomment-region :before (lambda (BEG END &optional ARG)
                                           (flyspell-delete-region-overlays BEG END))))
 
+;; Somehow solves the issue when flyspell-mode affects delete-selection-mode.
+(use-package flyspell-lazy
+  :after flyspell
+  :config
+  (flyspell-lazy-mode 1))
+
 ;; Automatically change language for spell checking.
 (use-package guess-language
   :hook (text-mode . guess-language-mode)
@@ -756,7 +762,6 @@ or the current buffer directory."
 (use-package rust-mode
   :mode ("\\.rs\\'" . rust-mode)
   :config
-  (setq rust-indent-offset 2)
   (unless (getenv "RUST_SRC_PATH")
     (when (executable-find "rustc")
       (setenv "RUST_SRC_PATH" (concat
