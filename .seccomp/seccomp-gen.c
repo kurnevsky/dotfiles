@@ -59,8 +59,6 @@ int main(int argc, char *argv[])
   DENY_RULE(modify_ldt);
   DENY_RULE(mount);
   DENY_RULE(move_pages);
-  DENY_RULE(name_to_handle_at);
-  DENY_RULE(open_by_handle_at);
   DENY_RULE(perf_event_open);
   DENY_RULE(pivot_root);
   DENY_RULE(process_vm_readv);

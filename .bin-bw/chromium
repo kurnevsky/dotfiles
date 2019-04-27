@@ -65,8 +65,7 @@ exec bwrap \
      \
      --cap-drop ALL \
      \
-     `# Requires 'name_to_handle_at' syscall` \
      --seccomp 3 \
-     3< ~/.seccomp/seccomp_name_to_handle_at.bpf \
+     3< ~/.seccomp/seccomp.bpf \
      \
      /usr/bin/chromium --no-sandbox "$@"

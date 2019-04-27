@@ -61,6 +61,6 @@ exec bwrap \
      --cap-drop ALL \
      \
      --seccomp 3 \
-     3< ~/.seccomp/seccomp_name_to_handle_at.bpf \
+     3< ~/.seccomp/seccomp.bpf \
      \
      /usr/share/skypeforlinux/skypeforlinux --executed-from="$(pwd)" --pid=$$ "$@"
