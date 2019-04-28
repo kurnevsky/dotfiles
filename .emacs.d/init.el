@@ -711,14 +711,18 @@ or the current buffer directory."
 (use-package flycheck
   :init (global-flycheck-mode)
   :config
+  (defvar flycheck-real-buffer nil)
+  (advice-add 'flycheck-handle-signal :before (lambda (process _event)
+                                                (setq flycheck-real-buffer (current-buffer))))
   (add-hook 'flycheck-after-syntax-check-hook
     (lambda ()
-      (if flycheck-current-errors
-        (flycheck-list-errors)
-        (when (get-buffer "*Flycheck errors*")
-          (switch-to-buffer "*Flycheck errors*")
-          (kill-buffer (current-buffer))
-          (delete-window)))))
+      (when (eq (current-buffer) flycheck-real-buffer)
+        (if flycheck-current-errors
+          (flycheck-list-errors)
+          (when (get-buffer "*Flycheck errors*")
+            (switch-to-buffer "*Flycheck errors*")
+            (kill-buffer (current-buffer))
+            (delete-window))))))
   (add-to-list 'display-buffer-alist
     `(,(rx bos "*Flycheck errors*" eos)
        (display-buffer-reuse-window display-buffer-below-selected)
