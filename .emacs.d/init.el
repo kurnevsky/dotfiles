@@ -597,7 +597,8 @@ If CLEAR is specified, clear them instead."
   (setq mc/cmds-to-run-once '(mc/multiple-cursors-mode-when-num-cursors>1
                                mc/toggle-fake-cursor))
   (setq mc/cmds-to-run-for-all '(back-to-indentation-or-beginning
-                                  end-of-code-or-line)))
+                                  end-of-code-or-line
+                                  indent-for-tab-command)))
 
 (use-package mc-mark-more
   :ensure multiple-cursors
