@@ -259,7 +259,17 @@
 
 (use-package display-line-numbers
   :config
-  (global-display-line-numbers-mode 1))
+  (global-display-line-numbers-mode 1)
+  ;; Workaround for bug #35404.
+  (when (version<= "26" emacs-version)
+    (advice-add 'posn-at-point :around (lambda (orig-fun &rest args)
+                                         (let ((pos (if (car args) (car args) (point)))
+                                                (res (apply orig-fun args)))
+                                           (if (and (not (nth 1 args)) (get-text-property pos 'display))
+                                             (let ((p (car (nth 2 res))))
+                                               (setcar (car (nthcdr 2 res)) (+ p (line-number-display-width t)))
+                                               res)
+                                             res))))))
 
 (use-package paren
   :config
