@@ -710,20 +710,10 @@ or the current buffer directory."
   :bind ("S-<f8>" . treemacs-projectile))
 
 (use-package flycheck
-  :init (global-flycheck-mode)
+  :demand t
+  :bind (("C-e" . flycheck-list-errors))
   :config
-  (defvar flycheck-real-buffer nil)
-  (advice-add 'flycheck-handle-signal :before (lambda (process _event)
-                                                (setq flycheck-real-buffer (current-buffer))))
-  (add-hook 'flycheck-after-syntax-check-hook
-    (lambda ()
-      (when (eq (current-buffer) flycheck-real-buffer)
-        (if flycheck-current-errors
-          (flycheck-list-errors)
-          (when (get-buffer "*Flycheck errors*")
-            (switch-to-buffer "*Flycheck errors*")
-            (kill-buffer (current-buffer))
-            (delete-window))))))
+  (global-flycheck-mode)
   (add-to-list 'display-buffer-alist
     `(,(rx bos "*Flycheck errors*" eos)
        (display-buffer-reuse-window display-buffer-below-selected)
