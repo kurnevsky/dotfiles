@@ -695,7 +695,8 @@ If CLEAR is specified, clear them instead."
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
 (use-package neotree
-  :init
+  :bind ("<f8>" . neotree-project-dir-toggle)
+  :config
   (defun neotree-project-dir-toggle ()
     "Open NeoTree using the project root, using find-file-in-project,
 or the current buffer directory."
@@ -714,8 +715,6 @@ or the current buffer directory."
             (neotree-dir project-dir))
           (if file-name
             (neotree-find file-name))))))
-  :bind ("<f8>" . neotree-project-dir-toggle)
-  :config
   (setq neo-window-position 'right)
   (setq neo-show-hidden-files t)
   (setq neo-autorefresh t)
