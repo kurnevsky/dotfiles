@@ -399,7 +399,12 @@ If CLEAR is specified, clear them instead."
   (counsel-mode 1))
 
 (use-package all-the-icons
-  :config
+  :commands (all-the-icons-icon-for-file
+              all-the-icons-icon-for-mode
+              all-the-icons-icon-for-url
+              all-the-icons-icon-for-weather
+              all-the-icons-install-fonts)
+  :init
   (when (display-graphic-p)
     (unless (member "all-the-icons" (font-family-list))
       (all-the-icons-install-fonts t))))
