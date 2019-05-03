@@ -296,7 +296,8 @@
   (add-hook 'emacs-lisp-mode-hook (lambda () (add-to-list 'font-lock-extra-managed-props 'display)))
   (add-hook 'haskell-mode-hook (lambda () (add-to-list 'font-lock-extra-managed-props 'display)))
   :config
-  (setq highlight-indent-guides-method 'character))
+  (setq highlight-indent-guides-method 'character)
+  (setq highlight-indent-guides-responsive 'stack))
 
 ;; Spell checking.
 (use-package flyspell
