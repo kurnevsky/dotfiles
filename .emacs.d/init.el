@@ -591,25 +591,26 @@ If CLEAR is specified, clear them instead."
 (use-package multiple-cursors-core
   :after cl-macs ;; for cl-letf
   :ensure multiple-cursors
-  :commands mc/maybe-multiple-cursors-mode-interactive
+  :commands (mc/multiple-cursors-mode-when-num-cursors>1
+              mc/quit-leaving-cursors)
   :bind (("C-b" . mc/mark-all-like-this)
           ("C-S-b" . mc/edit-lines)
-          ("C-S-<return>" . mc/multiple-cursors-mode-when-num-cursors>1)
           :map mc/keymap
-          ("C-S-b" . mc/keyboard-quit)
-          ("C-S-<return>" . (lambda ()
-                              (interactive)
-                              (cl-letf (((symbol-function 'mc/remove-fake-cursors)
-                                          (lambda ())))
-                                (multiple-cursors-mode 0)))))
+          ("C-S-b" . mc/keyboard-quit))
   :config
   (defun mc/multiple-cursors-mode-when-num-cursors>1 ()
     (interactive)
     (when (> (mc/num-cursors) 1)
       (multiple-cursors-mode 1)))
+  (defun mc/quit-leaving-cursors ()
+    (interactive)
+    (cl-letf (((symbol-function 'mc/remove-fake-cursors)
+                (lambda ())))
+      (multiple-cursors-mode 0)))
   (defun mc/load-lists ())
   (defun mc/save-lists ())
-  (setq mc/cmds-to-run-once '(mc/multiple-cursors-mode-when-num-cursors>1
+  (setq mc/cmds-to-run-once '(hydra-multiple-cursors/body
+                               hydra-multiple-cursors/nil
                                mc/toggle-fake-cursor))
   (setq mc/cmds-to-run-for-all '(back-to-indentation-or-beginning
                                   end-of-code-or-line
@@ -618,8 +619,7 @@ If CLEAR is specified, clear them instead."
 (use-package mc-mark-more
   :ensure multiple-cursors
   :commands mc/toggle-fake-cursor
-  :bind (("C-S-<mouse-1>" . mc/add-cursor-on-click)
-          ("C-<return>" . mc/toggle-fake-cursor))
+  :bind (("C-S-<mouse-1>" . mc/add-cursor-on-click))
   :config
   (defun mc/toggle-fake-cursor ()
     (interactive)
@@ -627,6 +627,18 @@ If CLEAR is specified, clear them instead."
       (if existing
         (mc/remove-fake-cursor existing)
         (mc/create-fake-cursor-at-point)))))
+
+(use-package hydra
+  :bind (("C-<return>" . hydra-multiple-cursors/body))
+  :config
+  (defhydra hydra-multiple-cursors (:foreign-keys run
+                                     :body-pre (progn
+                                                 (mc/quit-leaving-cursors)
+                                                 (mc/toggle-fake-cursor))
+                                     :post (mc/multiple-cursors-mode-when-num-cursors>1))
+    "multiple-cursors"
+    ("C-<return>" mc/toggle-fake-cursor)
+    ("<return>" nil "quit")))
 
 ;; TODO: undo-tree-visualize hotkey
 (use-package undo-tree
