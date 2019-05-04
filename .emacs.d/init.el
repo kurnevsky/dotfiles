@@ -773,7 +773,7 @@ or the current buffer directory."
       (progn (backward-delete-char 1)
         (insert "←"))
       (insert "-")))
-  (add-hook 'scala-mode-hook '(lambda ()
+  (add-hook 'scala-mode-hook (lambda ()
                                 (local-set-key (kbd "-") 'left-arrow)
                                 (local-set-key (kbd ">") 'right-arrow))))
 
@@ -857,7 +857,7 @@ or the current buffer directory."
   :ensure yasnippet
   :commands lsp
   :config
-  (add-hook 'lsp-mode-hook '(lambda () (highlight-thing-mode -1)))
+  (add-hook 'lsp-mode-hook (lambda () (highlight-thing-mode -1)))
   (setq lsp-auto-guess-root t)
   (setq lsp-prefer-flymake nil)
   (lsp-register-client
@@ -886,7 +886,7 @@ or the current buffer directory."
   (setq mu4e-get-mail-command "mbsync --all")
   ;; Remove padding so that content won't be shifted comparing to the header
   (dolist (hook '(mu4e-main-mode-hook mu4e-headers-mode-hook mu4e-view-mode-hook mu4e-compose-mode-hook))
-    (add-hook hook '(lambda ()
+    (add-hook hook (lambda ()
                       (display-line-numbers-mode -1)
                       (setq left-fringe-width 0)
                       (setq show-trailing-whitespace nil))))
