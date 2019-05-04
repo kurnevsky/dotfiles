@@ -18,13 +18,13 @@
 (setq gc-cons-threshold (* 32 1024 1024))
 (add-hook 'after-init-hook (lambda () (setq gc-cons-threshold (* 4 1024 1024))))
 ;; Collect the garbage when not used.
-(add-hook 'focus-out-hook 'garbage-collect)
+(add-hook 'focus-out-hook #'garbage-collect)
 ;; Remove gap in maximized window mode.
 (setq frame-resize-pixelwise t)
 ;; Start in maximized window mode.
 (toggle-frame-maximized)
 ;; Disable tool bar.
-(when (fboundp 'tool-bar-mode)
+(when (fboundp #'tool-bar-mode)
   (tool-bar-mode -1))
 ;; Set font.
 (set-face-attribute 'default nil :font "DejaVu Sans Mono:pixelsize=15")
@@ -58,7 +58,7 @@
 ;; File size in percents.
 (size-indication-mode t)
 ;; Short messages.
-(defalias 'yes-or-no-p 'y-or-n-p)
+(defalias 'yes-or-no-p #'y-or-n-p)
 ;; Add new line at the end of file if it doesn't exist.
 (setq require-final-newline t)
 ;; Highlight trailing whitespaces.
@@ -99,7 +99,7 @@
       (if (yes-or-no-p (format "Buffer '%s' modified and not associated with a file, kill it anyway?" (buffer-name buffer)))
         (apply orig-fun args))
       (apply orig-fun args))))
-(advice-add 'kill-buffer :around 'kill-buffer-ask-first)
+(advice-add 'kill-buffer :around #'kill-buffer-ask-first)
 ;; Add possibility to use C-m as hotkey in graphic mode.
 (when (display-graphic-p)
   (define-key input-decode-map [?\C-m] [C-m]))
@@ -159,7 +159,7 @@
   (defun color-blend (c1 c2 a)
     "Combine A C1 with (1-a) C2."
     (apply
-      'color-rgb-to-hex
+      #'color-rgb-to-hex
       (cl-mapcar
         (lambda (c1 c2) (+ (* a c1) (* (- 1 a) c2)))
         (color-name-to-rgb c1)
@@ -375,7 +375,7 @@ If CLEAR is specified, clear them instead."
                   (flx-propertize (car thing) (cdr thing))))
       (if clear
         things
-        (mapcar 'car things)))))
+        (mapcar #'car things)))))
 
 ;; Smart M-x command line.
 (use-package smex
@@ -398,7 +398,7 @@ If CLEAR is specified, clear them instead."
   (setq ivy-extra-directories nil)
   (setq ivy-fixed-height-minibuffer t)
   (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
-  (setq ivy-format-function 'ivy-format-function-line))
+  (setq ivy-format-function #'ivy-format-function-line))
 
 (use-package counsel
   :config
@@ -516,16 +516,16 @@ If CLEAR is specified, clear them instead."
         (setq formated (concat (char-to-string #x200B) formated (char-to-string #x200B))))
       formated))
   (advice-add 'ivy--highlight-fuzzy :around (lambda (orig-fun &rest args)
-                                                (pcase (split-string (car args) (char-to-string #x200B))
-                                                  (`(,left ,candidate ,right) (concat left (apply orig-fun (list candidate)) right))
-                                                  (_ (apply orig-fun args)))))
+                                              (pcase (split-string (car args) (char-to-string #x200B))
+                                                (`(,left ,candidate ,right) (concat left (apply orig-fun (list candidate)) right))
+                                                (_ (apply orig-fun args)))))
   (ivy-rich-mode 1))
 
 ;; TODO: (mapcar 'window-buffer (window-list))
 (use-package ediff
   :config
-  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-  (setq ediff-split-window-function 'split-window-horizontally))
+  (setq ediff-window-setup-function #'ediff-setup-windows-plain)
+  (setq ediff-split-window-function #'split-window-horizontally))
 
 ;; Buffer switcher.
 (use-package bs
@@ -697,7 +697,7 @@ If CLEAR is specified, clear them instead."
   :config
   (global-diff-hl-mode)
   (diff-hl-flydiff-mode)
-  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
+  (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
 
 (use-package neotree
   :bind ("<f8>" . neotree-project-dir-toggle)
@@ -711,7 +711,7 @@ or the current buffer directory."
               (projectile-project-root)))
            (file-name (buffer-file-name))
            (neo-smart-open t))
-      (if (and (fboundp 'neo-global--window-exists-p)
+      (if (and (fboundp #'neo-global--window-exists-p)
             (neo-global--window-exists-p))
         (neotree-hide)
         (progn
@@ -723,7 +723,7 @@ or the current buffer directory."
   (setq neo-window-position 'right)
   (setq neo-show-hidden-files t)
   (setq neo-autorefresh t)
-  (setq projectile-switch-project-action 'neotree-projectile-action))
+  (setq projectile-switch-project-action #'neotree-projectile-action))
 
 ;; Side bar.
 ;; TODO: try to display in side window: (display-buffer-in-side-window buffer `((side . , 'right)))
@@ -774,8 +774,8 @@ or the current buffer directory."
         (insert "←"))
       (insert "-")))
   (add-hook 'scala-mode-hook (lambda ()
-                                (local-set-key (kbd "-") 'left-arrow)
-                                (local-set-key (kbd ">") 'right-arrow))))
+                                (local-set-key (kbd "-") #'left-arrow)
+                                (local-set-key (kbd ">") #'right-arrow))))
 
 (use-package haskell-mode
   :mode ("\\.hs\\'" . haskell-mode)
@@ -784,7 +784,7 @@ or the current buffer directory."
 (use-package eldoc
   :commands (eldoc-mode turn-on-eldoc-mode)
   :init
-  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode))
+  (add-hook 'emacs-lisp-mode-hook #'turn-on-eldoc-mode))
 
 (use-package rust-mode
   :mode ("\\.rs\\'" . rust-mode)
@@ -795,7 +795,7 @@ or the current buffer directory."
                                 (replace-regexp-in-string "\n$" ""
                                   (shell-command-to-string "rustc --print sysroot"))
                                 "/lib/rustlib/src/rust/src"))))
-  (add-hook 'rust-mode-hook 'lsp))
+  (add-hook 'rust-mode-hook #'lsp))
 
 (use-package racer
   :after rust-mode
@@ -803,7 +803,7 @@ or the current buffer directory."
   :config
   (setq racer-cmd "/bin/racer")
   (setq racer-rust-src-path "~/rust-nightly-src/src")
-  (add-hook 'racer-mode-hook 'turn-on-eldoc-mode))
+  (add-hook 'racer-mode-hook #'turn-on-eldoc-mode))
 
 (use-package dockerfile-mode
   :mode ("Dockerfile'" . dockerfile-mode))
@@ -870,7 +870,7 @@ or the current buffer directory."
                         (with-lsp-workspace workspace
                           (lsp--set-configuration `(:rust (:clippy_preference "on"
                                                             :build_on_save t)))))
-      :notification-handlers (lsp-ht ("window/progress" 'lsp-clients--rust-window-progress)))))
+      :notification-handlers (lsp-ht ("window/progress" #'lsp-clients--rust-window-progress)))))
 
 ;; Mail.
 (use-package mu4e
@@ -1047,28 +1047,28 @@ properly."
   (save-excursion
     (shell-command-on-region (point-min) (point-max) "xmlstarlet format" (buffer-name) t)))
 ;; Key bindings.
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-(global-set-key (kbd "C-f") 'isearch-forward)
-(define-key isearch-mode-map (kbd "C-f") 'isearch-repeat-forward)
-(global-set-key (kbd "C-S-f") 'isearch-backward)
-(define-key isearch-mode-map (kbd "C-S-f") 'isearch-repeat-backward)
-(define-key isearch-mode-map (kbd "C-v") 'isearch-yank-kill)
-(define-key isearch-mode-map (kbd "<escape>") 'isearch-abort)
-(global-set-key (kbd "C-r") 'query-replace)
-(global-set-key (kbd "C-n") 'new-empty-buffer)
-(global-set-key (kbd "C-o") 'find-file)
-(global-set-key (kbd "C-s") 'save-buffer)
-(global-set-key (kbd "C-a") 'mark-whole-buffer)
-(global-set-key (kbd "C-=") 'text-scale-increase)
-(global-set-key (kbd "C--") 'text-scale-decrease)
-(global-set-key (kbd "C-,") 'move-cursor-previous-pane)
-(global-set-key (kbd "C-.") 'move-cursor-next-pane)
-(global-set-key (kbd "<home>") 'back-to-indentation-or-beginning)
-(global-set-key (kbd "<end>") 'end-of-code-or-line)
-(global-set-key (kbd "C-/") 'comment-or-uncomment-region-or-line)
-(global-set-key (kbd "C-k") 'kill-buffer)
-(global-set-key (kbd "C-|") 'split-window-horizontally)
-(global-set-key (kbd "C-_") 'split-window-vertically)
+(global-set-key (kbd "<escape>") #'keyboard-escape-quit)
+(global-set-key (kbd "C-f") #'isearch-forward)
+(define-key isearch-mode-map (kbd "C-f") #'isearch-repeat-forward)
+(global-set-key (kbd "C-S-f") #'isearch-backward)
+(define-key isearch-mode-map (kbd "C-S-f") #'isearch-repeat-backward)
+(define-key isearch-mode-map (kbd "C-v") #'isearch-yank-kill)
+(define-key isearch-mode-map (kbd "<escape>") #'isearch-abort)
+(global-set-key (kbd "C-r") #'query-replace)
+(global-set-key (kbd "C-n") #'new-empty-buffer)
+(global-set-key (kbd "C-o") #'find-file)
+(global-set-key (kbd "C-s") #'save-buffer)
+(global-set-key (kbd "C-a") #'mark-whole-buffer)
+(global-set-key (kbd "C-=") #'text-scale-increase)
+(global-set-key (kbd "C--") #'text-scale-decrease)
+(global-set-key (kbd "C-,") #'move-cursor-previous-pane)
+(global-set-key (kbd "C-.") #'move-cursor-next-pane)
+(global-set-key (kbd "<home>") #'back-to-indentation-or-beginning)
+(global-set-key (kbd "<end>") #'end-of-code-or-line)
+(global-set-key (kbd "C-/") #'comment-or-uncomment-region-or-line)
+(global-set-key (kbd "C-k") #'kill-buffer)
+(global-set-key (kbd "C-|") #'split-window-horizontally)
+(global-set-key (kbd "C-_") #'split-window-vertically)
 
 ;;https://stackoverflow.com/questions/4918707/in-emacs-how-to-go-back-to-previous-line-position-after-using-semantic-jump-to
 ;; pop-global-mark
