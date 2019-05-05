@@ -125,6 +125,16 @@
                                         right-char
                                         forward-char))
                              (ding))))
+;; Recompile init file on exit.
+(defun recompile-init ()
+  "Recompile init file when it was modified."
+  (let ((init-elc-attrs (file-attributes (concat user-init-file "c"))))
+    (when (or (not init-elc-attrs)
+            (time-less-p
+              (nth 5 init-elc-attrs)
+              (nth 5 (file-attributes user-init-file))))
+      (byte-compile-file user-init-file))))
+(add-hook 'kill-emacs-hook #'recompile-init)
 
 ;; ========== Install packages ==========
 
@@ -148,6 +158,8 @@
 ;; Lazy packages loading.
 (require 'use-package)
 (setq use-package-always-ensure t)
+(eval-when-compile
+  (setq use-package-expand-minimally byte-compile-current-file))
 
 ;; Dark theme.
 (use-package base16-theme
