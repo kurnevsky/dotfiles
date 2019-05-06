@@ -325,7 +325,7 @@
   :hook ((text-mode . flyspell-mode)
           (prog-mode . flyspell-prog-mode))
   :config
-  (advice-add 'uncomment-region :before (lambda (BEG END &optional ARG)
+  (advice-add 'uncomment-region :before (lambda (BEG END)
                                           (flyspell-delete-region-overlays BEG END))))
 
 ;; Somehow solves the issue when flyspell-mode affects delete-selection-mode.
