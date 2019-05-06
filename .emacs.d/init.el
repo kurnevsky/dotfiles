@@ -17,6 +17,10 @@
 ;; Speed up the initialization reducing garbage collection runs.
 (setq gc-cons-threshold (* 32 1024 1024))
 (add-hook 'after-init-hook (lambda () (setq gc-cons-threshold (* 4 1024 1024))))
+;; Speed up the initialization temporary disabling file-name-handler-alist.
+(defvar file-name-handler-alist-copy file-name-handler-alist)
+(setq file-name-handler-alist nil)
+(add-hook 'emacs-startup-hook (lambda () (setq file-name-handler-alist file-name-handler-alist-copy)))
 ;; Collect the garbage when not used.
 (add-hook 'focus-out-hook #'garbage-collect)
 ;; Remove gap in maximized window mode.
