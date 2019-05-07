@@ -830,6 +830,9 @@ or the current buffer directory."
 (use-package go-mode
   :mode ("\\.go\\'" . go-mode))
 
+(use-package typescript-mode
+  :mode ("\\.ts\\'" . typescript-mode))
+
 (use-package csharp-mode
   :mode ("\\.cs\\'" . csharp-mode))
 
