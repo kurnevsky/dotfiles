@@ -1,18 +1,12 @@
-;; Hotkeys (C = ctrl, M = alt, S = shift):
-;; C-h k - see commant binded to hotkey.
-;; C-h v - info about variable.
-;; C-h f - info about function.
-;; C-h a - search by all variables.
-;; C-x b - switch buffer.
-;; C-x o - switch frame.
-;; C-x k - kill buffer.
-;; C-x 0 - close buffer.
-;; C-x C-e - run lisp command.
-;; C-home - go to beginning of buffer.
-;; C-end - go to ending of buffer.
-;; C-f C-w - find the word after cursor.
+;;; init.el --- Kurnevsky's Emacs configuration
 
-;; ========== Configure emacs ==========
+;;; Commentary:
+
+;; This is my personal Emacs configuration.
+
+;;; Code:
+
+;; ========== Configure Emacs ==========
 
 ;; Speed up the initialization reducing garbage collection runs.
 (setq gc-cons-threshold (* 32 1024 1024))
