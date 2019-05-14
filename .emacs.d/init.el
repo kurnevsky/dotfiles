@@ -872,18 +872,14 @@ or the current buffer directory."
   :config
   (add-hook 'lsp-mode-hook (lambda () (highlight-thing-mode -1)))
   (setq lsp-auto-guess-root t)
-  (setq lsp-prefer-flymake nil)
-  (lsp-register-client
-    (make-lsp-client
-      :new-connection (lsp-stdio-connection '("rls"))
-      :major-modes '(rust-mode)
-      :priority 1
-      :server-id 'my-rls
-      :initialized-fn (lambda (workspace)
-                        (with-lsp-workspace workspace
-                          (lsp--set-configuration `(:rust (:clippy_preference "on"
-                                                            :build_on_save t)))))
-      :notification-handlers (lsp-ht ("window/progress" #'lsp-clients--rust-window-progress)))))
+  (setq lsp-prefer-flymake nil))
+
+(use-package lsp-rust
+  :ensure lsp-mode
+  :after lsp-mode
+  :config
+  (setq lsp-rust-clippy-preference "on")
+  (setq lsp-rust-build-on-save t))
 
 ;; Mail.
 (use-package mu4e
