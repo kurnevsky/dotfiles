@@ -45,8 +45,6 @@
 (setq use-dialog-box nil)
 ;; Show clock.
 (display-time-mode t)
-;; 24 hours time format.
-(setq display-time-24hr-format t)
 ;; Minimum shown number of lines before and after cursor.
 (setq scroll-margin 2)
 ;; Don't jump when scrolling.
@@ -271,6 +269,10 @@
   :config
   (cua-mode t)
   (define-key cua-global-keymap [C-return] nil))
+
+(use-package time
+  :config
+  (setq display-time-24hr-format t))
 
 (use-package display-line-numbers
   :config
