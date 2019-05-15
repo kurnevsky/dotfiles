@@ -396,9 +396,6 @@ If CLEAR is specified, clear them instead."
 
 (use-package ivy
   :demand t
-  :ensure t
-  :ensure flx
-  :ensure smex
   :bind (:map ivy-minibuffer-map
           ("RET" . ivy-alt-done)
           ("<C-return>" . ivy-immediate-done))
@@ -426,8 +423,6 @@ If CLEAR is specified, clear them instead."
       (all-the-icons-install-fonts t))))
 
 (use-package ivy-rich
-  :ensure t
-  :ensure all-the-icons
   :init
   (defun ivy-rich-switch-buffer-icon (candidate)
     (with-current-buffer
@@ -681,13 +676,14 @@ If CLEAR is specified, clear them instead."
   (setq org-support-shift-select t))
 
 (use-package yasnippet
-  :ensure t
-  :ensure yasnippet-snippets
   :hook (prog-mode . yas-minor-mode)
   :bind (:map yas-keymap
           ("<return>" . yas-next-field-or-maybe-expand))
   :config
   (yas-reload-all))
+
+(use-package yasnippet-snippets
+  :after yasnippet)
 
 (use-package magit
   :demand t
@@ -864,15 +860,17 @@ or the current buffer directory."
   (editorconfig-mode 1))
 
 (use-package lsp-mode
-  :ensure t
-  :ensure company-lsp
-  :ensure lsp-ui
-  :ensure yasnippet
   :commands lsp
   :config
   (add-hook 'lsp-mode-hook (lambda () (highlight-thing-mode -1)))
   (setq lsp-auto-guess-root t)
   (setq lsp-prefer-flymake nil))
+
+(use-package lsp-ui
+  :commands lsp-ui-mode)
+
+(use-package company-lsp
+  :commands company-lsp)
 
 (use-package lsp-rust
   :ensure lsp-mode
