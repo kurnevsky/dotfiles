@@ -597,8 +597,14 @@ If CLEAR is specified, clear them instead."
           ("TAB" . company-indent-or-complete-common))
   :config
   (global-company-mode 1)
-  (setq company-dabbrev-downcase nil)
   (setq company-tooltip-align-annotations t))
+
+(use-package company-dabbrev
+  :ensure company
+  :after company
+  :commands company-dabbrev
+  :config
+  (setq company-dabbrev-downcase nil))
 
 ;; Multiple cursors.
 (use-package multiple-cursors-core
