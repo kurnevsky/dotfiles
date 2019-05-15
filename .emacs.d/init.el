@@ -1030,28 +1030,34 @@ properly."
     (message "Active modes are %s" active-modes)))
 ;; Format json with jq.
 (defun jq-region ()
+  "Format json with jq in a region."
   (interactive)
   (save-excursion
     (shell-command-on-region (mark) (point) "jq ." (buffer-name) t)))
 (defun jq-buffer ()
+  "Format json with jq in a buffer."
   (interactive)
   (save-excursion
     (shell-command-on-region (point-min) (point-max) "jq ." (buffer-name) t)))
 ;; Format xml with xmllint.
 (defun xmllint-region ()
+  "Format xml with xmllint in a region."
   (interactive)
   (save-excursion
     (shell-command-on-region (mark) (point) "xmllint --format -" (buffer-name) t)))
 (defun xmllint-buffer ()
+  "Format xml with xmllint in a buffer."
   (interactive)
   (save-excursion
     (shell-command-on-region (point-min) (point-max) "xmllint --format -" (buffer-name) t)))
 ;; Format xml with xmlstarlet.
 (defun xmlstarlet-region ()
+  "Format xml with xmlstarlet in a region."
   (interactive)
   (save-excursion
     (shell-command-on-region (mark) (point) "xmlstarlet format" (buffer-name) t)))
 (defun xmlstarlet-buffer ()
+  "Format xml with xmlstarlet in a buffer."
   (interactive)
   (save-excursion
     (shell-command-on-region (point-min) (point-max) "xmlstarlet format" (buffer-name) t)))
