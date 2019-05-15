@@ -87,7 +87,7 @@
 (setq-default new-untitled nil)
 (put 'new-untitled 'permanent-local t)
 (defun kill-buffer-ask-first (orig-fun &rest args)
-  "Prompts before killing buffer if it isn't associated with a file"
+  "Prompts before killing buffer if it isn't associated with a file."
   (let ((buffer (get-buffer (if args (car args) (buffer-name)))))
     (if (and (buffer-local-value 'new-untitled buffer)
           (buffer-modified-p buffer)
