@@ -818,15 +818,6 @@ or the current buffer directory."
                                 "/lib/rustlib/src/rust/src"))))
   (add-hook 'rust-mode-hook #'lsp))
 
-(use-package racer
-  :after rust-mode
-  :commands racer-mode
-  :custom
-  (racer-cmd "/bin/racer")
-  (racer-rust-src-path "~/rust-nightly-src/src")
-  :config
-  (add-hook 'racer-mode-hook #'turn-on-eldoc-mode))
-
 (use-package dockerfile-mode
   :mode ("Dockerfile'" . dockerfile-mode))
 
