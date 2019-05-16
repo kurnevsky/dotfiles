@@ -160,10 +160,11 @@
 ;; Dark theme.
 (use-package base16-theme
   :after color
+  :custom
+  (base16-highlight-mode-line 'contrast)
+  (base16-distinct-fringe-background nil)
+  (base16-theme-256-color-source 'colors)
   :config
-  (setq base16-highlight-mode-line 'contrast)
-  (setq base16-distinct-fringe-background nil)
-  (setq base16-theme-256-color-source 'colors)
   (defun color-blend (c1 c2 a)
     "Combine A C1 with (1-a) C2."
     (apply
@@ -271,8 +272,8 @@
   (define-key cua-global-keymap [C-return] nil))
 
 (use-package time
-  :config
-  (setq display-time-24hr-format t))
+  :custom
+  (display-time-24hr-format t "24 hours time format."))
 
 (use-package display-line-numbers
   :config
@@ -289,9 +290,10 @@
                                              res))))))
 
 (use-package paren
+  :custom
+  (show-paren-style 'parenthesis)
   :config
-  (show-paren-mode t)
-  (setq show-paren-style 'parenthesis))
+  (show-paren-mode t))
 
 ;; Highlight current line.
 (use-package hl-line
@@ -300,16 +302,17 @@
 
 ;; Highlight word under point.
 (use-package highlight-thing
+  :custom
+  (highlight-thing-what-thing 'symbol)
   :config
-  (global-highlight-thing-mode)
-  (setq highlight-thing-what-thing 'symbol))
+  (global-highlight-thing-mode))
 
 ;; Highlight indentation levels.
 (use-package highlight-indent-guides
   :hook (prog-mode . highlight-indent-guides-mode)
-  :config
-  (setq highlight-indent-guides-method 'character)
-  (setq highlight-indent-guides-responsive 'stack))
+  :custom
+  (highlight-indent-guides-method 'character)
+  (highlight-indent-guides-responsive 'stack))
 
 ;; Spell checking.
 (use-package flyspell
@@ -328,26 +331,28 @@
 ;; Automatically change language for spell checking.
 (use-package guess-language
   :hook (text-mode . guess-language-mode)
-  :config
-  (setq guess-language-langcodes
+  :custom
+  (guess-language-langcodes
     '((en . ("en" "English"))
        (ru . ("ru" "Russian"))))
-  (setq guess-language-languages '(en ru))
-  (setq guess-language-min-paragraph-length 15))
+  (guess-language-languages '(en ru))
+  (guess-language-min-paragraph-length 15))
 
 ;; Graphical scroll.
 (use-package minimap
   :commands minimap-mode
-  :config
-  (setq minimap-window-location 'right))
+  :custom
+  (minimap-window-location 'right))
 
 (use-package ido
   :commands (ido-completing-read
               ido-read-directory-name
               ido-read-file-name
               ido-read-buffer)
+  :custom
+  (ido-enable-flex-matching t)
+  (ido-use-faces nil)
   :config
-  (setq ido-enable-flex-matching t)
   ;; Show directories first.
   (defun ends-with-/ (s)
     (eq (aref s (1- (length s))) ?/))
@@ -359,10 +364,10 @@
 
 (use-package flx-ido
   :after ido
+  :custom
+  (flx-ido-use-faces t)
   :config
   (flx-ido-mode 1)
-  (setq flx-ido-use-faces t)
-  (setq ido-use-faces nil)
   (defun clear-flx-highlight-face (str)
     "Clear flx-highlight-face from str"
     (remove-text-properties 0 (length str) '(face flx-highlight-face) str))
@@ -396,13 +401,14 @@ If CLEAR is specified, clear them instead."
   :bind (:map ivy-minibuffer-map
           ("RET" . ivy-alt-done)
           ("<C-return>" . ivy-immediate-done))
+  :custom
+  (ivy-magic-tilde nil)
+  (ivy-extra-directories nil)
+  (ivy-fixed-height-minibuffer t)
+  (ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
+  (ivy-format-function #'ivy-format-function-line)
   :config
-  (ivy-mode 1)
-  (setq ivy-magic-tilde nil)
-  (setq ivy-extra-directories nil)
-  (setq ivy-fixed-height-minibuffer t)
-  (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
-  (setq ivy-format-function #'ivy-format-function-line))
+  (ivy-mode 1))
 
 (use-package counsel
   :config
@@ -525,9 +531,9 @@ If CLEAR is specified, clear them instead."
 
 ;; TODO: (mapcar 'window-buffer (window-list))
 (use-package ediff
-  :config
-  (setq ediff-window-setup-function #'ediff-setup-windows-plain)
-  (setq ediff-split-window-function #'split-window-horizontally))
+  :custom
+  (ediff-window-setup-function #'ediff-setup-windows-plain)
+  (ediff-split-window-function #'split-window-horizontally))
 
 ;; Buffer switcher.
 (use-package bs
@@ -538,8 +544,8 @@ If CLEAR is specified, clear them instead."
           ("<mouse-1>" . bs-mouse-select)))
 
 (use-package tramp
-  :config
-  (setq tramp-default-method "ssh"))
+  :custom
+  (tramp-default-method "ssh"))
 
 ;; The Silver Searcher.
 (use-package ag
@@ -564,8 +570,9 @@ If CLEAR is specified, clear them instead."
 
 ;; Smart mode line.
 (use-package smart-mode-line
+  :custom
+  (sml/theme nil)
   :config
-  (setq sml/theme nil)
   (sml/setup)
   ;; apply the theme for clock right after start
   (sml/propertize-time-string))
@@ -576,9 +583,10 @@ If CLEAR is specified, clear them instead."
   :bind (:map projectile-mode-map
           ("C-p f" . projectile-find-file)
           ("C-p o" . projectile-find-file))
+  :custom
+  (projectile-completion-system 'ivy)
   :config
-  (projectile-mode)
-  (setq projectile-completion-system 'ivy))
+  (projectile-mode))
 
 (use-package projectile-ripgrep
   :after projectile
@@ -590,16 +598,17 @@ If CLEAR is specified, clear them instead."
   :demand t
   :bind (:map company-mode-map
           ("TAB" . company-indent-or-complete-common))
+  :custom
+  (company-tooltip-align-annotations t)
   :config
-  (global-company-mode 1)
-  (setq company-tooltip-align-annotations t))
+  (global-company-mode 1))
 
 (use-package company-dabbrev
   :ensure company
   :after company
   :commands company-dabbrev
-  :config
-  (setq company-dabbrev-downcase nil))
+  :custom
+  (company-dabbrev-downcase nil))
 
 ;; Multiple cursors.
 (use-package multiple-cursors-core
@@ -664,9 +673,10 @@ If CLEAR is specified, clear them instead."
           ("C-y" . undo-tree-redo))
   :init
   (setq undo-tree-map (make-sparse-keymap))
+  :custom
+  (undo-tree-enable-undo-in-region nil)
   :config
   (global-undo-tree-mode)
-  (setq undo-tree-enable-undo-in-region nil)
   (defun undo-tree-overridden-undo-bindings-p () nil))
 
 (use-package hideshow
@@ -675,8 +685,8 @@ If CLEAR is specified, clear them instead."
 
 (use-package org
   :mode ("\\.org\\'" . org-mode)
-  :config
-  (setq org-support-shift-select t))
+  :custom
+  (org-support-shift-select t))
 
 (use-package yasnippet
   :hook (prog-mode . yas-minor-mode)
@@ -710,6 +720,11 @@ If CLEAR is specified, clear them instead."
 
 (use-package neotree
   :bind ("<f8>" . neotree-project-dir-toggle)
+  :custom
+  (neo-window-position 'right)
+  (neo-show-hidden-files t)
+  (neo-autorefresh t)
+  (projectile-switch-project-action #'neotree-projectile-action)
   :config
   (defun neotree-project-dir-toggle ()
     "Open NeoTree using the project root, using find-file-in-project,
@@ -728,20 +743,17 @@ or the current buffer directory."
           (if project-dir
             (neotree-dir project-dir))
           (if file-name
-            (neotree-find file-name))))))
-  (setq neo-window-position 'right)
-  (setq neo-show-hidden-files t)
-  (setq neo-autorefresh t)
-  (setq projectile-switch-project-action #'neotree-projectile-action))
+            (neotree-find file-name)))))))
 
 ;; Side bar.
 ;; TODO: try to display in side window: (display-buffer-in-side-window buffer `((side . , 'right)))
 (use-package treemacs
   :commands (treemacs-toggle treemacs-select-window treemacs-delete-other-windows treemacs treemacs-find-file)
+  :custom
+  (treemacs-collapse-dirs 3)
+  (treemacs-position 'right)
+  (treemacs-project-follow-cleanup t)
   :config
-  (setq treemacs-collapse-dirs 3)
-  (setq treemacs-position 'right)
-  (setq treemacs-project-follow-cleanup t)
   (treemacs-follow-mode t)
   (treemacs-filewatch-mode t)
   (add-hook 'treemacs-mode-hook (lambda () (setq cursor-type 'bar))))
@@ -809,9 +821,10 @@ or the current buffer directory."
 (use-package racer
   :after rust-mode
   :commands racer-mode
+  :custom
+  (racer-cmd "/bin/racer")
+  (racer-rust-src-path "~/rust-nightly-src/src")
   :config
-  (setq racer-cmd "/bin/racer")
-  (setq racer-rust-src-path "~/rust-nightly-src/src")
   (add-hook 'racer-mode-hook #'turn-on-eldoc-mode))
 
 (use-package dockerfile-mode
@@ -831,9 +844,7 @@ or the current buffer directory."
 
 (use-package lua-mode
   :mode ("\\.lua\\'" . lua-mode)
-  :interpreter ("lua" . lua-mode)
-  :config
-  (setq lua-indent-level 2))
+  :interpreter ("lua" . lua-mode))
 
 ;; Agda.
 (when (executable-find "agda-mode")
@@ -864,10 +875,11 @@ or the current buffer directory."
 
 (use-package lsp-mode
   :commands lsp
+  :custom
+  (lsp-auto-guess-root t)
+  (lsp-prefer-flymake nil)
   :config
-  (add-hook 'lsp-mode-hook (lambda () (highlight-thing-mode -1)))
-  (setq lsp-auto-guess-root t)
-  (setq lsp-prefer-flymake nil))
+  (add-hook 'lsp-mode-hook (lambda () (highlight-thing-mode -1))))
 
 (use-package lsp-ui
   :commands lsp-ui-mode)
@@ -878,22 +890,25 @@ or the current buffer directory."
 (use-package lsp-rust
   :ensure lsp-mode
   :after lsp-mode
-  :config
-  (setq lsp-rust-clippy-preference "on")
-  (setq lsp-rust-build-on-save t))
+  :custom
+  (lsp-rust-clippy-preference "on")
+  (lsp-rust-build-on-save t))
+
+;; (use-package dap-mode)
 
 ;; Mail.
 (use-package mu4e
   :ensure nil ;; https://github.com/jwiegley/use-package/issues/190
   :load-path "/usr/share/emacs/site-lisp/mu4e"
   :commands mu4e
+  :custom
+  (mu4e-maildir "~/Mail")
+  (mu4e-update-interval 300)
+  (mu4e-view-show-addresses t)
+  (mu4e-headers-results-limit 1000)
+  (mu4e-change-filenames-when-moving t)
+  (mu4e-get-mail-command "mbsync --all")
   :config
-  (setq mu4e-maildir "~/Mail")
-  (setq mu4e-update-interval 300)
-  (setq mu4e-view-show-addresses t)
-  (setq mu4e-headers-results-limit 1000)
-  (setq mu4e-change-filenames-when-moving t)
-  (setq mu4e-get-mail-command "mbsync --all")
   ;; Remove padding so that content won't be shifted comparing to the header
   (dolist (hook '(mu4e-main-mode-hook mu4e-headers-mode-hook mu4e-view-mode-hook mu4e-compose-mode-hook))
     (add-hook hook (lambda ()
@@ -946,9 +961,9 @@ or the current buffer directory."
 ;; Weather.
 (use-package wttrin
   :commands wttrin
-  :config
-  (setq wttrin-default-cities '("Minsk"))
-  (setq wttrin-default-accept-language '("Accept-Language" . "en-EN")))
+  :custom
+  (wttrin-default-cities '("Minsk"))
+  (wttrin-default-accept-language '("Accept-Language" . "en-EN")))
 
 ;; ========== Key bindings ==========
 
