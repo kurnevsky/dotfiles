@@ -839,26 +839,13 @@ or the current buffer directory."
 
 ;; Agda.
 (when (executable-find "agda-mode")
-  (load-file (let ((coding-system-for-read 'utf-8))
-               (shell-command-to-string "agda-mode locate")))
-  (custom-set-faces
-    '(agda2-highlight-bound-variable-face ((t (:foreground "violet"))))
-    '(agda2-highlight-coinductive-constructor-face ((t (:foreground "green"))))
-    '(agda2-highlight-datatype-face ((t (:foreground "#0087ff"))))
-    '(agda2-highlight-dotted-face ((t (:foreground "violet"))))
-    '(agda2-highlight-field-face ((t (:foreground "orange red"))))
-    '(agda2-highlight-function-face ((t (:foreground "orange red"))))
-    '(agda2-highlight-inductive-constructor-face ((t (:foreground "green"))))
-    '(agda2-highlight-keyword-face ((t (:foreground "orange"))))
-    '(agda2-highlight-module-face ((t (:foreground "brightgreen"))))
-    '(agda2-highlight-number-face ((t (:foreground "brightgreen"))))
-    '(agda2-highlight-postulate-face ((t (:foreground "cyan"))))
-    '(agda2-highlight-primitive-face ((t (:foreground "#0087ff"))))
-    '(agda2-highlight-primitive-type-face ((t (:foreground "#0087ff"))))
-    '(agda2-highlight-record-face ((t (:foreground "#0087ff"))))
-    '(agda2-highlight-string-face ((t (:foreground "brightred"))))
-    '(agda2-highlight-symbol-face ((t (:foreground "brightblue"))))
-    '(custom-themed ((t (:background "blue1" :foreground "white"))))))
+  (use-package agda2-mode
+    :ensure nil
+    :load-path (lambda ()
+                 (let ((coding-system-for-read 'utf-8))
+                   (file-name-directory (shell-command-to-string "agda-mode locate"))))
+    :mode ("\\.l?agda\\'" . agda2-mode)
+    :interpreter ("agda -I" . agda2-mode)))
 
 (use-package editorconfig
   :config
