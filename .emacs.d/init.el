@@ -152,10 +152,11 @@
 ;; ========== Configure plugins ==========
 
 ;; Lazy packages loading.
-(require 'use-package)
-(setq use-package-always-ensure t)
 (eval-when-compile
+  (require 'use-package)
+  (setq use-package-always-ensure t)
   (setq use-package-expand-minimally byte-compile-current-file))
+(require 'bind-key)
 
 ;; Dark theme.
 (use-package base16-theme
