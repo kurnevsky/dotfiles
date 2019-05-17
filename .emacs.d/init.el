@@ -339,6 +339,12 @@
   (guess-language-languages '(en ru))
   (guess-language-min-paragraph-length 15))
 
+(use-package scroll-restore
+  :demand t
+  :bind (("C-w" . scroll-restore-jump-back))
+  :config
+  (scroll-restore-mode t))
+
 ;; Graphical scroll.
 (use-package minimap
   :commands minimap-mode
