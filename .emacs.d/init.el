@@ -105,9 +105,10 @@
       (when (display-graphic-p frame)
         (with-selected-frame frame
           (define-key input-decode-map [?\C-m] [C-m]))))))
-;; Unbind keys.
-(dolist (key '("\C-a" "\C-n" "\C-s"))
-  (global-unset-key key))
+;; Unbind keys
+(dolist (key '("C-a" "C-b" "C-d" "C-e" "C-f" "C-j" "C-k" "C-n" "C-o" "C-p" "C-r"
+                "C-s" "C-t" "C-u" "C-w" "C-y" "C-z" "M-w"))
+  (global-unset-key (kbd key)))
 ;; Disable bell on scroll.
 (setq ring-bell-function (lambda ()
                            (unless (memq this-command
