@@ -314,7 +314,14 @@
   :hook (prog-mode . highlight-indent-guides-mode)
   :custom
   (highlight-indent-guides-method 'character)
-  (highlight-indent-guides-responsive 'stack))
+  (highlight-indent-guides-responsive 'stack)
+  :config
+  ;; Display property might be deleted if a major mode defines
+  ;; font-lock-extra-managed-props via font-lock-defaults.
+  (defun add-display-to-extra-managed-props ()
+    (add-to-list 'font-lock-extra-managed-props 'display))
+  (dolist (hook '(emacs-lisp-mode-hook haskell-mode-hook))
+    (add-hook hook #'add-display-to-extra-managed-props)))
 
 ;; Spell checking.
 (use-package flyspell
