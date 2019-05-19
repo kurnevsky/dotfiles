@@ -320,14 +320,18 @@
   :hook ((text-mode . flyspell-mode)
           (prog-mode . flyspell-prog-mode))
   :config
+  ;; flyspell uses sit-for for delays which breaks things like
+  ;; delete-selection-mode and company-mode. One possible solution is setting
+  ;; flyspell-delay to nil but this will impact performance. Instead I disable
+  ;; it completely for self-insert-command when it inserts anything besides
+  ;; separators. See https://en.wikipedia.org/wiki/Unicode_character_property#General_Category
+  ;; for Unicode properties.
+  (advice-add 'flyspell-check-word-p :around (lambda (orig-fun &rest args)
+                                               (if (eq this-command 'self-insert-command)
+                                                 (memq (get-char-code-property (char-before) 'general-category) '(Zs Zl Zp))
+                                                 (apply orig-fun args))))
   (advice-add 'uncomment-region :before (lambda (BEG END &optional ARG)
                                           (flyspell-delete-region-overlays BEG END))))
-
-;; Somehow solves the issue when flyspell-mode affects delete-selection-mode.
-(use-package flyspell-lazy
-  :after flyspell
-  :config
-  (flyspell-lazy-mode 1))
 
 ;; Automatically change language for spell checking.
 (use-package guess-language
