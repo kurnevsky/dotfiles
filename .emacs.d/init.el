@@ -586,14 +586,11 @@ If CLEAR is specified, clear them instead."
   :config
   (global-anzu-mode t))
 
-;; Smart mode line.
-(use-package smart-mode-line
+(use-package doom-modeline
   :custom
-  (sml/theme nil)
+  (doom-modeline-buffer-file-name-style 'relative-from-project)
   :config
-  (sml/setup)
-  ;; apply the theme for clock right after start
-  (sml/propertize-time-string))
+  (doom-modeline-mode))
 
 ;; Project management.
 (use-package projectile
