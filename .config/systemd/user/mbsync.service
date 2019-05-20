@@ -4,4 +4,4 @@ Description=Mailbox synchronization service
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/mbsync -Va
-ExecStartPost=/usr/bin/mu index --lazy-check --mailditr=~/Mail
+ExecStartPost=/usr/bin/mu index --lazy-check --maildir=~/Mail
