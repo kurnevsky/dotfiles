@@ -318,10 +318,9 @@
   :config
   ;; Display property might be deleted if a major mode defines
   ;; font-lock-extra-managed-props via font-lock-defaults.
-  (defun add-display-to-extra-managed-props ()
-    (add-to-list 'font-lock-extra-managed-props 'display))
-  (dolist (hook '(emacs-lisp-mode-hook haskell-mode-hook))
-    (add-hook hook #'add-display-to-extra-managed-props)))
+  (add-hook 'after-change-major-mode-hook (lambda ()
+                                            (when (derived-mode-p 'prog-mode)
+                                              (add-to-list 'font-lock-extra-managed-props 'display)))))
 
 ;; Spell checking.
 (use-package flyspell
