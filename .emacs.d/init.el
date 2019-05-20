@@ -645,6 +645,9 @@ If CLEAR is specified, clear them instead."
     (cl-letf (((symbol-function 'mc/remove-fake-cursors)
                 (lambda ())))
       (multiple-cursors-mode 0)))
+  (defun mc/remove-fake-cursors-interactive ()
+    (interactive)
+    (mc/remove-fake-cursors))
   (defun mc/load-lists ())
   (defun mc/save-lists ())
   (setq mc/cmds-to-run-once '(hydra-multiple-cursors/body
@@ -675,8 +678,9 @@ If CLEAR is specified, clear them instead."
                                                  (mc/toggle-fake-cursor))
                                      :post (mc/multiple-cursors-mode-when-num-cursors>1))
     "multiple-cursors"
-    ("C-<return>" mc/toggle-fake-cursor)
-    ("<return>" nil "quit")))
+    ("C-<return>" mc/toggle-fake-cursor "toggle")
+    ("<return>" nil "apply")
+    ("<escape>" mc/remove-fake-cursors-interactive "quit" :exit t)))
 
 ;; TODO: undo-tree-visualize hotkey
 (use-package undo-tree
