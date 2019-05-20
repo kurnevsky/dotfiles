@@ -70,8 +70,6 @@
 (setq isearch-allow-scroll t)
 ;; Don't exit search mode on navigation.
 (setq search-exit-option nil)
-;; Make prompts uneditable.
-(setq comint-prompt-read-only t)
 ;; Show line and column numbers.
 (line-number-mode t)
 (column-number-mode t)
@@ -161,7 +159,6 @@
 
 ;; Dark theme.
 (use-package base16-theme
-  :after color
   :custom
   (base16-highlight-mode-line 'contrast)
   (base16-distinct-fringe-background nil)
@@ -176,6 +173,7 @@
         (color-name-to-rgb c1)
         (color-name-to-rgb c2))))
   (defun modify-theme (theme)
+    (require 'color)
     (let* ((colors (symbol-value (intern (concat (symbol-name theme) "-colors"))))
             (base00 (plist-get colors :base00))
             (base01 (plist-get colors :base01))
@@ -251,7 +249,7 @@
               epm-version))
 
 (use-package cl-macs
-  :ensure cl
+  :ensure nil
   :config
   ;; Fix hotkeys for Russian keyboard layout.
   (cl-loop
@@ -267,15 +265,23 @@
     (eval `(define-key key-translation-map (kbd ,(concat "C-" (string from))) (kbd ,(concat "C-S-" (string to)))))
     (eval `(define-key key-translation-map (kbd ,(concat "M-" (string from))) (kbd ,(concat "M-S-" (string to)))))))
 
-;; Cua mode.
 (use-package cua-base
+  :bind (:map cua-global-keymap
+          ([C-return]))
   :config
-  (cua-mode t)
-  (define-key cua-global-keymap [C-return] nil))
+  (cua-mode t))
 
 (use-package time
   :custom
-  (display-time-24hr-format t "24 hours time format."))
+  (display-time-24hr-format t "24 hours time format.")
+  :config
+  (display-time-update))
+
+(use-package comint
+  :ensure nil
+  :defer t
+  :custom
+  (comint-prompt-read-only t "Make the prompt read only."))
 
 (use-package display-line-numbers
   :config
