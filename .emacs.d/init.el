@@ -1041,6 +1041,11 @@ properly."
                            (error nil)))
       minor-mode-list)
     (message "Active modes are %s" active-modes)))
+(defun tell-emacsclients-for-buffer-to-die ()
+  "Sends error exit command to every client for the current buffer."
+  (interactive)
+  (dolist (proc server-buffer-clients)
+    (server-send-string proc "-error die")))
 ;; Format json with jq.
 (defun jq-region ()
   "Format json with jq in a region."
@@ -1097,6 +1102,7 @@ properly."
 (global-set-key (kbd "C-k") #'kill-buffer)
 (global-set-key (kbd "C-|") #'split-window-horizontally)
 (global-set-key (kbd "C-_") #'split-window-vertically)
+(global-set-key (kbd "C-x C-M-c") #'tell-emacsclients-for-buffer-to-die)
 
 ;;https://stackoverflow.com/questions/4918707/in-emacs-how-to-go-back-to-previous-line-position-after-using-semantic-jump-to
 ;; pop-global-mark
