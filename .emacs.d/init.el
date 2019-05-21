@@ -150,14 +150,12 @@
 
 ;; ========== Configure plugins ==========
 
-;; Lazy packages loading.
 (eval-when-compile
   (require 'use-package)
   (setq use-package-always-ensure t)
   (setq use-package-expand-minimally byte-compile-current-file))
 (require 'bind-key)
 
-;; Dark theme.
 (use-package base16-theme
   :custom
   (base16-highlight-mode-line 'contrast)
@@ -303,19 +301,16 @@
   :config
   (show-paren-mode t))
 
-;; Highlight current line.
 (use-package hl-line
   :config
   (global-hl-line-mode 1))
 
-;; Highlight word under point.
 (use-package highlight-thing
   :custom
   (highlight-thing-what-thing 'symbol)
   :config
   (global-highlight-thing-mode))
 
-;; Highlight indentation levels.
 (use-package highlight-indent-guides
   :hook (prog-mode . highlight-indent-guides-mode)
   :custom
@@ -328,7 +323,6 @@
                                             (when (derived-mode-p 'prog-mode)
                                               (add-to-list 'font-lock-extra-managed-props 'display)))))
 
-;; Spell checking.
 (use-package flyspell
   :hook ((text-mode . flyspell-mode)
           (prog-mode . flyspell-prog-mode))
@@ -346,7 +340,6 @@
   (advice-add 'uncomment-region :before (lambda (BEG END &optional ARG)
                                           (flyspell-delete-region-overlays BEG END))))
 
-;; Automatically change language for spell checking.
 (use-package guess-language
   :hook (text-mode . guess-language-mode)
   :custom
@@ -362,7 +355,6 @@
   :config
   (scroll-restore-mode t))
 
-;; Graphical scroll.
 (use-package minimap
   :commands minimap-mode
   :custom
@@ -413,7 +405,6 @@ If CLEAR is specified, clear them instead."
         things
         (mapcar #'car things)))))
 
-;; Smart M-x command line.
 (use-package smex
   :commands (smex
               smex-major-mode-commands)
@@ -553,13 +544,11 @@ If CLEAR is specified, clear them instead."
                                                 (_ (apply orig-fun args)))))
   (ivy-rich-mode 1))
 
-;; TODO: (mapcar 'window-buffer (window-list))
 (use-package ediff
   :custom
   (ediff-window-setup-function #'ediff-setup-windows-plain)
   (ediff-split-window-function #'split-window-horizontally))
 
-;; Buffer switcher.
 (use-package bs
   :bind (("<f2>" . bs-show)
           :map bs-mode-map
@@ -571,7 +560,6 @@ If CLEAR is specified, clear them instead."
   :custom
   (tramp-default-method "ssh"))
 
-;; The Silver Searcher.
 (use-package ag
   :commands (ag
               ag-files
@@ -584,7 +572,6 @@ If CLEAR is specified, clear them instead."
               ag-project-dired
               ag-project-dired-regexp))
 
-;; Smart find.
 (use-package anzu
   :demand t
   :bind (([remap query-replace] . anzu-query-replace)
@@ -598,7 +585,6 @@ If CLEAR is specified, clear them instead."
   :config
   (doom-modeline-mode))
 
-;; Project management.
 (use-package projectile
   :demand t
   :bind (:map projectile-mode-map
@@ -614,7 +600,6 @@ If CLEAR is specified, clear them instead."
   :bind (:map projectile-mode-map
           ("C-p g" . projectile-ripgrep)))
 
-;; Autocompletion.
 (use-package company
   :demand t
   :bind (:map company-mode-map
@@ -631,7 +616,6 @@ If CLEAR is specified, clear them instead."
   :custom
   (company-dabbrev-downcase nil))
 
-;; Multiple cursors.
 (use-package multiple-cursors-core
   :after cl-macs ;; for cl-letf
   :ensure multiple-cursors
@@ -688,7 +672,6 @@ If CLEAR is specified, clear them instead."
     ("<return>" nil "apply")
     ("<escape>" mc/remove-fake-cursors-interactive "quit" :exit t)))
 
-;; TODO: undo-tree-visualize hotkey
 (use-package undo-tree
   :demand t
   :bind (:map undo-tree-map
@@ -736,7 +719,6 @@ If CLEAR is specified, clear them instead."
   (add-hook 'magit-status-mode-hook
     (lambda () (company-mode -1))))
 
-;; Indicate uncommited changes on the fringe.
 (use-package diff-hl
   :config
   (global-diff-hl-mode)
@@ -770,8 +752,6 @@ or the current buffer directory."
           (if file-name
             (neotree-find file-name)))))))
 
-;; Side bar.
-;; TODO: try to display in side window: (display-buffer-in-side-window buffer `((side . , 'right)))
 (use-package treemacs
   :commands (treemacs-toggle treemacs-select-window treemacs-delete-other-windows treemacs treemacs-find-file)
   :custom
@@ -783,7 +763,6 @@ or the current buffer directory."
   (treemacs-filewatch-mode t)
   (add-hook 'treemacs-mode-hook (lambda () (setq cursor-type 'bar))))
 
-;; Projectile support for treemacs.
 (use-package treemacs-projectile
   :bind ("S-<f8>" . treemacs-projectile))
 
@@ -862,7 +841,6 @@ or the current buffer directory."
   :mode ("\\.lua\\'" . lua-mode)
   :interpreter ("lua" . lua-mode))
 
-;; Agda.
 (when (executable-find "agda-mode")
   (use-package agda2-mode
     :ensure nil
@@ -899,9 +877,8 @@ or the current buffer directory."
 
 ;; (use-package dap-mode)
 
-;; Mail.
 (use-package mu4e
-  :ensure nil ;; https://github.com/jwiegley/use-package/issues/190
+  :ensure nil
   :load-path "/usr/share/emacs/site-lisp/mu4e"
   :commands mu4e
   :custom
@@ -957,11 +934,9 @@ or the current buffer directory."
                    (mu4e-trash-folder . "/adform/Deleted Items")
                    (mu4e-refile-folder . "/adform/Archive"))))))
 
-;; Screensaver.
 (use-package zone
   :commands zone)
 
-;; Weather.
 (use-package wttrin
   :commands wttrin
   :custom
@@ -970,7 +945,6 @@ or the current buffer directory."
 
 ;; ========== Key bindings ==========
 
-;; Function for create new empty buffer.
 (defun new-empty-buffer ()
   "Create a new empty buffer."
   (interactive)
@@ -979,7 +953,6 @@ or the current buffer directory."
     (text-mode)
     (setq buffer-offer-save t)
     (setq-local new-untitled t)))
-;; Functions for pane switching.
 (defun move-cursor-next-pane ()
   "Move cursor to the next pane."
   (interactive)
@@ -988,19 +961,18 @@ or the current buffer directory."
   "Move cursor to the previous pane."
   (interactive)
   (other-window -1))
-;; Search from beginning of the document.
 (defun isearch-forward-from-begin ()
-  "Search from beginning of document."
+  "Search from the beginning of document."
   (interactive)
   (save-excursion
     (goto-char (point-min))
     (isearch-forward)))
-;; Go to line beginning.
 (defun back-to-indentation-or-beginning ()
+  "Move point to the first non-whitespace character on this line.
+If it's already there move it to the beginning of this line."
   (interactive "^")
-  (if (= (point) (progn (back-to-indentation) (point)))
+  (when (= (point) (progn (back-to-indentation) (point)))
     (beginning-of-line)))
-;; Go to line ending.
 (defun point-in-comment ()
   "Determine if the point is inside a comment."
   (interactive)
@@ -1008,8 +980,9 @@ or the current buffer directory."
     (and (nth 8 syn)
       (not (nth 3 syn)))))
 (defun end-of-code-or-line (arg)
-  "Move to end of line, or before start of comments depending on situation.
-Toggle back and forth positions if we are already at one.
+  "Move point to the end of this line ignoring comments.
+If it's already there move it to the end of this line.
+With argument ARG not nil or 1, move forward ARG - 1 lines first.
 Comments are recognized in any mode that sets 'syntax-ppss'
 properly."
   (interactive "^P")
@@ -1026,7 +999,6 @@ properly."
             (skip-chars-backward " \t")
             (throw 'bol (and (not (= eol start)) (>= start (point))))))
     (move-end-of-line arg)))
-;; Comment block or line.
 (defun comment-or-uncomment-region-or-line ()
   "Comments or uncomments the region or the current line if there's no active region."
   (interactive)
@@ -1036,7 +1008,6 @@ properly."
       (setq beg (line-beginning-position) end (line-end-position)))
     (comment-or-uncomment-region beg end)
     (forward-line)))
-;; Print current local modes.
 (defun which-active-modes ()
   "Gives a message of which minor modes are enabled in the current buffer."
   (interactive)
@@ -1052,7 +1023,6 @@ properly."
   (interactive)
   (dolist (proc server-buffer-clients)
     (server-send-string proc "-error die")))
-;; Format json with jq.
 (defun jq-region ()
   "Format json with jq in a region."
   (interactive)
@@ -1063,7 +1033,6 @@ properly."
   (interactive)
   (save-excursion
     (shell-command-on-region (point-min) (point-max) "jq ." (buffer-name) t)))
-;; Format xml with xmllint.
 (defun xmllint-region ()
   "Format xml with xmllint in a region."
   (interactive)
@@ -1074,7 +1043,6 @@ properly."
   (interactive)
   (save-excursion
     (shell-command-on-region (point-min) (point-max) "xmllint --format -" (buffer-name) t)))
-;; Format xml with xmlstarlet.
 (defun xmlstarlet-region ()
   "Format xml with xmlstarlet in a region."
   (interactive)
@@ -1085,7 +1053,6 @@ properly."
   (interactive)
   (save-excursion
     (shell-command-on-region (point-min) (point-max) "xmlstarlet format" (buffer-name) t)))
-;; Key bindings.
 (global-set-key (kbd "<escape>") #'keyboard-escape-quit)
 (global-set-key (kbd "C-f") #'isearch-forward)
 (define-key isearch-mode-map (kbd "C-f") #'isearch-repeat-forward)
