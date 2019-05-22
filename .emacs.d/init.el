@@ -873,6 +873,7 @@ or the current buffer directory."
   :after lsp-mode
   :custom
   (lsp-rust-clippy-preference "on")
+  (lsp-rust-cfg-test t)
   (lsp-rust-build-on-save t))
 
 ;; (use-package dap-mode)
