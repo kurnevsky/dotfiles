@@ -974,12 +974,6 @@ If it's already there move it to the beginning of this line."
   (interactive "^")
   (when (= (point) (progn (back-to-indentation) (point)))
     (beginning-of-line)))
-(defun point-in-comment ()
-  "Determine if the point is inside a comment."
-  (interactive)
-  (let ((syn (syntax-ppss)))
-    (and (nth 8 syn)
-      (not (nth 3 syn)))))
 (defun end-of-code-or-line (arg)
   "Move point to the end of this line ignoring comments.
 If it's already there move it to the end of this line.
@@ -987,19 +981,23 @@ With argument ARG not nil or 1, move forward ARG - 1 lines first.
 Comments are recognized in any mode that sets 'syntax-ppss'
 properly."
   (interactive "^P")
-  (when (catch 'bol
-          (let ((start (point))
-                 (bol (save-excursion
-                        (beginning-of-line)
-                        (point)))
-                 (eol (progn (move-end-of-line arg) (point))))
-            (while (point-in-comment)
-              (backward-char)
-              (when (= (point) bol)
-                (throw 'bol t)))
-            (skip-chars-backward " \t")
-            (throw 'bol (and (not (= eol start)) (>= start (point))))))
-    (move-end-of-line arg)))
+  (let* ((start (point))
+          (bol (save-excursion
+                 (beginning-of-line)
+                 (point)))
+          (eol (progn
+                 (move-end-of-line arg)
+                 (point)))
+          (syn (syntax-ppss))
+          (boc (nth 8 syn)))
+    (when (and
+            boc
+            (not (nth 3 syn))
+            (> boc bol))
+      (goto-char boc))
+    (skip-chars-backward " \t")
+    (when (or (= start (point)) (= bol (point)))
+      (move-end-of-line nil))))
 (defun comment-or-uncomment-region-or-line ()
   "Comments or uncomments the region or the current line if there's no active region."
   (interactive)
