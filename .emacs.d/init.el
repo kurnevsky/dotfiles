@@ -131,30 +131,34 @@
       (byte-compile-file user-init-file))))
 (add-hook 'kill-emacs-hook #'recompile-init)
 
-;; ========== Install packages ==========
+;; ========== Initialize packages ==========
 
-;; List of necessary packages.
 (require 'package)
-(add-to-list 'package-archives
-  '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'package-archives
-  '("melpa-stable" . "https://stable.melpa.org/packages/"))
 ;; Activate all the packages (in particular autoloads).
 (package-initialize)
+;; Configure the list of remote archives.
+(dolist (archive '(("melpa" . "https://melpa.org/packages/")
+                    ("melpa-stable" . "https://stable.melpa.org/packages/")))
+  (add-to-list 'package-archives archive))
+(setq package-archive-priorities
+  '(("melpa" . 2)
+     ("melpa-stable" . 1)
+     ("gnu" . 0)))
 ;; Fetch the list of packages available.
 (unless package-archive-contents
   (package-refresh-contents))
-;; Install the missing packages.
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
 
-;; ========== Configure plugins ==========
+;; ========== Install use-package ==========
 
 (eval-when-compile
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
   (require 'use-package)
   (setq use-package-always-ensure t)
   (setq use-package-expand-minimally byte-compile-current-file))
 (require 'bind-key)
+
+;; ========== Configure packages ==========
 
 (use-package base16-theme
   :custom
