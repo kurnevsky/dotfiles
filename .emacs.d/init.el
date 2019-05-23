@@ -330,6 +330,9 @@
 (use-package flyspell
   :hook ((text-mode . flyspell-mode)
           (prog-mode . flyspell-prog-mode))
+  :bind (:map flyspell-mode-map
+          ("C-.")
+          ("C-,"))
   :config
   ;; flyspell uses sit-for for delays which breaks things like
   ;; delete-selection-mode and company-mode. One possible solution is setting
@@ -705,7 +708,7 @@ If CLEAR is specified, clear them instead."
                  (car (undo-tree-node-undo undo))
                  (car undo))
           (`(,beg . ,end) (let ((pos (cond
-                                       ((and (integerp beg) (integerp end)) beg)
+                                       ((and (integerp beg) (integerp end)) end)
                                        ((and (stringp beg) (integerp end)) (abs end)))))
                             (if pos
                               (progn
