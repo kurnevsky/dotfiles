@@ -354,8 +354,6 @@
   (guess-language-min-paragraph-length 15))
 
 (use-package scroll-restore
-  :demand t
-  :bind (("C-w" . scroll-restore-jump-back))
   :config
   (scroll-restore-mode t))
 
@@ -682,14 +680,50 @@ If CLEAR is specified, clear them instead."
           ([remap undo] . undo-tree-undo)
           ([remap undo-only] . undo-tree-undo)
           ("C-S-z" . undo-tree-redo)
-          ("C-y" . undo-tree-redo))
+          ("C-y" . undo-tree-redo)
+          ("C-w" . last-edit))
   :init
   (setq undo-tree-map (make-sparse-keymap))
   :custom
   (undo-tree-enable-undo-in-region nil)
   :config
   (global-undo-tree-mode)
-  (defun undo-tree-overridden-undo-bindings-p () nil))
+  (defun undo-tree-overridden-undo-bindings-p () nil)
+  (defun last-edit-next (undo tree)
+    (if tree
+      (undo-tree-node-previous undo)
+      (cdr undo)))
+  (defun last-edit (arg)
+    "Go back to last add/delete edit."
+    (interactive "^P")
+    (unless arg
+      (setq arg 1))
+    (let ((undo buffer-undo-list)
+           (tree))
+      (while undo
+        (pcase (if tree
+                 (car (undo-tree-node-undo undo))
+                 (car undo))
+          (`(,beg . ,end) (let ((pos (cond
+                                       ((and (integerp beg) (integerp end)) beg)
+                                       ((and (stringp beg) (integerp end)) (abs end)))))
+                            (if pos
+                              (progn
+                                (setq arg (1- arg))
+                                (if (<= arg 0)
+                                  (progn
+                                    (goto-char pos)
+                                    (setq undo nil))
+                                  (setq undo (last-edit-next undo tree))))
+                              (setq undo (last-edit-next undo tree)))))
+          (`undo-tree-canary (if tree
+                               (progn
+                                 (error "Inner undo-tree-canary")
+                                 (setq undo nil))
+                               (setq
+                                 undo (undo-tree-current buffer-undo-tree)
+                                 tree t)))
+          (_ (setq undo (last-edit-next undo tree))))))))
 
 (use-package hideshow
   :hook (prog-mode . hs-minor-mode)
