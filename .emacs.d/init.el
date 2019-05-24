@@ -621,6 +621,11 @@ If CLEAR is specified, clear them instead."
   :custom
   (company-dabbrev-downcase nil))
 
+(use-package company-quickhelp
+  :after company
+  :config
+  (company-quickhelp-mode))
+
 (use-package multiple-cursors-core
   :after cl-macs ;; for cl-letf
   :ensure multiple-cursors
