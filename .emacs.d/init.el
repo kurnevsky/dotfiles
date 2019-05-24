@@ -356,10 +356,6 @@
   (guess-language-languages '(en ru))
   (guess-language-min-paragraph-length 15))
 
-(use-package scroll-restore
-  :config
-  (scroll-restore-mode t))
-
 (use-package minimap
   :commands minimap-mode
   :custom
