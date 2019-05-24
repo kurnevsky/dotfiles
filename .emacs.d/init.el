@@ -549,7 +549,9 @@ If CLEAR is specified, clear them instead."
                                                 (_ (apply orig-fun args)))))
   (ivy-rich-mode 1))
 
-(use-package ediff
+(use-package ediff-wind
+  :ensure nil
+  :defer t
   :custom
   (ediff-window-setup-function #'ediff-setup-windows-plain)
   (ediff-split-window-function #'split-window-horizontally))
@@ -562,6 +564,7 @@ If CLEAR is specified, clear them instead."
           ("<mouse-1>" . bs-mouse-select)))
 
 (use-package tramp
+  :defer t
   :custom
   (tramp-default-method "ssh"))
 
