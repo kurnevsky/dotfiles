@@ -347,6 +347,15 @@
   (advice-add 'uncomment-region :before (lambda (BEG END &optional ARG)
                                           (flyspell-delete-region-overlays BEG END))))
 
+(use-package langtool
+  :commands langtool-check
+  :custom
+  (langtool-java-classpath "/usr/share/languagetool:/usr/share/java/languagetool/*")
+  (langtool-default-language "en-US")
+  (langtool-mother-tongue "ru-RU")
+  (langtool-autoshow-message-function (lambda (overlays)
+                                        (pos-tip-sow (langtool-details-error-message overlays)))))
+
 (use-package guess-language
   :hook (text-mode . guess-language-mode)
   :custom
