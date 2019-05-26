@@ -136,8 +136,6 @@
 ;; ========== Initialize packages ==========
 
 (require 'package)
-;; Activate all the packages (in particular autoloads).
-(package-initialize)
 ;; Configure the list of remote archives.
 (dolist (archive '(("melpa" . "https://melpa.org/packages/")
                     ("melpa-stable" . "https://stable.melpa.org/packages/")))
@@ -146,6 +144,8 @@
   '(("melpa" . 2)
      ("melpa-stable" . 1)
      ("gnu" . 0)))
+;; Initialize packages without activating.
+(package-initialize t)
 ;; Fetch the list of packages available.
 (unless package-archive-contents
   (package-refresh-contents))
@@ -155,9 +155,30 @@
 (eval-when-compile
   (unless (package-installed-p 'use-package)
     (package-install 'use-package))
+  (package-activate 'use-package)
   (require 'use-package)
   (setq use-package-always-ensure t)
-  (setq use-package-expand-minimally byte-compile-current-file))
+  (setq use-package-expand-minimally byte-compile-current-file)
+  (defun use-package-normalize/:activate (name-symbol keyword args)
+    (use-package-only-one (symbol-name keyword) args
+      (lambda (label arg) arg)))
+  (defun use-package-handler/:activate (name-symbol keyword activate rest state)
+    (let ((body (use-package-process-keywords name-symbol rest state)))
+      (if activate
+        (use-package-concat
+          `((package-activate ',name-symbol))
+          body)
+        body)))
+  (defun insert-after (xs element after-elemnet)
+    "Insert ELEMENT after AFTER_ELEMENT into XS."
+    (let ((pos (1+ (cl-position after-elemnet xs))))
+      (nconc
+        (cl-subseq xs 0 pos)
+        (list element)
+        (nthcdr pos xs))))
+  (setq use-package-keywords (insert-after use-package-keywords :activate :load-path))
+  (add-to-list 'use-package-defaults '(:activate t t) t))
+(package-activate 'bind-key)
 (require 'bind-key)
 
 ;; ========== Configure packages ==========
