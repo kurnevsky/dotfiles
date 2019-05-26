@@ -70,6 +70,8 @@
 (setq isearch-allow-scroll t)
 ;; Don't exit search mode on navigation.
 (setq search-exit-option nil)
+;; Move mouse to newly selected frames.
+(setq focus-follows-mouse t)
 ;; Show line and column numbers.
 (line-number-mode t)
 (column-number-mode t)
