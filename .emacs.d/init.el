@@ -908,6 +908,16 @@ or the current buffer directory."
                                 "/lib/rustlib/src/rust/src"))))
   (add-hook 'rust-mode-hook #'lsp))
 
+(use-package sql)
+
+(use-package matlab-mode)
+
+(use-package ess)
+
+(use-package csv-mode)
+
+(use-package json-mode)
+
 (use-package dockerfile-mode)
 
 (use-package systemd)
