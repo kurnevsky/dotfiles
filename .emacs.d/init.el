@@ -782,7 +782,6 @@ If CLEAR is specified, clear them instead."
   :bind (("C-`" . hs-toggle-hiding)))
 
 (use-package org
-  :mode ("\\.org\\'" . org-mode)
   :custom
   (org-support-shift-select t))
 
@@ -870,11 +869,9 @@ or the current buffer directory."
        (side            . bottom)
        (window-height   . 0.3))))
 
-(use-package yaml-mode
-  :mode ("\\.yml\\'" . yaml-mode))
+(use-package yaml-mode)
 
 (use-package scala-mode
-  :mode ("\\.scala\\'" . scala-mode)
   :interpreter ("scala" . scala-mode)
   :config
   (defun right-arrow ()
@@ -894,9 +891,7 @@ or the current buffer directory."
                                 (local-set-key (kbd "-") #'left-arrow)
                                 (local-set-key (kbd ">") #'right-arrow))))
 
-(use-package haskell-mode
-  :mode ("\\.hs\\'" . haskell-mode)
-  :interpreter ("ghci" . haskell-mode))
+(use-package haskell-mode)
 
 (use-package eldoc
   :commands (eldoc-mode turn-on-eldoc-mode)
@@ -904,7 +899,6 @@ or the current buffer directory."
   (add-hook 'emacs-lisp-mode-hook #'turn-on-eldoc-mode))
 
 (use-package rust-mode
-  :mode ("\\.rs\\'" . rust-mode)
   :config
   (unless (getenv "RUST_SRC_PATH")
     (when (executable-find "rustc")
@@ -914,26 +908,19 @@ or the current buffer directory."
                                 "/lib/rustlib/src/rust/src"))))
   (add-hook 'rust-mode-hook #'lsp))
 
-(use-package dockerfile-mode
-  :mode ("Dockerfile'" . dockerfile-mode))
+(use-package dockerfile-mode)
 
 (use-package systemd)
 
-(use-package pkgbuild-mode
-  :mode ("PKGBUILD'" . pkgbuild-mode))
+(use-package pkgbuild-mode)
 
-(use-package go-mode
-  :mode ("\\.go\\'" . go-mode))
+(use-package go-mode)
 
-(use-package typescript-mode
-  :mode ("\\.ts\\'" . typescript-mode))
+(use-package typescript-mode)
 
-(use-package csharp-mode
-  :mode ("\\.cs\\'" . csharp-mode))
+(use-package csharp-mode)
 
-(use-package lua-mode
-  :mode ("\\.lua\\'" . lua-mode)
-  :interpreter ("lua" . lua-mode))
+(use-package lua-mode)
 
 (when (executable-find "agda-mode")
   (use-package agda2-mode
