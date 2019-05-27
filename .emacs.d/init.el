@@ -158,6 +158,8 @@
   (package-activate 'use-package)
   (require 'use-package)
   (setq use-package-always-ensure t)
+  (setq use-package-always-defer t)
+  (setq use-package-verbose t)
   (setq use-package-expand-minimally byte-compile-current-file)
   (defun use-package-normalize/:activate (name-symbol keyword args)
     (use-package-only-one (symbol-name keyword) args
@@ -184,6 +186,7 @@
 ;; ========== Configure packages ==========
 
 (use-package base16-theme
+  :demand t
   :custom
   (base16-highlight-mode-line 'contrast)
   (base16-distinct-fringe-background nil)
@@ -275,6 +278,7 @@
 
 (use-package cl-macs
   :ensure nil
+  :demand t
   :config
   ;; Fix hotkeys for Russian keyboard layout.
   (cl-loop
@@ -291,12 +295,14 @@
     (eval `(define-key key-translation-map (kbd ,(concat "M-" (string from))) (kbd ,(concat "M-S-" (string to)))))))
 
 (use-package cua-base
+  :demand t
   :bind (:map cua-global-keymap
           ([C-return]))
   :config
   (cua-mode t))
 
 (use-package time
+  :demand t
   :custom
   (display-time-24hr-format t "24 hours time format.")
   :config
@@ -304,11 +310,11 @@
 
 (use-package comint
   :ensure nil
-  :defer t
   :custom
   (comint-prompt-read-only t "Make the prompt read only."))
 
 (use-package display-line-numbers
+  :demand t
   :config
   (global-display-line-numbers-mode 1)
   ;; Workaround for bug #35404.
@@ -323,16 +329,19 @@
                                              res))))))
 
 (use-package paren
+  :demand t
   :custom
   (show-paren-style 'parenthesis)
   :config
   (show-paren-mode t))
 
 (use-package hl-line
+  :demand t
   :config
   (global-hl-line-mode 1))
 
 (use-package highlight-thing
+  :demand t
   :custom
   (highlight-thing-what-thing 'symbol)
   :config
@@ -412,6 +421,7 @@
       (t (string-lessp a b)))))
 
 (use-package flx-ido
+  :demand t
   :after ido
   :custom
   (flx-ido-use-faces t)
@@ -459,6 +469,8 @@ If CLEAR is specified, clear them instead."
   (ivy-mode 1))
 
 (use-package counsel
+  :demand t
+  :after ivy
   :config
   (counsel-mode 1))
 
@@ -474,6 +486,8 @@ If CLEAR is specified, clear them instead."
       (all-the-icons-install-fonts t))))
 
 (use-package ivy-rich
+  :demand t
+  :after ivy
   :init
   (defun ivy-rich-switch-buffer-icon (candidate)
     (with-current-buffer
@@ -579,7 +593,6 @@ If CLEAR is specified, clear them instead."
 
 (use-package ediff-wind
   :ensure nil
-  :defer t
   :custom
   (ediff-window-setup-function #'ediff-setup-windows-plain)
   (ediff-split-window-function #'split-window-horizontally))
@@ -592,7 +605,6 @@ If CLEAR is specified, clear them instead."
           ("<mouse-1>" . bs-mouse-select)))
 
 (use-package tramp
-  :defer t
   :custom
   (tramp-default-method "ssh"))
 
@@ -616,6 +628,7 @@ If CLEAR is specified, clear them instead."
   (global-anzu-mode t))
 
 (use-package doom-modeline
+  :demand t
   :custom
   (doom-modeline-buffer-file-name-style 'relative-from-project)
   :config
@@ -653,12 +666,12 @@ If CLEAR is specified, clear them instead."
   (company-dabbrev-downcase nil))
 
 (use-package company-quickhelp
+  :demand t
   :after company
   :config
   (company-quickhelp-mode))
 
 (use-package multiple-cursors-core
-  :after cl-macs ;; for cl-letf
   :ensure multiple-cursors
   :commands (mc/multiple-cursors-mode-when-num-cursors>1
               mc/quit-leaving-cursors)
@@ -781,6 +794,7 @@ If CLEAR is specified, clear them instead."
   (yas-reload-all))
 
 (use-package yasnippet-snippets
+  :demand t
   :after yasnippet)
 
 (use-package magit
@@ -797,6 +811,7 @@ If CLEAR is specified, clear them instead."
     (lambda () (company-mode -1))))
 
 (use-package diff-hl
+  :demand t
   :config
   (global-diff-hl-mode)
   (diff-hl-flydiff-mode)
@@ -928,6 +943,7 @@ or the current buffer directory."
     :interpreter ("agda -I" . agda2-mode)))
 
 (use-package editorconfig
+  :demand t
   :config
   (editorconfig-mode 1))
 
