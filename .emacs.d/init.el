@@ -917,6 +917,8 @@ or the current buffer directory."
 (use-package dockerfile-mode
   :mode ("Dockerfile'" . dockerfile-mode))
 
+(use-package systemd)
+
 (use-package pkgbuild-mode
   :mode ("PKGBUILD'" . pkgbuild-mode))
 
