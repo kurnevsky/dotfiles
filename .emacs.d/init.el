@@ -869,6 +869,19 @@ or the current buffer directory."
        (side            . bottom)
        (window-height   . 0.3))))
 
+(use-package polymode
+  :config
+  ;; Doesn't work well with polymode.
+  (add-hook 'prog-mode-hook (lambda ()
+                              (when polymode-mode
+                                (set (make-local-variable 'highlight-indent-guides-responsive) nil)))))
+
+(use-package poly-markdown)
+
+(use-package poly-org)
+
+(use-package poly-rst)
+
 (use-package yaml-mode)
 
 (use-package scala-mode
