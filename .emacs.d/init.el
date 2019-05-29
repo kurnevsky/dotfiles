@@ -882,6 +882,9 @@ or the current buffer directory."
 
 (use-package poly-rst)
 
+(use-package conf-mode
+  :mode ("/Cargo.lock\\'" . conf-toml-mode))
+
 (use-package yaml-mode)
 
 (use-package scala-mode
