@@ -644,10 +644,12 @@ If CLEAR is specified, clear them instead."
   :config
   (projectile-mode))
 
-(use-package projectile-ripgrep
+(use-package rg
   :after projectile
+  :custom
+  (rg-group-result t)
   :bind (:map projectile-mode-map
-          ("C-p g" . projectile-ripgrep)))
+          ("C-p g" . rg-project)))
 
 (use-package company
   :demand t
