@@ -167,9 +167,10 @@
   (defun use-package-handler/:activate (name-symbol keyword activate rest state)
     (let ((body (use-package-process-keywords name-symbol rest state)))
       (if activate
-        (use-package-concat
-          `((package-activate ',name-symbol))
-          body)
+        (let ((package (if (eq activate t) name-symbol activate)))
+          (use-package-concat
+            `((package-activate ',package))
+            body))
         body)))
   (defun insert-after (xs element after-elemnet)
     "Insert ELEMENT after AFTER_ELEMENT into XS."
@@ -662,6 +663,7 @@ If CLEAR is specified, clear them instead."
 
 (use-package company-dabbrev
   :ensure company
+  :activate company
   :after company
   :commands company-dabbrev
   :custom
@@ -675,6 +677,7 @@ If CLEAR is specified, clear them instead."
 
 (use-package multiple-cursors-core
   :ensure multiple-cursors
+  :activate multiple-cursors
   :commands (mc/multiple-cursors-mode-when-num-cursors>1
               mc/quit-leaving-cursors)
   :bind (("C-b" . mc/mark-all-like-this)
@@ -705,6 +708,7 @@ If CLEAR is specified, clear them instead."
 
 (use-package mc-mark-more
   :ensure multiple-cursors
+  :activate multiple-cursors
   :commands mc/toggle-fake-cursor
   :bind (("C-S-<mouse-1>" . mc/add-cursor-on-click))
   :config
@@ -980,6 +984,7 @@ or the current buffer directory."
 
 (use-package lsp-rust
   :ensure lsp-mode
+  :activate lsp-mode
   :after lsp-mode
   :custom
   (lsp-rust-clippy-preference "on")
