@@ -926,7 +926,7 @@ or the current buffer directory."
   (unless (getenv "RUST_SRC_PATH")
     (when (executable-find "rustc")
       (setenv "RUST_SRC_PATH" (concat
-                                (replace-regexp-in-string "\n$" ""
+                                (replace-regexp-in-string "\n\\'" ""
                                   (shell-command-to-string "rustc --print sysroot"))
                                 "/lib/rustlib/src/rust/src"))))
   (add-hook 'rust-mode-hook #'lsp))
