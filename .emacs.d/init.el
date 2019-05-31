@@ -856,10 +856,10 @@ or the current buffer directory."
   (treemacs-collapse-dirs 3)
   (treemacs-position 'right)
   (treemacs-project-follow-cleanup t)
+  (treemacs-show-cursor t)
   :config
   (treemacs-follow-mode t)
-  (treemacs-filewatch-mode t)
-  (add-hook 'treemacs-mode-hook (lambda () (setq cursor-type 'bar))))
+  (treemacs-filewatch-mode t))
 
 (use-package treemacs-projectile
   :bind ("S-<f8>" . treemacs-projectile))
