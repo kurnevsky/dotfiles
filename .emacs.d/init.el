@@ -650,7 +650,12 @@ If CLEAR is specified, clear them instead."
   :custom
   (rg-group-result t)
   :bind (:map projectile-mode-map
-          ("C-p g" . rg-project)))
+          ("C-p g" . rg-project)
+          :map rg-mode-map
+          ("C-b")
+          ("C-f")
+          ("F" . rg-forward-history)
+          ("B" . rg-back-history)))
 
 (use-package company
   :demand t
