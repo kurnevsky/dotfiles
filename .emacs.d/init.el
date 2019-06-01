@@ -816,6 +816,12 @@ If CLEAR is specified, clear them instead."
   (add-hook 'magit-status-mode-hook
     (lambda () (company-mode -1))))
 
+(use-package gitattributes-mode)
+
+(use-package gitconfig-mode)
+
+(use-package gitignore-mode)
+
 (use-package diff-hl
   :demand t
   :config
