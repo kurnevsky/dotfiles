@@ -595,11 +595,20 @@ If CLEAR is specified, clear them instead."
   (ediff-split-window-function #'split-window-horizontally))
 
 (use-package bs
+  :custom
+  (bs-configurations '(("all" nil nil nil nil nil)
+                        ("filtered" nil nil "^\\*" polymode-indirect bs-sort-buffer-interns-are-last)))
+  (bs-default-configuration "filtered")
   :bind (("<f2>" . bs-show)
           :map bs-mode-map
           ("<f2>" . bs-abort)
           ("<escape>" . bs-abort)
-          ("<mouse-1>" . bs-mouse-select)))
+          ("<mouse-1>" . bs-mouse-select))
+  :config
+  (defun polymode-indirect (buffer)
+    (and
+      (with-current-buffer buffer (bound-and-true-p polymode-mode))
+      (buffer-base-buffer buffer))))
 
 (use-package tramp
   :custom
