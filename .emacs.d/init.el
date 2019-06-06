@@ -1008,10 +1008,6 @@ or the current buffer directory."
   (lsp-rust-cfg-test t)
   (lsp-rust-build-on-save t))
 
-(use-package lsp-scala
-  :after lsp-mode
-  :demand t)
-
 ;; (use-package dap-mode)
 
 (use-package mu4e
