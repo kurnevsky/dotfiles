@@ -891,6 +891,9 @@ or the current buffer directory."
        (side            . bottom)
        (window-height   . 0.3))))
 
+(use-package adoc-mode
+  :mode ("\\.adoc\\'" . adoc-mode))
+
 (use-package polymode
   :config
   ;; Doesn't work well with polymode.
