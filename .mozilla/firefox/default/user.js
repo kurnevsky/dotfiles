@@ -4,6 +4,10 @@
 user_pref("lightweightThemes.selectedThemeID", "firefox-compact-dark@mozilla.org");
 // Enable OpenGL Off-Main-Thread Compositing (OMTC)
 user_pref("layers.acceleration.force-enabled", true);
+// Allow unsigned Add-ons. Or at least try...
+user_pref("xpinstall.signatures.required", false);
+// Read userChrome.css and userContent.css
+user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true)
 
 /*** [SECTION 0100]: STARTUP ***/
 
