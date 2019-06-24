@@ -1033,37 +1033,37 @@ or the current buffer directory."
            (shr-width (- (window-body-width) 8)))
       (shr-render-region (point-min) (point-max))
       (goto-char (point-min))))
-  (setq mu4e-contexts
-    `( ,(make-mu4e-context
-          :name "Gmail"
-          :enter-func (lambda () (mu4e-message "Entering gmail context"))
-          :leave-func (lambda () (mu4e-message "Leaving gmail context"))
-          :match-func (lambda (msg) (when msg
-                                      (string-prefix-p "/gmail" (mu4e-message-field msg :maildir))))
-          :vars '((mu4e-sent-folder . "/gmail/[Gmail]/Sent Mail")
-                   (mu4e-drafts-folder . "/gmail/[Gmail]/Drafts")
-                   (mu4e-trash-folder . "/gmail/[Gmail]/Trash")
-                   (mu4e-refile-folder . "/gmail/[Gmail]/Archive")))
-       ,(make-mu4e-context
-          :name "Yandex"
-          :enter-func (lambda () (mu4e-message "Entering yandex context"))
-          :leave-func (lambda () (mu4e-message "Leaving yandex context"))
-          :match-func (lambda (msg) (when msg
-                                      (string-prefix-p "/yandex" (mu4e-message-field msg :maildir))))
-          :vars '((mu4e-sent-folder . "/yandex/Sent")
-                   (mu4e-drafts-folder . "/yandex/Drafts")
-                   (mu4e-trash-folder . "/yandex/Trash")
-                   (mu4e-refile-folder . "/yandex/Archive")))
-       ,(make-mu4e-context
-          :name "Adform"
-          :enter-func (lambda () (mu4e-message "Entering adform context"))
-          :leave-func (lambda () (mu4e-message "Leaving adform context"))
-          :match-func (lambda (msg) (when msg
-                                      (string-prefix-p "/adform" (mu4e-message-field msg :maildir))))
-          :vars '((mu4e-sent-folder . "/adform/Sent Items")
-                   (mu4e-drafts-folder . "/adform/Drafts")
-                   (mu4e-trash-folder . "/adform/Deleted Items")
-                   (mu4e-refile-folder . "/adform/Archive"))))))
+  (defvar mu4e-sent-folder-alternatives '("/[Gmail]/Sent Mail" ;; gmail
+                                           "/Sent" ;; yandex
+                                           "/Sent Items" ;; outlook
+                                           ))
+  (defvar mu4e-drafts-folder-alternatives '("/[Gmail]/Drafts" ;; gmail
+                                             "/Drafts" ;; yandex, outlook
+                                             ))
+  (defvar mu4e-trash-folder-alternatives '("/[Gmail]/Trash" ;; gmail
+                                            "/Trash" ;; yandex
+                                            "/Deleted Items" ;; outlook
+                                            ))
+  (defvar mu4e-refile-folder-alternatives '("/[Gmail]/Archive" ;; gmail
+                                             "/Archive" ;; yandex, outlook
+                                             ))
+  (defun choose-mu4e-alternative (name alternatives)
+    (string-remove-prefix mu4e-maildir
+      (seq-find #'file-directory-p
+        (mapcar (lambda (value) (concat mu4e-maildir "/" name value))
+          (symbol-value alternatives)))))
+  (defun make-mu4e-context-generic (name)
+    (make-mu4e-context
+      :name name
+      :enter-func `(lambda () (mu4e-message (concat "Entering " ,name " context")))
+      :leave-func `(lambda () (mu4e-message (concat "Leaving " ,name " context")))
+      :match-func `(lambda (msg) (when msg
+                                   (string-prefix-p (concat "/" ,name) (mu4e-message-field msg :maildir))))
+      :vars `((mu4e-sent-folder . ,(choose-mu4e-alternative name 'mu4e-sent-folder-alternatives))
+               (mu4e-drafts-folder . ,(choose-mu4e-alternative name 'mu4e-drafts-folder-alternatives))
+               (mu4e-trash-folder . ,(choose-mu4e-alternative name 'mu4e-trash-folder-alternatives))
+               (mu4e-refile-folder . ,(choose-mu4e-alternative name 'mu4e-refile-folder-alternatives)))))
+  (setq mu4e-contexts (mapcar #'make-mu4e-context-generic (directory-files "~/Mail" nil "[^.]"))))
 
 (use-package zone
   :commands zone)
