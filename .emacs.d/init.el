@@ -833,35 +833,8 @@ If CLEAR is specified, clear them instead."
   (diff-hl-flydiff-mode)
   (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
 
-(use-package neotree
-  :bind ("<f8>" . neotree-project-dir-toggle)
-  :custom
-  (neo-window-position 'right)
-  (neo-show-hidden-files t)
-  (neo-autorefresh t)
-  (projectile-switch-project-action #'neotree-projectile-action)
-  :config
-  (defun neotree-project-dir-toggle ()
-    "Open NeoTree using the project root, using find-file-in-project,
-or the current buffer directory."
-    (interactive)
-    (let ((project-dir
-            (ignore-errors
-              (projectile-project-root)))
-           (file-name (buffer-file-name))
-           (neo-smart-open t))
-      (if (and (fboundp #'neo-global--window-exists-p)
-            (neo-global--window-exists-p))
-        (neotree-hide)
-        (progn
-          (neotree-show)
-          (if project-dir
-            (neotree-dir project-dir))
-          (if file-name
-            (neotree-find file-name)))))))
-
 (use-package treemacs
-  :commands (treemacs-toggle treemacs-select-window treemacs-delete-other-windows treemacs treemacs-find-file)
+  :bind ("<f8>" . treemacs)
   :custom
   (treemacs-collapse-dirs 3)
   (treemacs-position 'right)
