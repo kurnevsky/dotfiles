@@ -1,0 +1,4 @@
+/* Remove close button from tabs */
+#tabbrowser-tabs .tabbrowser-tab .tab-close-button {
+  display: none !important;
+}

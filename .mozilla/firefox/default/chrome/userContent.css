@@ -1,0 +1,41 @@
+:root {
+  --dark-color: #101010;
+}
+
+@-moz-document url-prefix("about:about"),
+               url-prefix("about:accounts"),
+               url-prefix("about:addons"),
+               url-prefix("about:blank"),
+               url-prefix("about:buildconfig"),
+               url-prefix("about:cache"),
+               url-prefix("about:certerror"),
+               url-prefix("about:checkerboard"),
+               url-prefix("about:config"),
+               url-prefix("about:crashes"),
+               url-prefix("about:debugging"),
+               url-prefix("about:downloads"),
+               url-prefix("about:home"),
+               url-prefix("about:license"),
+               url-prefix("about:memory"),
+               url-prefix("about:neterror"),
+               url-prefix("about:networking"),
+               url-prefix("about:newtab"),
+               url-prefix("about:performance"),
+               url-prefix("about:plugins"),
+               url-prefix("about:preferences"),
+               url-prefix("about:profiles"),
+               url-prefix("about:rights"),
+               url-prefix("about:robots"),
+               url-prefix("about:serviceworkers"),
+               url-prefix("about:sessionrestore"),
+               url-prefix("about:studies"),
+               url-prefix("about:support"),
+               url-prefix("about:sync-log"),
+               url-prefix("about:telemetry"),
+               url-prefix("about:url-classifier"),
+               url-prefix("about:webrtc") {
+  html, page, window {
+    filter: invert(90%) hue-rotate(180deg) !important;
+    background: var(--dark-color) !important;
+  }
+}
