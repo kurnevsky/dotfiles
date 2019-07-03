@@ -39,3 +39,8 @@
     background: var(--dark-color) !important;
   }
 }
+
+.invert-colors {
+  filter: invert(90%) hue-rotate(180deg) !important;
+  background: var(--dark-color) !important;
+}

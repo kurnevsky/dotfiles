@@ -1,4 +1,14 @@
-/* Remove close button from tabs */
-#tabbrowser-tabs .tabbrowser-tab .tab-close-button {
-  display: none !important;
+:root {
+  --dark-color: #101010;
+}
+
+dialog,
+menupopup,
+popup,
+#statuspanel {
+  filter: invert(90%) hue-rotate(180deg) !important;
+}
+
+#tabbrowser-tabpanels {
+  background: var(--dark-color) !important;
 }
