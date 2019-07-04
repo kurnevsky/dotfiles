@@ -7,6 +7,8 @@ export EPM_INIT_FILE=~/.emacs.d/epm.el
 
 export ALTERNATE_EDITOR=nano
 export EDITOR=emacsclient
+export VIEWER=less
+export AUR_PAGER=mc
 
 [ -f /usr/bin/src-hilite-lesspipe.sh ] && {
   export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
