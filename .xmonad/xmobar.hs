@@ -1,4 +1,4 @@
-Config { font = "xft:DejaVu Sans:pixelsize=14:antialias=true:autohint=false"
+Config { font = "xft:DejaVu Sans:size=11"
        , bgColor = "black"
        , fgColor = "gray"
        , position = TopSize C 100 25

@@ -66,12 +66,15 @@ myNormalBorderColor = "gray"
 
 myFocusedBorderColor = "black"
 
+myFont size = "xft:DejaVu Sans:size=" ++ show size
+
 myXPConfig = def
   { position = Top
   , height = 25
   , bgColor = "black"
   , promptBorderWidth = 0
   , alwaysHighlight = True
+  , font = myFont 11
   }
 
 withPid :: Window -> (ProcessID -> X ()) -> X ()
@@ -244,7 +247,7 @@ myTheme = def { activeColor = "#000000"
               , activeTextColor = "#00FF00"
               , inactiveTextColor = "#FFFFFF"
               , urgentTextColor = "#FF0000"
-              , fontName = "xft:DejaVu Sans:pixelsize=14:antialias=true:autohint=false"
+              , fontName = myFont 11
               , decoHeight = 25
               }
 
@@ -253,9 +256,9 @@ myLayout = fullLayoutModifiers fullLayout |||
            mirrorLayoutModifiers mirrorLayout |||
            gridLayoutModifiers gridLayout where
   fullLayoutModifiers = named "Full" . smartBorders . avoidStruts . maximize . minimize . boringWindows . trackFloating
-  tiledLayoutModifiers = named "Tiled" . dwmStyle shrinkText def . smartBorders . smartSpacing 2 . avoidStruts . maximize . minimize . boringWindows
-  mirrorLayoutModifiers = named "Mirror" . dwmStyle shrinkText def . smartBorders . smartSpacing 2 . avoidStruts . maximize . minimize . boringWindows
-  gridLayoutModifiers = named "Grid" . dwmStyle shrinkText def . smartBorders . smartSpacing 2 . avoidStruts . maximize . minimize . boringWindows
+  tiledLayoutModifiers = named "Tiled" . dwmStyle shrinkText myTheme . smartBorders . smartSpacing 2 . avoidStruts . maximize . minimize . boringWindows
+  mirrorLayoutModifiers = named "Mirror" . dwmStyle shrinkText myTheme . smartBorders . smartSpacing 2 . avoidStruts . maximize . minimize . boringWindows
+  gridLayoutModifiers = named "Grid" . dwmStyle shrinkText myTheme . smartBorders . smartSpacing 2 . avoidStruts . maximize . minimize . boringWindows
   fullLayout = tabbedBottom shrinkText myTheme
   tiledLayout = Tall nmaster delta ratio
   mirrorLayout = Mirror tiledLayout
@@ -299,7 +302,7 @@ myLogHook hXmobar = do
 myGSConfig :: HasColorizer a => GSConfig a
 myGSConfig = def { gs_cellheight = 200
                  , gs_cellwidth = 400
-                 , gs_font = "xft:Sans-16"
+                 , gs_font = myFont 22
                  }
 
 addNETSupported :: Atom -> X ()
