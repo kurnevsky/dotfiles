@@ -31,7 +31,6 @@ int main(int argc, char *argv[])
   DENY_RULE(acct);
   DENY_RULE(add_key);
   DENY_RULE(adjtimex);
-  DENY_RULE(chroot);
   DENY_RULE(clock_adjtime);
   DENY_RULE(create_module);
   DENY_RULE(delete_module);
