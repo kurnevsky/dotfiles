@@ -4,6 +4,8 @@ set -e
 
 echo $$ > "/sys/fs/cgroup/memory/$USER/4G/tasks"
 
+mapfile -t video < <(find /dev -maxdepth 1 -type c -regex '/dev/video[0-9]+' | sed 's/.*/--dev-bind\n&\n&/')
+
 exec bwrap \
      --ro-bind /usr/bin/chromium /usr/bin/chromium \
      \
@@ -24,6 +26,8 @@ exec bwrap \
      \
      --dev /dev \
      --dev-bind /dev/dri /dev/dri \
+     `# Necessary for camera access` \
+     "${video[@]}" \
      \
      `# Necessary for hardware acceleration` \
      --ro-bind /sys/dev /sys/dev \
