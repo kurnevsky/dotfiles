@@ -919,7 +919,9 @@ If CLEAR is specified, clear them instead."
 
 (use-package sql)
 
-(use-package matlab-mode)
+(use-package matlab
+  :ensure matlab-mode
+  :activate matlab-mode)
 
 (use-package ess)
 
