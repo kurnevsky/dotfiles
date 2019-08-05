@@ -921,8 +921,7 @@ If CLEAR is specified, clear them instead."
       (setenv "RUST_SRC_PATH" (concat
                                 (replace-regexp-in-string "\n\\'" ""
                                   (shell-command-to-string "rustc --print sysroot"))
-                                "/lib/rustlib/src/rust/src"))))
-  (add-hook 'rust-mode-hook #'lsp))
+                                "/lib/rustlib/src/rust/src")))))
 
 (use-package sql)
 
