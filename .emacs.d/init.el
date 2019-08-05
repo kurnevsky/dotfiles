@@ -967,7 +967,15 @@ If CLEAR is specified, clear them instead."
   :commands lsp
   :custom
   (lsp-auto-guess-root t)
-  (lsp-prefer-flymake nil))
+  (lsp-prefer-flymake nil)
+  :config
+  (defun lsp-activate-if-already-activated (server-id)
+    (when (lsp-find-workspace server-id (buffer-file-name))
+      (lsp)))
+  (add-hook 'rust-mode-hook (lambda ()
+                              (lsp-activate-if-already-activated 'rls)))
+  (add-hook 'scala-mode-hook (lambda ()
+                               (lsp-activate-if-already-activated 'metals))))
 
 (use-package lsp-ui
   :commands lsp-ui-mode)
