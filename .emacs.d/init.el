@@ -342,6 +342,13 @@
   :custom
   (highlight-thing-what-thing 'symbol)
   :config
+  (defun highlight-thing-should-highlight-p ()
+    (and
+      (not (minibufferp))
+      (not (member major-mode highlight-thing-excluded-major-modes))
+      (not (and
+             (bound-and-true-p lsp-mode)
+             (lsp--capability "documentHighlightProvider")))))
   (global-highlight-thing-mode))
 
 (use-package highlight-indent-guides
@@ -961,9 +968,7 @@ If CLEAR is specified, clear them instead."
   :commands lsp
   :custom
   (lsp-auto-guess-root t)
-  (lsp-prefer-flymake nil)
-  :config
-  (add-hook 'lsp-mode-hook (lambda () (highlight-thing-mode -1))))
+  (lsp-prefer-flymake nil))
 
 (use-package lsp-ui
   :commands lsp-ui-mode)
