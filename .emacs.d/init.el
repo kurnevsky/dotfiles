@@ -72,6 +72,10 @@
 (setq search-exit-option nil)
 ;; Move mouse to newly selected frames.
 (setq focus-follows-mouse t)
+;; Increase undo history limits.
+(setq undo-limit (* 1024 1024))
+(setq undo-strong-limit (* 2 1024 1024))
+(setq undo-outer-limit (* 16 1024 1024))
 ;; Show line and column numbers.
 (line-number-mode t)
 (column-number-mode t)
