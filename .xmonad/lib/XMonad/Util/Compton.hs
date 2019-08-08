@@ -47,7 +47,7 @@ getInversionStatus dpy w =
                                 ]
              }
       extractStatus :: [Variant] -> Maybe Bool
-      extractStatus [v] = fmap (== (1 :: Word16)) $ fromVariant v
+      extractStatus [v] = fmap (== (1 :: Word32)) $ fromVariant v
       extractStatus _ = Nothing
   in do client <- connectSession
         status <- call_ client mc
@@ -60,7 +60,7 @@ setInversionStatus dpy w status =
              { methodCallDestination = Just $ comptonBus dpy
              , methodCallBody = [ toVariant (fromIntegral w :: Word32)
                                 , toVariant ("invert_color_force" :: String)
-                                , toVariant ((if status then 1 else 0) :: Word16)
+                                , toVariant ((if status then 1 else 0) :: Word32)
                                 ]
              }
   in do client <- connectSession
