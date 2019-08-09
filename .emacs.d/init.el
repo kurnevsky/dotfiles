@@ -660,6 +660,7 @@ If CLEAR is specified, clear them instead."
   :after projectile
   :custom
   (rg-group-result t)
+  (rg-command-line-flags '("--hidden"))
   :bind (:map projectile-mode-map
           ("C-p g" . rg-project)
           :map rg-mode-map
