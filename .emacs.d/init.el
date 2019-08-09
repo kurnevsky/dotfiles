@@ -988,7 +988,9 @@ If CLEAR is specified, clear them instead."
                                (lsp-activate-if-already-activated 'metals))))
 
 (use-package lsp-ui
-  :commands lsp-ui-mode)
+  :commands lsp-ui-mode
+  :custom
+  (lsp-ui-doc-alignment 'window))
 
 (use-package company-lsp
   :commands company-lsp)
