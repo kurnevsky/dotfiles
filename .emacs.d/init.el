@@ -891,6 +891,8 @@ If CLEAR is specified, clear them instead."
 
 (use-package yaml-mode)
 
+(use-package groovy-mode)
+
 (use-package scala-mode
   :interpreter ("scala" . scala-mode)
   :config
