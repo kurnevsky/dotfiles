@@ -619,7 +619,13 @@ If CLEAR is specified, clear them instead."
           :map bs-mode-map
           ("<f2>" . bs-abort)
           ("<escape>" . bs-abort)
-          ("<mouse-1>" . bs-mouse-select)))
+          ("<mouse-1>" . bs-mouse-select))
+  :config
+  ;; Fix bs height for non-standard modelines.
+  (advice-add 'bs-show :after (lambda (_ARG)
+                                (setq-local scroll-margin 0)
+                                (redisplay)
+                                (bs--set-window-height))))
 
 (use-package tramp
   :custom
