@@ -72,6 +72,8 @@
 (setq search-exit-option nil)
 ;; Move mouse to newly selected frames.
 (setq focus-follows-mouse t)
+;; Resize windows pixelwise.
+(setq window-resize-pixelwise t)
 ;; Increase undo history limits.
 (setq undo-limit (* 1024 1024))
 (setq undo-strong-limit (* 2 1024 1024))
