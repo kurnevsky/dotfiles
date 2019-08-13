@@ -981,6 +981,8 @@ If CLEAR is specified, clear them instead."
   :config
   (editorconfig-mode 1))
 
+(use-package format-all)
+
 (use-package lsp-mode
   :commands lsp
   :custom
