@@ -70,6 +70,7 @@ exec bwrap \
      --bind ~/Downloads ~/Downloads \
      --ro-bind ~/.password-store ~/.password-store \
      --bind ~/.gnupg ~/.gnupg \
+     --ro-bind ~/.config/gtk-3.0 ~/.config/gtk-3.0 \
      --bind ~/.config/pulse ~/.config/pulse \
      --ro-bind ~/.Xauthority ~/.Xauthority \
      \

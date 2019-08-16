@@ -1,13 +1,13 @@
 // Based on https://github.com/ghacksuserjs/ghacks-user.js/blob/45bd5ccc02d4526195cc85bb2e455ec489388361/user.js
 
-// Set dark theme
-user_pref("lightweightThemes.selectedThemeID", "firefox-compact-dark@mozilla.org");
 // Enable OpenGL Off-Main-Thread Compositing (OMTC)
 user_pref("layers.acceleration.force-enabled", true);
 // Allow unsigned Add-ons. Or at least try...
 user_pref("xpinstall.signatures.required", false);
 // Read userChrome.css and userContent.css
 user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
+// Dark about:* pages.
+user_pref("browser.in-content.dark-mode", true);
 
 /*** [SECTION 0100]: STARTUP ***/
 

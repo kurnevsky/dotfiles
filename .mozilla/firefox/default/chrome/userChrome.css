@@ -2,13 +2,6 @@
   --dark-color: #101010;
 }
 
-dialog,
-menupopup,
-popup,
-#statuspanel {
-  filter: invert(90%) hue-rotate(180deg) !important;
-}
-
 #tabbrowser-tabpanels {
   background: var(--dark-color) !important;
 }
