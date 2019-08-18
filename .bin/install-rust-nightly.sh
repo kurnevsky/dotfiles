@@ -1,23 +1,37 @@
 #!/bin/bash
 
-wget https://static.rust-lang.org/dist/rustc-nightly-src.tar.gz
-wget https://static.rust-lang.org/dist/rustc-nightly-src.tar.gz.asc
-gpg --verify rustc-nightly-src.tar.gz{.asc,} || { echo "Can't verify rustc-nightly-src" >&2; exit 1; }
+VERSION=nightly
+TARGET=x86_64-unknown-linux-gnu
+BASE_URL=https://static.rust-lang.org/dist/
 
-wget https://static.rust-lang.org/dist/rust-nightly-x86_64-unknown-linux-gnu.tar.gz
-wget https://static.rust-lang.org/dist/rust-nightly-x86_64-unknown-linux-gnu.tar.gz.asc
-gpg --verify rust-nightly-x86_64-unknown-linux-gnu.tar.gz{.asc,} || { echo "Can't verify rust-nightly-x86_64-unknown-linux-gnu" >&2; exit 1; }
+RUST="rust-$VERSION-$TARGET"
+RUST_SRC="rustc-$VERSION-src"
+RUST_TAR="$RUST.tar.gz"
+RUST_SRC_TAR="$RUST_SRC.tar.gz"
+RUST_URL="$BASE_URL$RUST_TAR"
+RUST_SRC_URL="$BASE_URL$RUST_SRC_TAR"
+RUST_INSTALL_PATH="./$RUST-installed"
 
-rm -rf rust
-rm -rf rust-nightly-src
-rm -rf rust-nightly-x86_64-unknown-linux-gnu
+mkdir -p ~/rust
+cd ~/rust || exit 1;
 
-tar -xvzf rustc-nightly-src.tar.gz
-tar -xvzf rust-nightly-x86_64-unknown-linux-gnu.tar.gz
+wget "$RUST_SRC_URL"
+wget "$RUST_SRC_URL.asc"
+gpg --verify "$RUST_SRC_TAR"{.asc,} || { echo "Can't verify $RUST_SRC" >&2; exit 1; }
 
-rm rustc-nightly-src.tar.gz{.asc,}
-rm rust-nightly-x86_64-unknown-linux-gnu.tar.gz{.asc,}
+wget "$RUST_URL"
+wget "$RUST_URL.asc"
+gpg --verify "$RUST_TAR"{.asc,} || { echo "Can't verify $RUST" >&2; exit 1; }
 
-mv rustc-nightly-src rust-nightly-src
+rm -rf "./$RUST_SRC"
+rm -rf "./$RUST"
 
-./rust-nightly-x86_64-unknown-linux-gnu/install.sh --prefix=./rust
+tar -xvzf "$RUST_SRC_TAR"
+tar -xvzf "$RUST_TAR"
+
+rm "$RUST_SRC_TAR"{.asc,}
+rm "$RUST_TAR"{.asc,}
+
+rm -rf "$RUST_INSTALL_PATH"
+
+./"$RUST"/install.sh --prefix="$RUST_INSTALL_PATH"
