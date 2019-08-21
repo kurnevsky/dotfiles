@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# To find out the mime type of a file use: file --mime-type -b filename
+# To debug use: XDG_UTILS_DEBUG_LEVEL=2 xdg-mime query default mimetype
+# See /usr/share/mime/types for all mimetypes.
+
+MIMEAPPS=~/.config/mimeapps.list
+
+echo "[Default Applications]" > $MIMEAPPS
+
+add_app () {
+  echo "# $1" >> $MIMEAPPS
+  awk -F '=' '/^MimeType/{print $2}' "/usr/share/applications/$1.desktop" | sed "s/;/=$1.desktop\n/g" | grep -v -e '^$' >> $MIMEAPPS
+}
+
+for APP in \
+  org.pwmt.zathura-ps \
+  org.pwmt.zathura-djvu \
+  org.pwmt.zathura-pdf-mupdf \
+  feh \
+  mpv \
+  org.qbittorrent.qBittorrent \
+  firefox
+do
+  add_app $APP
+done
