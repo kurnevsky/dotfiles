@@ -20,19 +20,20 @@ exec bwrap \
      \
      --dev /dev \
      \
-     --ro-bind /opt/tor-browser-en /opt/tor-browser-en \
+     --ro-bind /opt/tor-browser /opt/tor-browser \
      \
      --ro-bind /tmp/.X11-unix /tmp/.X11-unix \
      \
      --tmpfs /run \
      \
-     --bind ~/.tor-browser-en ~/.tor-browser-en \
+     --bind ~/.tor-browser ~/.tor-browser \
      --ro-bind ~/.Xauthority ~/.Xauthority \
      \
      --unsetenv MAIL \
      --unsetenv SHELL \
-     --setenv HOME ~/.tor-browser-en/INSTALL/Browser \
-     --setenv FONTCONFIG_PATH ~/.tor-browser-en/INSTALL/Browser/TorBrowser/Data/fontconfig \
+     --setenv LD_LIBRARY_PATH ~/.tor-browser/app/Browser/TorBrowser/Tor \
+     --setenv HOME ~/.tor-browser/app/Browser \
+     --setenv FONTCONFIG_PATH ~/.tor-browser/app/Browser/TorBrowser/Data/fontconfig \
      --setenv FONTCONFIG_FILE fonts.conf \
      \
      --unshare-user \
@@ -49,7 +50,7 @@ exec bwrap \
      --seccomp 3 \
      3< ~/.seccomp/seccomp.bpf \
      \
-     ~/.tor-browser-en/INSTALL/Browser/firefox.real \
+     ~/.tor-browser/app/Browser/firefox.real \
      --class "Tor Browser" \
-     --profile ~/.tor-browser-en/INSTALL/Browser/TorBrowser/Data/Browser/profile.default \
+     --profile ~/.tor-browser/app/Browser/TorBrowser/Data/Browser/profile.default \
      "$@"
