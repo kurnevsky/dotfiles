@@ -150,9 +150,6 @@
   '(("melpa" . 2)
      ("melpa-stable" . 1)
      ("gnu" . 0)))
-;; Fix for bug 34341.
-(when (version<= "26" emacs-version)
-  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 ;; Initialize packages without activating.
 (package-initialize t)
 ;; Fetch the list of packages available.
