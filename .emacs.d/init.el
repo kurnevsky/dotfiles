@@ -74,6 +74,8 @@
 (setq focus-follows-mouse t)
 ;; Resize windows pixelwise.
 (setq window-resize-pixelwise t)
+;; Allow minibuffer commands while in the minibuffer.
+(setq enable-recursive-minibuffers t)
 ;; Increase undo history limits.
 (setq undo-limit (* 1024 1024))
 (setq undo-strong-limit (* 2 1024 1024))
@@ -315,6 +317,11 @@
   :ensure nil
   :custom
   (comint-prompt-read-only t "Make the prompt read only."))
+
+(use-package mb-depth
+  :demand t
+  :config
+  (minibuffer-depth-indicate-mode t))
 
 (use-package display-line-numbers
   :demand t
