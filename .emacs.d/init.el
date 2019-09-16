@@ -1002,7 +1002,8 @@ If CLEAR is specified, clear them instead."
 
 (use-package lsp-ui
   :custom
-  (lsp-ui-doc-alignment 'window))
+  (lsp-ui-doc-alignment 'window)
+  (lsp-ui-sideline-show-hover t))
 
 (use-package company-lsp)
 
