@@ -21,8 +21,10 @@ awk -F: '/\/home/ && ($3 >= 1000) {printf "%s\n", $1}' /etc/passwd | while read 
 do
   for size in {1..8}G
   do
+    bytes=$(dehumanise "$size")
     mkdir -p "/sys/fs/cgroup/memory/$user/$size"
-    dehumanise $size > "/sys/fs/cgroup/memory/$user/$size/memory.limit_in_bytes"
+    echo "$bytes" > "/sys/fs/cgroup/memory/$user/$size/memory.limit_in_bytes"
+    echo "$bytes" > "/sys/fs/cgroup/memory/$user/$size/memory.memsw.limit_in_bytes"
     chown "$user:$user" "/sys/fs/cgroup/memory/$user/$size/tasks"
   done
 done
