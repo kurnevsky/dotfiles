@@ -3,8 +3,20 @@ Config { font = "xft:DejaVu Sans:size=11"
        , fgColor = "gray"
        , position = TopSize C 100 25
        , commands = [ Run Date "<fc=#ffcc00>%a %Y.%m.%d %T</fc>" "date" 10
-                    , Run Weather "UMMS" [ "--template", "<station> <hour> <tempC>C <rh>% <pressure>Hg"
-                                         ] 1000
+                    , Run WeatherX "UMMS" [ ("clear", "🌣")
+                                          , ("sunny", "🌣")
+                                          , ("mostly clear", "🌤")
+                                          , ("mostly sunny", "🌤")
+                                          , ("partly sunny", "⛅")
+                                          , ("fair", "🌑")
+                                          , ("cloudy","☁")
+                                          , ("overcast","☁")
+                                          , ("partly cloudy", "⛅")
+                                          , ("mostly cloudy", "🌧")
+                                          , ("considerable cloudiness", "⛈")
+                                          ]
+                                          [ "--template", "<station> <hour> <tempC>°C <skyConditionS> <rh>% <pressure>Hg"
+                                          ] 1000
                     , Run Battery [ "--template", "<acstatus>"
                                   , "--Low", "10"
                                   , "--High", "80"
