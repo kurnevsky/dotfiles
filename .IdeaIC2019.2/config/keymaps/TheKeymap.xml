@@ -1,0 +1,16 @@
+<keymap version="1" name="TheKeymap" parent="Default for XWin">
+  <action id="EditorBackwardParagraph">
+    <keyboard-shortcut first-keystroke="ctrl up" />
+  </action>
+  <action id="EditorBackwardParagraphWithSelection">
+    <keyboard-shortcut first-keystroke="shift ctrl up" />
+  </action>
+  <action id="EditorForwardParagraph">
+    <keyboard-shortcut first-keystroke="ctrl down" />
+  </action>
+  <action id="EditorForwardParagraphWithSelection">
+    <keyboard-shortcut first-keystroke="shift ctrl down" />
+  </action>
+  <action id="EditorScrollDown" />
+  <action id="EditorScrollUp" />
+</keymap>
