@@ -596,7 +596,7 @@ If CLEAR is specified, clear them instead."
           (setq formated (funcall width formated))
           (if (floatp width)
             (setq width (floor (* (window-width (minibuffer-window)) width))))
-          (setq formated (ivy-rich-normailze-width formated width (eq align 'left)))))
+          (setq formated (ivy-rich-normalize-width formated width (eq align 'left)))))
       (if face
         (setq formated (propertize formated 'face face)))
       (when highlight
