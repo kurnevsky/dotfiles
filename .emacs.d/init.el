@@ -910,24 +910,7 @@ If CLEAR is specified, clear them instead."
 (use-package groovy-mode)
 
 (use-package scala-mode
-  :interpreter ("scala" . scala-mode)
-  :config
-  (defun right-arrow ()
-    (interactive)
-    (cond ((looking-back "=" nil)
-            (backward-delete-char 1) (insert "⇒"))
-      ((looking-back "-" nil)
-        (backward-delete-char 1) (insert "→"))
-      (t (insert ">"))))
-  (defun left-arrow ()
-    (interactive)
-    (if (looking-back "<" nil)
-      (progn (backward-delete-char 1)
-        (insert "←"))
-      (insert "-")))
-  (add-hook 'scala-mode-hook (lambda ()
-                                (local-set-key (kbd "-") #'left-arrow)
-                                (local-set-key (kbd ">") #'right-arrow))))
+  :interpreter ("scala" . scala-mode))
 
 (use-package haskell-mode)
 
