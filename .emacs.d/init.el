@@ -974,6 +974,7 @@ If CLEAR is specified, clear them instead."
   :custom
   (lsp-auto-guess-root t)
   (lsp-prefer-flymake nil)
+  (lsp-file-watch-threshold nil)
   :config
   (defun lsp-activate-if-already-activated (server-id)
     (when (lsp-find-workspace server-id (buffer-file-name))
