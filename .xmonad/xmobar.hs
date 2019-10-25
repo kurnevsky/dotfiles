@@ -15,6 +15,7 @@ Config { font = "xft:Dejavu Sans:size=11"
                                           , ("partly cloudy", "⛅")
                                           , ("mostly cloudy", "🌧")
                                           , ("considerable cloudiness", "⛈")
+                                          , ("obscured", "🌫")
                                           ]
                                           [ "--template", "<station> <hour> <tempC>°C <fn=1><skyConditionS></fn> <rh>% <pressure>Hg"
                                           ] 1000
