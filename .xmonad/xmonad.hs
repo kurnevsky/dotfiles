@@ -38,12 +38,13 @@ import XMonad.Layout.Maximize (maximize)
 import XMonad.Layout.Minimize (minimize)
 import XMonad.Layout.Named (named)
 import XMonad.Layout.NoBorders (smartBorders)
+import XMonad.Prompt.Shell (shellPrompt)
 import XMonad.Layout.Spacing (smartSpacing)
 import XMonad.Layout.Tabbed (tabbedBottom)
 import XMonad.Layout.TrackFloating (trackFloating)
 import XMonad.Prompt (XPConfig(..), XPPosition(..))
 import XMonad.Prompt.ConfirmPrompt (confirmPrompt)
-import XMonad.Prompt.Fuzzy (fuzzyShellPrompt)
+import XMonad.Prompt.FuzzyMatch (fuzzyMatch, fuzzySort)
 import qualified XMonad.StackSet as SS
 import XMonad.Util.Compton (invert)
 import XMonad.Util.NamedWindows (getName)
@@ -73,6 +74,8 @@ myXPConfig = def
   , height = 25
   , bgColor = "black"
   , promptBorderWidth = 0
+  , searchPredicate = fuzzyMatch
+  , sorter = fuzzySort
   , alwaysHighlight = True
   , font = myFont 11
   }
@@ -120,7 +123,7 @@ myKeys conf@XConfig { XMonad.modMask = modm } = M.union (planeKeys modm (Lines 3
   -- Launch mc.
   , ((modm, xK_e), spawn "xterm -e tmux new-session mc")
   -- Launch application.
-  , ((modm, xK_F2), fuzzyShellPrompt myXPConfig)
+  , ((modm, xK_F2), shellPrompt myXPConfig)
   -- Close the focused window.
   , ((modm, xK_c), killSafe)
   -- Kill the focused window.
