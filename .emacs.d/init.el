@@ -861,7 +861,10 @@ If CLEAR is specified, clear them instead."
   (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
 
 (use-package treemacs
-  :bind ("<f8>" . treemacs)
+  :bind (("<f8>" . treemacs)
+          :map treemacs-mode-map
+          ("<M-up>")
+          ("<M-down>"))
   :custom
   (treemacs-collapse-dirs 3)
   (treemacs-position 'right)
