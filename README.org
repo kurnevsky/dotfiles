@@ -23,9 +23,9 @@ Also install modules: ~pacman -S zsh-syntax-highlighting pkgfile~ and ~pacaur -S
 
 Install it from aur with command ~pacaur -S trayer-srg~.
 
-* compton - composite manager
+* picom - composite manager
 
-Install it with command ~pacaur -S compton~.
+Install it with command ~pacaur -S picom~.
 
 * dunst - notifier
 
