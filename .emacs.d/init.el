@@ -891,7 +891,20 @@ If CLEAR is specified, clear them instead."
   ;; Doesn't work well with polymode.
   (add-hook 'prog-mode-hook (lambda ()
                               (when polymode-mode
-                                (set (make-local-variable 'highlight-indent-guides-responsive) nil)))))
+                                (set (make-local-variable 'highlight-indent-guides-responsive) nil))))
+  ;; Fix selection
+  (add-to-list 'polymode-move-these-vars-from-old-buffer 'transient-mark-mode)
+  ;; Fix highlight thing
+  (add-hook 'polymode-before-switch-buffer-hook (lambda (_old _new)
+                                                  (highlight-thing-remove-last)))
+  ;; Fix multiple cursors
+  (add-to-list 'polymode-move-these-vars-from-old-buffer 'mc--this-command)
+  (add-to-list 'polymode-move-these-minor-modes-from-old-buffer 'multiple-cursors-mode)
+  (advice-add 'mc/execute-this-command-for-all-cursors-1 :around (lambda (orig-fun &rest args)
+                                                                   (unless mc--executing-command-for-fake-cursor
+                                                                     (polymode-disable-post-command)
+                                                                     (apply orig-fun args)
+                                                                     (polymode-enable-post-command)))))
 
 (use-package poly-markdown)
 
