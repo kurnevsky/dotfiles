@@ -991,7 +991,8 @@ If CLEAR is specified, clear them instead."
   :custom
   (lsp-ui-doc-alignment 'window)
   (lsp-ui-sideline-show-hover t)
-  (lsp-ui-sideline-update-mode 'line))
+  (lsp-ui-sideline-update-mode 'line)
+  (lsp-ui-doc-position 'top))
 
 (use-package company-lsp)
 
