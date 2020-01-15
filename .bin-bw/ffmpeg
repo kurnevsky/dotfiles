@@ -24,6 +24,8 @@ exec bwrap \
      \
      --proc /proc \
      \
+     --ro-bind /opt/intel/mediasdk /opt/intel/mediasdk \
+     \
      --dev /dev \
      --dev-bind /dev/dri /dev/dri \
      `# Necessary for camera access` \
@@ -32,6 +34,10 @@ exec bwrap \
      `# Necessary for hardware acceleration` \
      --ro-bind /sys/dev /sys/dev \
      --ro-bind /sys/devices /sys/devices \
+     \
+     --ro-bind /etc/ld.so.cache /etc/ld.so.cache \
+     --ro-bind /etc/ld.so.conf /etc/ld.so.conf \
+     --ro-bind /etc/ld.so.conf.d /etc/ld.so.conf.d \
      \
      --tmpfs /run \
      \
