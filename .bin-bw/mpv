@@ -30,8 +30,6 @@ exec bwrap \
      --symlink /usr/bin /bin \
      --symlink /usr/bin /sbin \
      \
-     --ro-bind /opt/intel/mediasdk /opt/intel/mediasdk \
-     \
      --proc /proc \
      \
      --dev /dev \
@@ -46,9 +44,6 @@ exec bwrap \
      --ro-bind /etc/fonts /etc/fonts \
      --ro-bind /etc/pulse /etc/pulse \
      --ro-bind /etc/mpv /etc/mpv \
-     --ro-bind /etc/ld.so.cache /etc/ld.so.cache \
-     --ro-bind /etc/ld.so.conf /etc/ld.so.conf \
-     --ro-bind /etc/ld.so.conf.d /etc/ld.so.conf.d \
      \
      --tmpfs /run \
      --bind "/run/user/$UID/pulse" "/run/user/$UID/pulse" \

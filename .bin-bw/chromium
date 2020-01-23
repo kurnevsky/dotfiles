@@ -24,8 +24,6 @@ exec bwrap \
      \
      --proc /proc \
      \
-     --ro-bind /opt/intel/mediasdk /opt/intel/mediasdk \
-     \
      --dev /dev \
      --dev-bind /dev/dri /dev/dri \
      `# Necessary for camera access` \
@@ -45,9 +43,6 @@ exec bwrap \
      --ro-bind /etc/gtk-3.0 /etc/gtk-3.0 \
      --ro-bind /etc/resolv.conf /etc/resolv.conf \
      --ro-bind /etc/localtime /etc/localtime \
-     --ro-bind /etc/ld.so.cache /etc/ld.so.cache \
-     --ro-bind /etc/ld.so.conf /etc/ld.so.conf \
-     --ro-bind /etc/ld.so.conf.d /etc/ld.so.conf.d \
      \
      --tmpfs /run \
      --bind /run/dbus/system_bus_socket /run/dbus/system_bus_socket \
