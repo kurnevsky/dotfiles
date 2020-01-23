@@ -912,6 +912,7 @@ If CLEAR is specified, clear them instead."
 (use-package groovy-mode)
 
 (use-package scala-mode
+  :mode ("\\.worksheet\\.sc\\'" . scala-mode)
   :interpreter ("scala" . scala-mode))
 
 (use-package haskell-mode)
