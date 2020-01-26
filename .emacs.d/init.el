@@ -684,6 +684,7 @@ If CLEAR is specified, clear them instead."
           ("TAB" . company-indent-or-complete-common))
   :custom
   (company-tooltip-align-annotations t)
+  (company-require-match nil)
   :config
   (global-company-mode 1))
 
