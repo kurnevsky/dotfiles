@@ -1,5 +1,5 @@
 Config { font = "xft:Dejavu Sans:size=11"
-       , additionalFonts = ["xft:Noto Sans Symbols2:size=10"]
+       , additionalFonts = ["xft:Noto Sans Symbols2:size=10,Dejavu Sans:size=11"]
        , bgColor = "black"
        , fgColor = "gray"
        , position = TopSize C 100 25
