@@ -47,6 +47,8 @@
 (display-time-mode t)
 ;; Minimum shown number of lines before and after cursor.
 (setq scroll-margin 2)
+;; Reduce tab width.
+(setq-default tab-width 4)
 ;; Don't jump when scrolling.
 (setq scroll-conservatively 10000)
 ;; Don't show scratch message.
@@ -507,14 +509,17 @@ If CLEAR is specified, clear them instead."
   :after ivy
   :init
   (defun ivy-rich-switch-buffer-icon (candidate)
-    (with-current-buffer
-      (get-buffer candidate)
-      (let ((icon (all-the-icons-icon-for-mode major-mode :height 0.7 :v-adjust 0.05)))
-	(if (symbolp icon)
-	  (all-the-icons-icon-for-mode 'fundamental-mode :height 0.7 :v-adjust 0.05)
-	  icon))))
+    (concat
+      (with-current-buffer (get-buffer candidate)
+        (let ((icon (all-the-icons-icon-for-mode major-mode :height 0.7 :v-adjust 0.05)))
+          (if (symbolp icon)
+            (all-the-icons-icon-for-mode 'fundamental-mode :height 0.7 :v-adjust 0.05)
+            icon)))
+      "\t"))
   (defun ivy-rich-find-file-icon (candidate)
-    (all-the-icons-icon-for-file candidate :height 0.7 :v-adjust 0.05))
+    (concat
+      (all-the-icons-icon-for-file candidate :height 0.7 :v-adjust 0.05)
+      "\t"))
   (defun ivy-rich-file-size (candidate)
     (let ((candidate (expand-file-name candidate ivy--directory)))
       (if (or (not (file-exists-p candidate)) (file-remote-p candidate))
@@ -579,7 +584,7 @@ If CLEAR is specified, clear them instead."
            (ivy-rich-file-user (:width 10 :face font-lock-doc-face))
            (ivy-rich-file-group (:width 4 :face font-lock-doc-face))
            (ivy-rich-file-modes (:width 11 :face font-lock-doc-face))
-           (ivy-rich-file-size (:width 6 :face font-lock-doc-face))
+           (ivy-rich-file-size (:width 10 :face font-lock-doc-face))
            (ivy-rich-file-last-modified-time (:width 30 :face font-lock-doc-face))))))
   :config
   ;; Handle 'highlight' option to prevent highlighting helper columns
