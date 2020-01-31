@@ -985,6 +985,7 @@ If CLEAR is specified, clear them instead."
   (lsp-prefer-flymake nil)
   (lsp-file-watch-threshold nil)
   (lsp-keep-workspace-alive nil)
+  (lsp-lens-auto-enable t)
   :config
   (defun lsp-activate-if-already-activated (server-id)
     (when (lsp-find-workspace server-id (buffer-file-name))
@@ -1019,7 +1020,11 @@ If CLEAR is specified, clear them instead."
   :after lsp-mode
   :demand t)
 
-;; (use-package dap-mode)
+(use-package dap-mode
+  :config
+  (dap-mode t)
+  (dap-ui-mode t)
+  (dap-tooltip-mode t))
 
 (use-package mu4e
   :ensure nil
