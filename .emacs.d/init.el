@@ -1004,7 +1004,9 @@ If CLEAR is specified, clear them instead."
 
 (use-package company-lsp)
 
-(use-package lsp-treemacs)
+(use-package lsp-treemacs
+  :config
+  (lsp-metals-treeview-enable t))
 
 (use-package lsp-rust
   :ensure lsp-mode
