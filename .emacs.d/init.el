@@ -817,7 +817,16 @@ If CLEAR is specified, clear them instead."
 
 (use-package hideshow
   :hook (prog-mode . hs-minor-mode)
-  :bind (("C-`" . hs-toggle-hiding)))
+  :bind (:map hs-minor-mode-map
+          ("C-`" . hs-toggle-hiding)))
+
+(use-package origami
+  :bind (:map origami-mode-map
+          ("C-`" . origami-toggle-node))
+  :config
+  (add-hook 'origami-mode-hook
+    (lambda ()
+      (hs-minor-mode -1))))
 
 (use-package org
   :custom
@@ -1003,6 +1012,21 @@ If CLEAR is specified, clear them instead."
   (lsp-ui-doc-position 'top))
 
 (use-package company-lsp)
+
+(use-package lsp-origami
+  :init
+  (defun lsp-origami-activate-when-supported ()
+    (when (lsp--capability "foldingRangeProvider")
+      (origami-mode t)
+      (lsp-origami-mode t)))
+  (defun lsp-origami-activate-when-supported-for-workspace ()
+    (->> lsp--cur-workspace
+      (lsp--workspace-buffers)
+      (mapc (lambda (buffer)
+              (with-current-buffer buffer
+                (lsp-origami-activate-when-supported))))))
+  :hook (lsp-after-initialize . lsp-origami-activate-when-supported-for-workspace)
+  :hook (lsp-mode . lsp-origami-activate-when-supported))
 
 (use-package lsp-treemacs
   :config
