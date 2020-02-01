@@ -1019,14 +1019,7 @@ If CLEAR is specified, clear them instead."
     (when (lsp--capability "foldingRangeProvider")
       (origami-mode t)
       (lsp-origami-mode t)))
-  (defun lsp-origami-activate-when-supported-for-workspace ()
-    (->> lsp--cur-workspace
-      (lsp--workspace-buffers)
-      (mapc (lambda (buffer)
-              (with-current-buffer buffer
-                (lsp-origami-activate-when-supported))))))
-  :hook (lsp-after-initialize . lsp-origami-activate-when-supported-for-workspace)
-  :hook (lsp-mode . lsp-origami-activate-when-supported))
+  :hook (lsp-after-open . lsp-origami-activate-when-supported))
 
 (use-package lsp-treemacs
   :config
