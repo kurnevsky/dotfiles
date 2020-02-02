@@ -306,7 +306,23 @@
   :bind (:map cua-global-keymap
           ([C-return]))
   :config
-  (cua-mode t))
+  (cua-mode t)
+  (defun cua-macro-fix (orig-fun &rest args)
+    (apply orig-fun args)
+    (kmacro-edit-macro)
+    (let ((timeout "[[:space:]]*\\(;.*\n\\)?<timeout>"))
+      ;; fix the C-c C-c
+      (goto-char (point-min))
+      (forward-line 7)
+      (while (search-forward-regexp (concat "C-c C-c" timeout) nil t)
+        (replace-match "C-c <timeout>"))
+      ;; fix the C-x C-x
+      (goto-char (point-min))
+      (forward-line 7)
+      (while (search-forward-regexp (concat "C-x C-x" timeout) nil t)
+        (replace-match "C-x <timeout>")))
+    (edmacro-finish-edit))
+  (advice-add 'kmacro-end-macro :around #'cua-macro-fix))
 
 (use-package time
   :demand t
