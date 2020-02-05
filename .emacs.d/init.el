@@ -733,6 +733,61 @@ If CLEAR is specified, clear them instead."
           :map mc/keymap
           ("C-S-b" . mc/keyboard-quit))
   :config
+  ;; Copy/paste.
+  (defvar-local mc/clipboard nil)
+  (defun mc/cut-copy-across-cursors (cut)
+    (setq mc/clipboard nil)
+    (mc/for-each-cursor-ordered
+      (mc/restore-state-from-overlay cursor)
+      (push
+        (if (region-active-p)
+          (buffer-substring
+            (caar (region-bounds))
+            (cdar (region-bounds)))
+          "")
+        mc/clipboard)
+      (mc/execute-command-for-fake-cursor
+        (lambda ()
+          (interactive)
+          (if (and cut (not buffer-read-only))
+            (delete-region
+              (caar (region-bounds))
+              (cdar (region-bounds)))
+            (deactivate-mark)))
+        cursor)))
+  (defun mc/copy-across-cursors ()
+    (interactive)
+    (mc/cut-copy-across-cursors nil))
+  (defun mc/cut-across-cursors ()
+    (interactive)
+    (mc/cut-copy-across-cursors t))
+  (defun mc/paste-across-cursors ()
+    (interactive)
+    (if mc/clipboard
+      (let ((clipboard (reverse mc/clipboard)))
+        (mc/for-each-cursor-ordered
+          (when clipboard
+            (mc/execute-command-for-fake-cursor
+              (lambda ()
+                (interactive)
+                (insert (car clipboard)))
+              cursor)
+            (setq clipboard (cdr clipboard)))))
+      (mc/execute-command-for-all-cursors #'cua-paste)))
+  (defvar mc/extra-keymap (make-sparse-keymap))
+  (define-key mc/extra-keymap [remap yank] #'mc/paste-across-cursors)
+  (define-key mc/extra-keymap [remap clipboard-yank] #'mc/paste-across-cursors)
+  (define-key mc/extra-keymap [remap x-clipboard-yank] #'mc/paste-across-cursors)
+  (define-key mc/extra-keymap [remap copy-region-as-kill] #'mc/copy-across-cursors)
+  (define-key mc/extra-keymap [remap kill-region] #'mc/cut-across-cursors)
+  (define-key mc/extra-keymap [remap clipboard-kill-region] #'mc/cut-across-cursors)
+  (push
+    `((multiple-cursors-mode . ,mc/extra-keymap))
+    emulation-mode-map-alists)
+  (defun mc/clear-clipboard ()
+    (setq mc/clipboard nil))
+  (add-hook 'multiple-cursors-mode-hook #'mc/clear-clipboard)
+  ;; Fake cursors manipulation.
   (defun mc/multiple-cursors-mode-when-num-cursors>1 ()
     (interactive)
     (when (> (mc/num-cursors) 1)
@@ -745,11 +800,17 @@ If CLEAR is specified, clear them instead."
   (defun mc/remove-fake-cursors-interactive ()
     (interactive)
     (mc/remove-fake-cursors))
+  ;; Disable saving/loading commands.
   (defun mc/load-lists ())
   (defun mc/save-lists ())
+  ;; Define commands.
   (setq mc/cmds-to-run-once '(hydra-multiple-cursors/body
                                hydra-multiple-cursors/nil
-                               mc/toggle-fake-cursor))
+                               cua--prefix-override-handler
+                               mc/toggle-fake-cursor
+                               mc/copy-across-cursors
+                               mc/cut-across-cursors
+                               mc/paste-across-cursors))
   (setq mc/cmds-to-run-for-all '(back-to-indentation-or-beginning
                                   end-of-code-or-line
                                   indent-for-tab-command)))
