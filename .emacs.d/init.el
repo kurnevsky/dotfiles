@@ -310,17 +310,22 @@
   (defun cua-macro-fix (orig-fun &rest args)
     (apply orig-fun args)
     (kmacro-edit-macro)
-    (let ((timeout "[[:space:]]*\\(;.*\n\\)?<timeout>"))
+    (let ((endl "[[:space:]]*\\(;.*\n\\)?"))
       ;; fix the C-c C-c
       (goto-char (point-min))
       (forward-line 7)
-      (while (search-forward-regexp (concat "C-c C-c" timeout) nil t)
+      (while (search-forward-regexp (concat "C-c C-c" endl "<timeout>") nil t)
         (replace-match "C-c <timeout>"))
       ;; fix the C-x C-x
       (goto-char (point-min))
       (forward-line 7)
-      (while (search-forward-regexp (concat "C-x C-x" timeout) nil t)
-        (replace-match "C-x <timeout>")))
+      (while (search-forward-regexp (concat "C-x C-x" endl "<timeout>") nil t)
+        (replace-match "C-x <timeout>"))
+      ;; fix C-m is being confused with <return>
+      (goto-char (point-min))
+      (forward-line 7)
+      (while (search-forward-regexp (concat "RET" endl) nil t)
+        (replace-match "<return>")))
     (edmacro-finish-edit))
   (advice-add 'kmacro-end-macro :around #'cua-macro-fix))
 
