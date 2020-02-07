@@ -1122,6 +1122,7 @@ If CLEAR is specified, clear them instead."
   :demand t)
 
 (use-package dap-mode
+  :ensure posframe
   :config
   (dap-mode t)
   (dap-ui-mode t)
