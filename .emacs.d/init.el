@@ -494,10 +494,14 @@ If CLEAR is specified, clear them instead."
   :config
   (smex-initialize))
 
+(defvar prefer-helm nil
+  "Whether to prefer helm or ivy.")
+
 (use-package ivy
+  :if (not prefer-helm)
   :demand t
   :bind (:map ivy-minibuffer-map
-          ("RET" . ivy-alt-done)
+          ("<return>" . ivy-alt-done)
           ("<C-return>" . ivy-immediate-done))
   :custom
   (ivy-magic-tilde nil)
@@ -509,6 +513,7 @@ If CLEAR is specified, clear them instead."
   (ivy-mode 1))
 
 (use-package counsel
+  :if (not prefer-helm)
   :demand t
   :after ivy
   :config
@@ -526,6 +531,7 @@ If CLEAR is specified, clear them instead."
       (all-the-icons-install-fonts t))))
 
 (use-package ivy-rich
+  :if (not prefer-helm)
   :demand t
   :after ivy
   :init
@@ -633,6 +639,34 @@ If CLEAR is specified, clear them instead."
                                                 (`(,left ,candidate ,right) (concat left (apply orig-fun (list candidate)) right))
                                                 (_ (apply orig-fun args)))))
   (ivy-rich-mode 1))
+
+(use-package helm
+  :if prefer-helm
+  :demand t
+  :bind (("M-x" . helm-M-x)
+          ([remap find-file] . helm-find-files)
+          :map helm-map
+          ("<escape>" . helm-keyboard-quit)
+          ("<tab>" . helm-complete-prefix)
+          :map helm-find-files-map
+          ("<tab>" . helm-execute-persistent-action))
+  :custom
+  (helm-mode-fuzzy-match t)
+  (helm-completion-in-region-fuzzy-match t)
+  (helm-candidate-number-limit 1000)
+  :config
+  (helm-mode 1)
+  (defun helm-complete-prefix ()
+    (interactive)
+    (let ((prefix nil))
+      (mapc (lambda (candidate)
+              (when (string-prefix-p helm-pattern candidate)
+                (setq prefix (if prefix
+                               (fill-common-string-prefix prefix candidate)
+                               candidate))))
+        (helm-get-cached-candidates (helm-get-current-source)))
+      (when prefix
+        (helm-set-pattern prefix)))))
 
 (use-package ediff-wind
   :ensure nil
