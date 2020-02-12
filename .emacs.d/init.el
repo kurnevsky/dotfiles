@@ -304,7 +304,7 @@
 (use-package cua-base
   :demand t
   :bind (:map cua-global-keymap
-          ([C-return]))
+          ("<C-return>"))
   :config
   (cua-mode t)
   (defun cua-macro-fix (orig-fun &rest args)
@@ -506,7 +506,7 @@ If CLEAR is specified, clear them instead."
   :if (not prefer-helm)
   :demand t
   :bind (:map ivy-minibuffer-map
-          ("<return>" . ivy-alt-done)
+          ("RET" . ivy-alt-done)
           ("<C-return>" . ivy-immediate-done))
   :custom
   (ivy-magic-tilde nil)
@@ -873,7 +873,7 @@ If CLEAR is specified, clear them instead."
         (mc/create-fake-cursor-at-point)))))
 
 (use-package hydra
-  :bind (("C-<return>" . hydra-multiple-cursors/body))
+  :bind (("<C-return>" . hydra-multiple-cursors/body))
   :config
   (defhydra hydra-multiple-cursors (:foreign-keys run
                                      :body-pre (progn
@@ -881,7 +881,7 @@ If CLEAR is specified, clear them instead."
                                                  (mc/toggle-fake-cursor))
                                      :post (mc/multiple-cursors-mode-when-num-cursors>1))
     "multiple-cursors"
-    ("C-<return>" mc/toggle-fake-cursor "toggle")
+    ("<C-return>" mc/toggle-fake-cursor "toggle")
     ("<return>" nil "apply")
     ("<escape>" mc/remove-fake-cursors-interactive "quit" :exit t)))
 
