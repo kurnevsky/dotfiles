@@ -1104,6 +1104,10 @@ If CLEAR is specified, clear them instead."
 
 (use-package format-all)
 
+(use-package dumb-jump
+  :custom
+  (dumb-jump-selector 'ivy))
+
 (use-package lsp-mode
   :custom
   (lsp-auto-guess-root t)
