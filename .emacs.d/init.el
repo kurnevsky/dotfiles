@@ -911,30 +911,31 @@ If CLEAR is specified, clear them instead."
       (setq arg 1))
     (let ((undo buffer-undo-list)
            (tree))
-      (while undo
-        (pcase (if tree
-                 (car (undo-tree-node-undo undo))
-                 (car undo))
-          (`(,beg . ,end) (let ((pos (cond
-                                       ((and (integerp beg) (integerp end)) end)
-                                       ((and (stringp beg) (integerp end)) (abs end)))))
-                            (if pos
-                              (progn
-                                (setq arg (1- arg))
-                                (if (<= arg 0)
-                                  (progn
-                                    (goto-char pos)
-                                    (setq undo nil))
-                                  (setq undo (last-edit-next undo tree))))
-                              (setq undo (last-edit-next undo tree)))))
-          (`undo-tree-canary (if tree
-                               (progn
-                                 (error "Inner undo-tree-canary")
-                                 (setq undo nil))
-                               (setq
-                                 undo (undo-tree-current buffer-undo-tree)
-                                 tree t)))
-          (_ (setq undo (last-edit-next undo tree))))))))
+      (unless (eq undo t)
+        (while undo
+          (pcase (if tree
+                   (car (undo-tree-node-undo undo))
+                   (car undo))
+            (`(,beg . ,end) (let ((pos (cond
+                                         ((and (integerp beg) (integerp end)) end)
+                                         ((and (stringp beg) (integerp end)) (abs end)))))
+                              (if pos
+                                (progn
+                                  (setq arg (1- arg))
+                                  (if (<= arg 0)
+                                    (progn
+                                      (goto-char pos)
+                                      (setq undo nil))
+                                    (setq undo (last-edit-next undo tree))))
+                                (setq undo (last-edit-next undo tree)))))
+            (`undo-tree-canary (if tree
+                                 (progn
+                                   (error "Inner undo-tree-canary")
+                                   (setq undo nil))
+                                 (setq
+                                   undo (undo-tree-current buffer-undo-tree)
+                                   tree t)))
+            (_ (setq undo (last-edit-next undo tree)))))))))
 
 (use-package hideshow
   :hook (prog-mode . hs-minor-mode)
