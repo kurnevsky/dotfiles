@@ -310,7 +310,8 @@
   (defun cua-macro-fix (orig-fun &rest args)
     (apply orig-fun args)
     (kmacro-edit-macro)
-    (let ((endl "[[:space:]]*\\(;.*\n\\)?"))
+    (let ((endl "[[:space:]]*\\(;.*\\)?\n")
+           (case-fold-search nil))
       ;; fix the C-c C-c
       (goto-char (point-min))
       (forward-line 7)
