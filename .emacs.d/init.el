@@ -373,6 +373,11 @@
   :config
   (global-hl-line-mode 1))
 
+(use-package dimmer
+  :demand t
+  :config
+  (dimmer-mode t))
+
 (use-package highlight-thing
   :demand t
   :custom
