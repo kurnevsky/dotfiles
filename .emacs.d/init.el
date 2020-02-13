@@ -376,6 +376,8 @@
 
 (use-package dimmer
   :demand t
+  :custom
+  (dimmer-watch-frame-focus-events nil)
   :config
   (dimmer-mode t))
 
