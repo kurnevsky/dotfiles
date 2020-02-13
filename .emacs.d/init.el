@@ -379,6 +379,8 @@
   :custom
   (dimmer-watch-frame-focus-events nil)
   :config
+  (add-to-list 'dimmer-buffer-exclusion-regexps "^ \\*lsp-ui-doc-.*\\*$")
+  (add-to-list 'dimmer-buffer-exclusion-regexps "^ \\*LV\\*$")
   (dimmer-mode t))
 
 (use-package highlight-thing
