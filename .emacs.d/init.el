@@ -25,8 +25,8 @@
 (when (fboundp #'tool-bar-mode)
   (tool-bar-mode -1))
 ;; Set font.
-(set-face-attribute 'default nil :font "DejaVu Sans Mono:pixelsize=15")
-(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono:pixelsize=15"))
+(set-face-attribute 'default nil :font "DejaVu Sans Mono:size=15")
+(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono:size=15"))
 ;; Don't do backup files.
 (setq make-backup-files nil)
 ;; Don't save discarded files.
