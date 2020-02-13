@@ -1140,7 +1140,9 @@ If CLEAR is specified, clear them instead."
   (lsp-ui-doc-alignment 'window)
   (lsp-ui-sideline-show-hover t)
   (lsp-ui-sideline-update-mode 'line)
-  (lsp-ui-doc-position 'top))
+  (lsp-ui-doc-position 'top)
+  :config
+  (add-to-list 'lsp-ui-doc-frame-parameters '(no-accept-focus . t)))
 
 (use-package company-lsp)
 
