@@ -560,7 +560,7 @@ If CLEAR is specified, clear them instead."
   (defun ivy-rich-file-size (candidate)
     (let ((candidate (expand-file-name candidate ivy--directory)))
       (if (or (not (file-exists-p candidate)) (file-remote-p candidate))
-        ""
+        "?"
         (let ((size (file-attribute-size (file-attributes candidate))))
           (cond
             ((> size 1000000) (format "%.1fM " (/ size 1000000.0)))
@@ -569,19 +569,19 @@ If CLEAR is specified, clear them instead."
   (defun ivy-rich-file-modes (candidate)
     (let ((candidate (expand-file-name candidate ivy--directory)))
       (if (or (not (file-exists-p candidate)) (file-remote-p candidate))
-        ""
+        "?"
         (format "%s" (file-attribute-modes (file-attributes candidate))))))
   (defun ivy-rich-file-user (candidate)
     (let ((candidate (expand-file-name candidate ivy--directory)))
       (if (or (not (file-exists-p candidate)) (file-remote-p candidate))
-        ""
+        "?"
         (let* ((user-id (file-attribute-user-id (file-attributes candidate)))
                 (user-name (user-login-name user-id)))
           (format "%s" user-name)))))
   (defun ivy-rich-file-group (candidate)
     (let ((candidate (expand-file-name candidate ivy--directory)))
       (if (or (not (file-exists-p candidate)) (file-remote-p candidate))
-        ""
+        "?"
         (let* ((group-id (file-attribute-group-id (file-attributes candidate)))
                 (group-function (if (fboundp #'group-login-name) #'group-login-name #'identity))
                 (group-name (funcall group-function group-id)))
