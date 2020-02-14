@@ -8,6 +8,9 @@
 
 ;; ========== Configure Emacs ==========
 
+(defvar prefer-helm nil
+  "Whether to prefer helm or ivy.")
+
 ;; Speed up the initialization reducing garbage collection runs.
 (setq gc-cons-threshold (* 32 1024 1024))
 (add-hook 'after-init-hook (lambda () (setq gc-cons-threshold (* 4 1024 1024))))
@@ -379,8 +382,15 @@
   :custom
   (dimmer-watch-frame-focus-events nil)
   :config
+  (defun dimmer-lsp-ui-p ()
+    (string-match-p "^ \\*lsp-ui-doc-.*\\*$" (buffer-name (current-buffer))))
+  (add-to-list
+    'dimmer-prevent-dimming-predicates
+    #'dimmer-lsp-ui-p)
   (add-to-list 'dimmer-buffer-exclusion-regexps "^ \\*lsp-ui-doc-.*\\*$")
-  (add-to-list 'dimmer-buffer-exclusion-regexps "^ \\*LV\\*$")
+  (when prefer-helm
+    (dimmer-configure-helm))
+  (dimmer-configure-hydra)
   (dimmer-mode t))
 
 (use-package highlight-thing
@@ -503,9 +513,6 @@ If CLEAR is specified, clear them instead."
               smex-major-mode-commands)
   :config
   (smex-initialize))
-
-(defvar prefer-helm nil
-  "Whether to prefer helm or ivy.")
 
 (use-package ivy
   :if (not prefer-helm)
