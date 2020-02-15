@@ -1364,6 +1364,13 @@ properly."
   (interactive)
   (save-excursion
     (shell-command-on-region (point-min) (point-max) "xmlstarlet format" (buffer-name) t)))
+(defun save-as (filename)
+  "Save current buffer to FILENAME."
+  (interactive "F")
+  (save-restriction
+    (widen)
+    (write-region (point-min) (point-max) filename)
+    (find-file filename)))
 (global-set-key (kbd "<escape>") #'keyboard-escape-quit)
 (global-set-key (kbd "C-f") #'isearch-forward)
 (define-key isearch-mode-map (kbd "C-f") #'isearch-repeat-forward)
@@ -1375,6 +1382,7 @@ properly."
 (global-set-key (kbd "C-n") #'new-empty-buffer)
 (global-set-key (kbd "C-o") #'find-file)
 (global-set-key (kbd "C-s") #'save-buffer)
+(global-set-key (kbd "C-S-s") #'save-as)
 (global-set-key (kbd "C-a") #'mark-whole-buffer)
 (global-set-key (kbd "C-=") #'text-scale-increase)
 (global-set-key (kbd "C--") #'text-scale-decrease)
