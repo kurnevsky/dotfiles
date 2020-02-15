@@ -25,7 +25,7 @@
 ;; Start in maximized window mode.
 (toggle-frame-maximized)
 ;; Disable tool bar.
-(when (fboundp #'tool-bar-mode)
+(when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1))
 ;; Set font.
 (set-face-attribute 'default nil :font "DejaVu Sans Mono:size=15")
@@ -404,6 +404,7 @@
       (not (member major-mode highlight-thing-excluded-major-modes))
       (not (and
              (bound-and-true-p lsp-mode)
+             (fboundp 'lsp--capability)
              (lsp--capability "documentHighlightProvider")))))
   (global-highlight-thing-mode))
 
@@ -790,7 +791,8 @@ If CLEAR is specified, clear them instead."
           ("C-S-b" . mc/keyboard-quit))
   :config
   ;; Copy/paste.
-  (defvar-local mc/clipboard nil)
+  (with-no-warnings
+    (defvar-local mc/clipboard nil))
   (defun mc/cut-copy-across-cursors (cut)
     (setq mc/clipboard nil)
     (mc/for-each-cursor-ordered
@@ -830,16 +832,15 @@ If CLEAR is specified, clear them instead."
               cursor)
             (setq clipboard (cdr clipboard)))))
       (mc/execute-command-for-all-cursors #'cua-paste)))
-  (defvar mc/extra-keymap (make-sparse-keymap))
-  (define-key mc/extra-keymap [remap yank] #'mc/paste-across-cursors)
-  (define-key mc/extra-keymap [remap clipboard-yank] #'mc/paste-across-cursors)
-  (define-key mc/extra-keymap [remap x-clipboard-yank] #'mc/paste-across-cursors)
-  (define-key mc/extra-keymap [remap copy-region-as-kill] #'mc/copy-across-cursors)
-  (define-key mc/extra-keymap [remap kill-region] #'mc/cut-across-cursors)
-  (define-key mc/extra-keymap [remap clipboard-kill-region] #'mc/cut-across-cursors)
-  (push
-    `((multiple-cursors-mode . ,mc/extra-keymap))
-    emulation-mode-map-alists)
+  (add-to-list
+    'emulation-mode-map-alists
+    `((multiple-cursors-mode . ,(-doto (make-sparse-keymap)
+                                  (define-key [remap yank] #'mc/paste-across-cursors)
+                                  (define-key [remap clipboard-yank] #'mc/paste-across-cursors)
+                                  (define-key [remap x-clipboard-yank] #'mc/paste-across-cursors)
+                                  (define-key [remap copy-region-as-kill] #'mc/copy-across-cursors)
+                                  (define-key [remap kill-region] #'mc/cut-across-cursors)
+                                  (define-key [remap clipboard-kill-region] #'mc/cut-across-cursors)))))
   (defun mc/clear-clipboard ()
     (setq mc/clipboard nil))
   (add-hook 'multiple-cursors-mode-hook #'mc/clear-clipboard)
