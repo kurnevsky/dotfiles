@@ -1176,6 +1176,7 @@ If CLEAR is specified, clear them instead."
   (lsp-rust-build-on-save t))
 
 (use-package lsp-haskell
+  :disabled
   :after lsp-mode
   :demand t)
 
