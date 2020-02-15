@@ -210,3 +210,6 @@ export GPG_TTY=$(tty)
 
 # It causes segfaults
 export MAGICK_OCL_DEVICE=OFF
+
+# Set cursor type to steady bar
+echo -e -n "\x1b[\x36 q"

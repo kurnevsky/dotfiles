@@ -23,3 +23,6 @@ export MAGICK_OCL_DEVICE=OFF
 alias epm='~/.emacs.d/elpa/epm-*/epm'
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
+
+# Set cursor type to steady bar
+echo -e -n "\x1b[\x36 q"
