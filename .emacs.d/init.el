@@ -1,4 +1,4 @@
-;;; init.el --- Kurnevsky's Emacs configuration
+;;; init.el --- Kurnevsky's Emacs configuration -*- lexical-binding: t -*-
 
 ;;; Commentary:
 
@@ -174,10 +174,10 @@
   (setq use-package-always-defer t)
   (setq use-package-verbose t)
   (setq use-package-expand-minimally byte-compile-current-file)
-  (defun use-package-normalize/:activate (name-symbol keyword args)
+  (defun use-package-normalize/:activate (_name-symbol keyword args)
     (use-package-only-one (symbol-name keyword) args
-      (lambda (label arg) arg)))
-  (defun use-package-handler/:activate (name-symbol keyword activate rest state)
+      (lambda (_label arg) arg)))
+  (defun use-package-handler/:activate (name-symbol _keyword activate rest state)
     (let ((body (use-package-process-keywords name-symbol rest state)))
       (if activate
         (let ((package (if (eq activate t) name-symbol activate)))
@@ -436,7 +436,7 @@
                                                (if (eq this-command 'self-insert-command)
                                                  (memq (get-char-code-property (char-before) 'general-category) '(Zs Zl Zp))
                                                  (apply orig-fun args))))
-  (advice-add 'uncomment-region :before (lambda (BEG END &optional ARG)
+  (advice-add 'uncomment-region :before (lambda (BEG END &optional _ARG)
                                           (flyspell-delete-region-overlays BEG END))))
 
 (use-package langtool
@@ -446,7 +446,7 @@
   (langtool-default-language "en-US")
   (langtool-mother-tongue "ru-RU")
   (langtool-autoshow-message-function (lambda (overlays)
-                                        (pos-tip-sow (langtool-details-error-message overlays)))))
+                                        (pos-tip-show (langtool-details-error-message overlays)))))
 
 (use-package guess-language
   :hook (text-mode . guess-language-mode)
@@ -590,7 +590,7 @@ If CLEAR is specified, clear them instead."
       (if (or (not (file-exists-p candidate)) (file-remote-p candidate))
         "?"
         (let* ((group-id (file-attribute-group-id (file-attributes candidate)))
-                (group-function (if (fboundp #'group-login-name) #'group-login-name #'identity))
+                (group-function (if (fboundp 'group-login-name) #'group-login-name #'identity))
                 (group-name (funcall group-function group-id)))
           (format "%s" group-name)))))
   (setq ivy-rich-display-transformers-list
@@ -1208,6 +1208,8 @@ If CLEAR is specified, clear them instead."
   (defun mu4e-shr2text ()
     "Html to text using the shr engine."
     (interactive)
+    (defvar shr-inhibit-images)
+    (defvar shr-width)
     (let ((shr-inhibit-images t)
            (shr-width (- (window-body-width) 8)))
       (shr-render-region (point-min) (point-max))
@@ -1306,7 +1308,7 @@ properly."
       (goto-char boc))
     (skip-chars-backward " \t")
     (when (or (= start (point)) (= bol (point)))
-      (move-end-of-line nil))))
+      (goto-char eol))))
 (defun comment-or-uncomment-region-or-line ()
   "Comments or uncomments the region or the current line if there's no active region."
   (interactive)
