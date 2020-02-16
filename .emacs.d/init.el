@@ -65,6 +65,7 @@
 ;; Highlight trailing whitespaces.
 (setq-default show-trailing-whitespace t)
 (add-hook 'minibuffer-setup-hook (lambda () (setq show-trailing-whitespace nil)))
+(add-hook 'Buffer-menu-mode-hook (lambda () (setq show-trailing-whitespace nil)))
 ;; Easy transition between buffers: M-arrow-keys.
 (windmove-default-keybindings 'meta)
 ;; Don't show cursor in inactive buffers.
@@ -518,9 +519,12 @@ If CLEAR is specified, clear them instead."
 (use-package ivy
   :if (not prefer-helm)
   :demand t
-  :bind (:map ivy-minibuffer-map
+  :bind (("<f2>" . ivy-switch-buffer)
+          :map ivy-minibuffer-map
           ("RET" . ivy-alt-done)
-          ("<C-return>" . ivy-immediate-done))
+          ("<C-return>" . ivy-immediate-done)
+          :map ivy-switch-buffer-map
+          ("<f2>" . keyboard-escape-quit))
   :custom
   (ivy-magic-tilde nil)
   (ivy-extra-directories nil)
@@ -663,9 +667,12 @@ If CLEAR is specified, clear them instead."
   :demand t
   :bind (("M-x" . helm-M-x)
           ([remap find-file] . helm-find-files)
+          ("<f2>" . helm-buffers-list)
           :map helm-map
           ("<escape>" . helm-keyboard-quit)
           ("<tab>" . helm-complete-prefix)
+          :map helm-buffer-map
+          ("<f2>" . helm-keyboard-quit)
           :map helm-find-files-map
           ("<tab>" . helm-execute-persistent-action))
   :custom
@@ -691,17 +698,6 @@ If CLEAR is specified, clear them instead."
   :custom
   (ediff-window-setup-function #'ediff-setup-windows-plain)
   (ediff-split-window-function #'split-window-horizontally))
-
-(use-package bs
-  :custom
-  (bs-configurations '(("all" nil nil nil nil nil)
-                        ("filtered" nil nil "^\\*" nil bs-sort-buffer-interns-are-last)))
-  (bs-default-configuration "filtered")
-  :bind (("<f2>" . bs-show)
-          :map bs-mode-map
-          ("<f2>" . bs-abort)
-          ("<escape>" . bs-abort)
-          ("<mouse-1>" . bs-mouse-select)))
 
 (use-package tramp
   :custom
@@ -1395,6 +1391,7 @@ properly."
 (global-set-key (kbd "C-|") #'split-window-horizontally)
 (global-set-key (kbd "C-_") #'split-window-vertically)
 (global-set-key (kbd "C-x C-M-c") #'tell-emacsclients-for-buffer-to-die)
+(global-set-key (kbd "<S-f2>") #'list-buffers)
 
 ;;https://stackoverflow.com/questions/4918707/in-emacs-how-to-go-back-to-previous-line-position-after-using-semantic-jump-to
 ;; pop-global-mark
