@@ -121,7 +121,7 @@ myKeys conf@XConfig { XMonad.modMask = modm } = M.union (planeKeys modm (Lines 3
   -- Launch terminal.
   , ((modm .|. shiftMask, xK_r), spawn "xterm")
   -- Launch mc.
-  , ((modm, xK_e), spawn "xterm -e tmux new-session mc")
+  , ((modm, xK_e), spawn "alacritty -e mc")
   -- Launch application.
   , ((modm, xK_F2), shellPrompt myXPConfig)
   -- Close the focused window.
