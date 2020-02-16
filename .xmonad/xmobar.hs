@@ -75,5 +75,5 @@ Config { font = "xft:Dejavu Sans:size=11"
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%trayer% : %UnsafeStdinReader%}{%mpris2% : %dynnetwork% : %diskio% : %cpu% : %memory% : %swap% : %coretemp% : %battery% : %UMMS% : <action=`xterm -e zsh -c 'cal -m -y; sleep infinity'`>%date%</action>"
+       , template = "%trayer% : %UnsafeStdinReader%}{%mpris2% : %dynnetwork% : %diskio% : %cpu% : %memory% : %swap% : %coretemp% : %battery% : %UMMS% : <action=`alacritty -e zsh -c 'cal -m -y; sleep infinity'`>%date%</action>"
        }
