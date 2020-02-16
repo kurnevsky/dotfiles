@@ -102,7 +102,7 @@
 (put 'new-untitled 'permanent-local t)
 (defun kill-buffer-ask-first (orig-fun &rest args)
   "Prompts before killing buffer if it isn't associated with a file."
-  (let ((buffer (get-buffer (if args (car args) (buffer-name)))))
+  (let ((buffer (get-buffer (if (and args (car args)) (car args) (buffer-name)))))
     (if (and (buffer-local-value 'new-untitled buffer)
           (buffer-modified-p buffer)
           (not (buffer-file-name buffer)))
