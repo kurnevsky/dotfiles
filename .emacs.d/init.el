@@ -98,7 +98,7 @@
   (write-region "" nil custom-file))
 (load custom-file)
 ;; Ask before killing new buffer.
-(setq-default new-untitled nil)
+(defvar new-untitled nil)
 (put 'new-untitled 'permanent-local t)
 (defun kill-buffer-ask-first (orig-fun &rest args)
   "Prompts before killing buffer if it isn't associated with a file."
