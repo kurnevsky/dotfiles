@@ -735,7 +735,7 @@ If CLEAR is specified, clear them instead."
           ("C-p f" . projectile-find-file)
           ("C-p o" . projectile-find-file))
   :custom
-  (projectile-completion-system 'ivy)
+  (projectile-completion-system (if prefer-helm 'helm 'ivy))
   :config
   (projectile-mode))
 
@@ -1121,7 +1121,7 @@ If CLEAR is specified, clear them instead."
 
 (use-package dumb-jump
   :custom
-  (dumb-jump-selector 'ivy))
+  (dumb-jump-selector (if prefer-helm 'helm 'ivy)))
 
 (use-package lsp-mode
   :custom
