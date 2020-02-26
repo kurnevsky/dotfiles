@@ -1151,12 +1151,12 @@ If CLEAR is specified, clear them instead."
 (use-package company-lsp)
 
 (use-package lsp-origami
-  :init
+  :hook (lsp-after-open . lsp-origami-activate-when-supported)
+  :config
   (defun lsp-origami-activate-when-supported ()
     (when (lsp--capability "foldingRangeProvider")
       (origami-mode t)
-      (lsp-origami-mode t)))
-  :hook (lsp-after-open . lsp-origami-activate-when-supported))
+      (lsp-origami-mode t))))
 
 (use-package lsp-treemacs
   :config
