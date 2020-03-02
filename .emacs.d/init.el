@@ -1387,7 +1387,7 @@ properly."
 (global-set-key (kbd "<home>") #'back-to-indentation-or-beginning)
 (global-set-key (kbd "<end>") #'end-of-code-or-line)
 (global-set-key (kbd "C-/") #'comment-or-uncomment-region-or-line)
-(global-set-key (kbd "C-k") #'kill-buffer)
+(global-set-key (kbd "C-k") #'kill-current-buffer)
 (global-set-key (kbd "C-|") #'split-window-horizontally)
 (global-set-key (kbd "C-_") #'split-window-vertically)
 (global-set-key (kbd "C-x C-M-c") #'tell-emacsclients-for-buffer-to-die)
