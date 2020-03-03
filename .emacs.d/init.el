@@ -306,6 +306,7 @@
     (eval `(define-key key-translation-map (kbd ,(concat "M-" (string (upcase from)))) (kbd ,(concat "M-S-" (string to)))))))
 
 (use-package cua-base
+  :ensure nil
   :demand t
   :bind (:map cua-global-keymap
           ("<C-return>"))
@@ -335,6 +336,7 @@
   (advice-add 'kmacro-end-macro :around #'cua-macro-fix))
 
 (use-package time
+  :ensure nil
   :demand t
   :custom
   (display-time-24hr-format t "24 hours time format.")
@@ -347,11 +349,13 @@
   (comint-prompt-read-only t "Make the prompt read only."))
 
 (use-package mb-depth
+  :ensure nil
   :demand t
   :config
   (minibuffer-depth-indicate-mode t))
 
 (use-package display-line-numbers
+  :ensure nil
   :demand t
   :config
   (global-display-line-numbers-mode 1)
@@ -367,6 +371,7 @@
                                              res))))))
 
 (use-package paren
+  :ensure nil
   :demand t
   :custom
   (show-paren-style 'parenthesis)
@@ -374,6 +379,7 @@
   (show-paren-mode t))
 
 (use-package hl-line
+  :ensure nil
   :demand t
   :config
   (global-hl-line-mode 1))
@@ -422,6 +428,7 @@
                                               (add-to-list 'font-lock-extra-managed-props 'display)))))
 
 (use-package flyspell
+  :ensure nil
   :hook ((text-mode . flyspell-mode)
           (prog-mode . flyspell-prog-mode))
   :bind (:map flyspell-mode-map
@@ -465,6 +472,7 @@
   (minimap-window-location 'right))
 
 (use-package ido
+  :ensure nil
   :commands (ido-completing-read
               ido-read-directory-name
               ido-read-file-name
@@ -700,6 +708,7 @@ If CLEAR is specified, clear them instead."
   (ediff-split-window-function #'split-window-horizontally))
 
 (use-package tramp
+  :ensure nil
   :custom
   (tramp-default-method "ssh"))
 
@@ -947,6 +956,7 @@ If CLEAR is specified, clear them instead."
             (_ (setq undo (last-edit-next undo tree)))))))))
 
 (use-package hideshow
+  :ensure nil
   :hook (prog-mode . hs-minor-mode)
   :bind (:map hs-minor-mode-map
           ("C-`" . hs-toggle-hiding)))
@@ -960,6 +970,7 @@ If CLEAR is specified, clear them instead."
       (hs-minor-mode -1))))
 
 (use-package org
+  :ensure nil
   :custom
   (org-support-shift-select t))
 
@@ -1051,6 +1062,7 @@ If CLEAR is specified, clear them instead."
 (use-package poly-rst)
 
 (use-package conf-mode
+  :ensure nil
   :mode ("/Cargo.lock\\'" . conf-toml-mode))
 
 (use-package yaml-mode)
@@ -1064,6 +1076,7 @@ If CLEAR is specified, clear them instead."
 (use-package haskell-mode)
 
 (use-package eldoc
+  :ensure nil
   :commands (eldoc-mode turn-on-eldoc-mode)
   :init
   (add-hook 'emacs-lisp-mode-hook #'turn-on-eldoc-mode))
@@ -1076,8 +1089,6 @@ If CLEAR is specified, clear them instead."
                                 (replace-regexp-in-string "\n\\'" ""
                                   (shell-command-to-string "rustc --print sysroot"))
                                 "/lib/rustlib/src/rust/src")))))
-
-(use-package sql)
 
 (use-package matlab
   :ensure matlab-mode
@@ -1242,9 +1253,6 @@ If CLEAR is specified, clear them instead."
                (mu4e-trash-folder . ,(choose-mu4e-alternative name 'mu4e-trash-folder-alternatives))
                (mu4e-refile-folder . ,(choose-mu4e-alternative name 'mu4e-refile-folder-alternatives)))))
   (setq mu4e-contexts (mapcar #'make-mu4e-context-generic (directory-files "~/Mail" nil "[^.]"))))
-
-(use-package zone
-  :commands zone)
 
 (use-package wttrin
   :commands wttrin
