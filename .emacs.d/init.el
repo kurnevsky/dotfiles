@@ -1139,6 +1139,7 @@ If CLEAR is specified, clear them instead."
   (lsp-file-watch-threshold nil)
   (lsp-keep-workspace-alive nil)
   (lsp-lens-auto-enable t)
+  (lsp-prefer-capf t)
   :config
   (defun lsp-activate-if-already-activated (server-id)
     (when (lsp-find-workspace server-id (buffer-file-name))
@@ -1156,8 +1157,6 @@ If CLEAR is specified, clear them instead."
   (lsp-ui-doc-position 'top)
   :config
   (add-to-list 'lsp-ui-doc-frame-parameters '(no-accept-focus . t)))
-
-(use-package company-lsp)
 
 (use-package lsp-origami
   :hook (lsp-after-open . lsp-origami-activate-when-supported)
