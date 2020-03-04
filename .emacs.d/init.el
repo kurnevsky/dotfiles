@@ -1049,8 +1049,6 @@ If CLEAR is specified, clear them instead."
   (add-hook 'prog-mode-hook (lambda ()
                               (when polymode-mode
                                 (set (make-local-variable 'highlight-indent-guides-responsive) nil))))
-  ;; Fix selection
-  (add-to-list 'polymode-move-these-vars-from-old-buffer 'transient-mark-mode)
   ;; Fix highlight thing
   (add-hook 'polymode-before-switch-buffer-hook (lambda (_old _new)
                                                   (highlight-thing-remove-last))))
