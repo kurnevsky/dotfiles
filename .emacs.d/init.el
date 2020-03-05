@@ -86,6 +86,15 @@
 (setq undo-limit (* 1024 1024))
 (setq undo-strong-limit (* 2 1024 1024))
 (setq undo-outer-limit (* 16 1024 1024))
+;; Increase the amount of data which Emacs reads from the process.
+(setq read-process-output-max (* 1024 1024))
+;; Don’t consider case significant in completion.
+(setq completion-ignore-case t)
+(setq read-buffer-completion-ignore-case t)
+(setq read-file-name-completion-ignore-case t)
+;; Use fuzzy matching in completion.
+(unless (version< emacs-version "27")
+  (setq completion-styles '(flex)))
 ;; Show line and column numbers.
 (line-number-mode t)
 (column-number-mode t)
@@ -360,7 +369,7 @@
   :config
   (global-display-line-numbers-mode 1)
   ;; Workaround for bug #35404.
-  (when (version<= "26" emacs-version)
+  (when (version< emacs-version "27")
     (advice-add 'posn-at-point :around (lambda (orig-fun &rest args)
                                          (let ((pos (if (car args) (car args) (point)))
                                                 (res (apply orig-fun args)))
@@ -603,6 +612,7 @@ If CLEAR is specified, clear them instead."
       (if (or (not (file-exists-p candidate)) (file-remote-p candidate))
         "?"
         (let* ((group-id (file-attribute-group-id (file-attributes candidate)))
+                ;; group-login-name was added in Emacs 27
                 (group-function (if (fboundp 'group-login-name) #'group-login-name #'identity))
                 (group-name (funcall group-function group-id)))
           (format "%s" group-name)))))
