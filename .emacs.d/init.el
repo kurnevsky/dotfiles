@@ -203,7 +203,11 @@
         (list element)
         (nthcdr pos xs))))
   (setq use-package-keywords (insert-after use-package-keywords :activate :load-path))
-  (add-to-list 'use-package-defaults '(:activate t t) t))
+  (add-to-list
+    'use-package-defaults
+    '(:activate t (lambda (_name args)
+                    (plist-get args :ensure)))
+    t))
 (package-activate 'bind-key)
 (require 'bind-key)
 
@@ -783,7 +787,6 @@ If CLEAR is specified, clear them instead."
 
 (use-package company-dabbrev
   :ensure company
-  :activate company
   :after company
   :commands company-dabbrev
   :custom
@@ -797,7 +800,6 @@ If CLEAR is specified, clear them instead."
 
 (use-package multiple-cursors-core
   :ensure multiple-cursors
-  :activate multiple-cursors
   :commands (mc/multiple-cursors-mode-when-num-cursors>1
               mc/quit-leaving-cursors)
   :bind (("C-b" . mc/mark-all-like-this)
@@ -889,7 +891,6 @@ If CLEAR is specified, clear them instead."
 
 (use-package mc-mark-more
   :ensure multiple-cursors
-  :activate multiple-cursors
   :commands mc/toggle-fake-cursor
   :bind (("C-S-<mouse-1>" . mc/add-cursor-on-click))
   :config
@@ -1099,8 +1100,7 @@ If CLEAR is specified, clear them instead."
                                 "/lib/rustlib/src/rust/src")))))
 
 (use-package matlab
-  :ensure matlab-mode
-  :activate matlab-mode)
+  :ensure matlab-mode)
 
 (use-package ess)
 
@@ -1182,7 +1182,6 @@ If CLEAR is specified, clear them instead."
 
 (use-package lsp-rust
   :ensure lsp-mode
-  :activate lsp-mode
   :after lsp-mode
   :demand t
   :custom
