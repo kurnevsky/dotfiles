@@ -148,12 +148,7 @@
 ;; Recompile init file on exit.
 (defun recompile-init ()
   "Recompile init file when it was modified."
-  (let ((init-elc-attrs (file-attributes (concat user-init-file "c"))))
-    (when (or (not init-elc-attrs)
-            (time-less-p
-              (nth 5 init-elc-attrs)
-              (nth 5 (file-attributes user-init-file))))
-      (byte-compile-file user-init-file))))
+  (byte-recompile-file user-init-file nil 0))
 (add-hook 'kill-emacs-hook #'recompile-init)
 
 ;; ========== Configure packages ==========
