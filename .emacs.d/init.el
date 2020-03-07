@@ -115,7 +115,7 @@
     (if (and (buffer-local-value 'new-untitled buffer)
           (buffer-modified-p buffer)
           (not (buffer-file-name buffer)))
-      (if (yes-or-no-p (format "Buffer '%s' modified and not associated with a file, kill it anyway?" (buffer-name buffer)))
+      (when (yes-or-no-p (format "Buffer '%s' modified and not associated with a file, kill it anyway?" (buffer-name buffer)))
         (apply orig-fun args))
       (apply orig-fun args))))
 (advice-add 'kill-buffer :around #'kill-buffer-ask-first)
@@ -156,62 +156,20 @@
       (byte-compile-file user-init-file))))
 (add-hook 'kill-emacs-hook #'recompile-init)
 
-;; ========== Initialize packages ==========
+;; ========== Configure packages ==========
 
-(require 'package)
-;; Configure the list of remote archives.
-(dolist (archive '(("melpa" . "https://melpa.org/packages/")
-                    ("melpa-stable" . "https://stable.melpa.org/packages/")))
-  (add-to-list 'package-archives archive))
-(setq package-archive-priorities
-  '(("melpa" . 2)
-     ("melpa-stable" . 1)
-     ("gnu" . 0)))
-;; Initialize packages without activating.
-(package-initialize t)
-;; Fetch the list of packages available.
-(unless package-archive-contents
-  (package-refresh-contents))
-
-;; ========== Install use-package ==========
-
+(defconst bootstrap-file (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+(load bootstrap-file nil 'nomessage)
 (eval-when-compile
-  (unless (package-installed-p 'use-package)
-    (package-install 'use-package))
-  (package-activate 'use-package)
+  (straight-use-package 'use-package)
   (require 'use-package)
-  (setq use-package-always-ensure t)
+  (setq straight-use-package-by-default t)
   (setq use-package-always-defer t)
   (setq use-package-verbose t)
-  (setq use-package-expand-minimally byte-compile-current-file)
-  (defun use-package-normalize/:activate (_name-symbol keyword args)
-    (use-package-only-one (symbol-name keyword) args
-      (lambda (_label arg) arg)))
-  (defun use-package-handler/:activate (name-symbol _keyword activate rest state)
-    (let ((body (use-package-process-keywords name-symbol rest state)))
-      (if activate
-        (let ((package (if (eq activate t) name-symbol activate)))
-          (use-package-concat
-            `((package-activate ',package))
-            body))
-        body)))
-  (defun insert-after (xs element after-elemnet)
-    "Insert ELEMENT after AFTER_ELEMENT into XS."
-    (let ((pos (1+ (cl-position after-elemnet xs))))
-      (nconc
-        (cl-subseq xs 0 pos)
-        (list element)
-        (nthcdr pos xs))))
-  (setq use-package-keywords (insert-after use-package-keywords :activate :load-path))
-  (add-to-list
-    'use-package-defaults
-    '(:activate t (lambda (_name args)
-                    (plist-get args :ensure)))
-    t))
-(package-activate 'bind-key)
-(require 'bind-key)
+  (setq use-package-expand-minimally byte-compile-current-file))
 
-;; ========== Configure packages ==========
+(use-package bind-key
+  :demand t)
 
 (use-package base16-theme
   :demand t
@@ -292,20 +250,8 @@
         (lambda ()
           (modify-theme (theme)))))))
 
-(use-package epm
-  :commands (epm-list
-              epm-install
-              epm-reinstall
-              epm-delete
-              epm-refresh
-              epm-info
-              epm-search
-              epm-outdated
-              epm-upgrade
-              epm-version))
-
 (use-package cl-macs
-  :ensure nil
+  :straight nil
   :demand t
   :config
   ;; Fix hotkeys for Russian keyboard layout.
@@ -319,7 +265,7 @@
     (eval `(define-key key-translation-map (kbd ,(concat "M-" (string (upcase from)))) (kbd ,(concat "M-S-" (string to)))))))
 
 (use-package cua-base
-  :ensure nil
+  :straight nil
   :demand t
   :bind (:map cua-global-keymap
           ("<C-return>"))
@@ -349,7 +295,7 @@
   (advice-add 'kmacro-end-macro :around #'cua-macro-fix))
 
 (use-package time
-  :ensure nil
+  :straight nil
   :demand t
   :custom
   (display-time-24hr-format t "24 hours time format.")
@@ -357,18 +303,18 @@
   (display-time-update))
 
 (use-package comint
-  :ensure nil
+  :straight nil
   :custom
   (comint-prompt-read-only t "Make the prompt read only."))
 
 (use-package mb-depth
-  :ensure nil
+  :straight nil
   :demand t
   :config
   (minibuffer-depth-indicate-mode t))
 
 (use-package display-line-numbers
-  :ensure nil
+  :straight nil
   :demand t
   :config
   (global-display-line-numbers-mode 1)
@@ -384,7 +330,7 @@
                                              res))))))
 
 (use-package paren
-  :ensure nil
+  :straight nil
   :demand t
   :custom
   (show-paren-style 'parenthesis)
@@ -392,7 +338,7 @@
   (show-paren-mode t))
 
 (use-package hl-line
-  :ensure nil
+  :straight nil
   :demand t
   :config
   (global-hl-line-mode 1))
@@ -441,7 +387,7 @@
                                               (add-to-list 'font-lock-extra-managed-props 'display)))))
 
 (use-package flyspell
-  :ensure nil
+  :straight nil
   :hook ((text-mode . flyspell-mode)
           (prog-mode . flyspell-prog-mode))
   :bind (:map flyspell-mode-map
@@ -485,7 +431,7 @@
   (minimap-window-location 'right))
 
 (use-package ido
-  :ensure nil
+  :straight nil
   :commands (ido-completing-read
               ido-read-directory-name
               ido-read-file-name
@@ -716,13 +662,13 @@ If CLEAR is specified, clear them instead."
         (helm-set-pattern prefix)))))
 
 (use-package ediff-wind
-  :ensure nil
+  :straight nil
   :custom
   (ediff-window-setup-function #'ediff-setup-windows-plain)
   (ediff-split-window-function #'split-window-horizontally))
 
 (use-package tramp
-  :ensure nil
+  :straight nil
   :custom
   (tramp-default-method "ssh"))
 
@@ -786,7 +732,7 @@ If CLEAR is specified, clear them instead."
   (global-company-mode 1))
 
 (use-package company-dabbrev
-  :ensure company
+  :straight company
   :after company
   :commands company-dabbrev
   :custom
@@ -799,7 +745,7 @@ If CLEAR is specified, clear them instead."
   (company-quickhelp-mode))
 
 (use-package multiple-cursors-core
-  :ensure multiple-cursors
+  :straight multiple-cursors
   :commands (mc/multiple-cursors-mode-when-num-cursors>1
               mc/quit-leaving-cursors)
   :bind (("C-b" . mc/mark-all-like-this)
@@ -890,7 +836,7 @@ If CLEAR is specified, clear them instead."
                                   indent-for-tab-command)))
 
 (use-package mc-mark-more
-  :ensure multiple-cursors
+  :straight multiple-cursors
   :commands mc/toggle-fake-cursor
   :bind (("C-S-<mouse-1>" . mc/add-cursor-on-click))
   :config
@@ -967,7 +913,7 @@ If CLEAR is specified, clear them instead."
             (_ (setq undo (last-edit-next undo tree)))))))))
 
 (use-package hideshow
-  :ensure nil
+  :straight nil
   :hook (prog-mode . hs-minor-mode)
   :bind (:map hs-minor-mode-map
           ("C-`" . hs-toggle-hiding)))
@@ -981,7 +927,7 @@ If CLEAR is specified, clear them instead."
       (hs-minor-mode -1))))
 
 (use-package org
-  :ensure nil
+  :straight nil
   :custom
   (org-support-shift-select t))
 
@@ -1042,7 +988,10 @@ If CLEAR is specified, clear them instead."
 (use-package flycheck
   :demand t
   :bind (("C-e" . flycheck-list-errors))
+  :custom
+  (flycheck-emacs-lisp-load-path 'inherit)
   :config
+  (setq flycheck-emacs-args (append flycheck-emacs-args `("--load" ,bootstrap-file)))
   (global-flycheck-mode)
   (add-to-list 'display-buffer-alist
     `(,(rx bos "*Flycheck errors*" eos)
@@ -1071,7 +1020,7 @@ If CLEAR is specified, clear them instead."
 (use-package poly-rst)
 
 (use-package conf-mode
-  :ensure nil
+  :straight nil
   :mode ("/Cargo.lock\\'" . conf-toml-mode))
 
 (use-package yaml-mode)
@@ -1085,7 +1034,7 @@ If CLEAR is specified, clear them instead."
 (use-package haskell-mode)
 
 (use-package eldoc
-  :ensure nil
+  :straight nil
   :commands (eldoc-mode turn-on-eldoc-mode)
   :init
   (add-hook 'emacs-lisp-mode-hook #'turn-on-eldoc-mode))
@@ -1100,7 +1049,7 @@ If CLEAR is specified, clear them instead."
                                 "/lib/rustlib/src/rust/src")))))
 
 (use-package matlab
-  :ensure matlab-mode)
+  :straight matlab-mode)
 
 (use-package ess)
 
@@ -1124,7 +1073,7 @@ If CLEAR is specified, clear them instead."
 
 (when (executable-find "agda-mode")
   (use-package agda2-mode
-    :ensure nil
+    :straight nil
     :load-path (lambda ()
                  (let ((coding-system-for-read 'utf-8))
                    (file-name-directory (shell-command-to-string "agda-mode locate"))))
@@ -1181,7 +1130,7 @@ If CLEAR is specified, clear them instead."
   (lsp-metals-treeview-enable t))
 
 (use-package lsp-rust
-  :ensure lsp-mode
+  :straight lsp-mode
   :after lsp-mode
   :demand t
   :custom
@@ -1195,14 +1144,14 @@ If CLEAR is specified, clear them instead."
   :demand t)
 
 (use-package dap-mode
-  :ensure posframe
+  :straight (t posframe)
   :config
   (dap-mode t)
   (dap-ui-mode t)
   (dap-tooltip-mode t))
 
 (use-package mu4e
-  :ensure nil
+  :straight nil
   :load-path "/usr/share/emacs/site-lisp/mu4e"
   :commands mu4e
   :custom
