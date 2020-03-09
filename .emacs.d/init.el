@@ -343,11 +343,14 @@
   :custom
   (dimmer-watch-frame-focus-events nil)
   :config
-  (defun dimmer-lsp-ui-p ()
-    (string-match-p "^ \\*lsp-ui-doc-.*\\*$" (buffer-name (current-buffer))))
+  (defun dimmer-prevent-dimming-p ()
+    (let ((name (buffer-name (current-buffer))))
+       (or
+         (string-equal " *LV*" name)
+         (string-match-p "^ \\*lsp-ui-doc-.*\\*$" name))))
   (add-to-list
     'dimmer-prevent-dimming-predicates
-    #'dimmer-lsp-ui-p)
+    #'dimmer-prevent-dimming-p)
   (add-to-list 'dimmer-buffer-exclusion-regexps "^ \\*lsp-ui-doc-.*\\*$")
   (when prefer-helm
     (dimmer-configure-helm))
