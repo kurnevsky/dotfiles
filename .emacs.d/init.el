@@ -324,6 +324,11 @@
                                                res)
                                              res))))))
 
+(use-package which-key
+  :demand t
+  :config
+  (which-key-mode))
+
 (use-package paren
   :straight nil
   :demand t
@@ -1098,6 +1103,7 @@ If CLEAR is specified, clear them instead."
   (lsp-lens-auto-enable t)
   (lsp-prefer-capf t)
   :config
+  (lsp-enable-which-key-integration)
   (defun lsp-activate-if-already-activated (server-id)
     (when (lsp-find-workspace server-id (buffer-file-name))
       (lsp)))
