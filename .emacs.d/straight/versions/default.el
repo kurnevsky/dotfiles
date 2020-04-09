@@ -16,7 +16,6 @@
  ("dap-mode" . "e2086fc9fbde4413f779b314bd5a93f808a3fb78")
  ("dash.el" . "721436b04da4e2795387cb48a98ac6de37ece0fd")
  ("diff-hl" . "7fce94f7d5eebea06aed153b0f574567182c8d2b")
- ("dimmer.el" . "5298af739ce30bacadda892b620858b95709c84b")
  ("dockerfile-mode" . "d31f7685ebc5832d957e25070a930aa42984327d")
  ("doom-modeline" . "0642f7107102e88fb8818da02e6612c6855537ff")
  ("dumb-jump" . "e8e9b0c2d1eda594fd40db9c64e93a70b426641b")

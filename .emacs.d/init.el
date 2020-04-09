@@ -343,25 +343,6 @@
   :config
   (global-hl-line-mode 1))
 
-(use-package dimmer
-  :demand t
-  :custom
-  (dimmer-watch-frame-focus-events nil)
-  :config
-  (defun dimmer-prevent-dimming-p ()
-    (let ((name (buffer-name (current-buffer))))
-       (or
-         (string-equal " *LV*" name)
-         (string-match-p "^ \\*lsp-ui-doc-.*\\*$" name))))
-  (add-to-list
-    'dimmer-prevent-dimming-predicates
-    #'dimmer-prevent-dimming-p)
-  (add-to-list 'dimmer-buffer-exclusion-regexps "^ \\*lsp-ui-doc-.*\\*$")
-  (when prefer-helm
-    (dimmer-configure-helm))
-  (dimmer-configure-hydra)
-  (dimmer-mode t))
-
 (use-package highlight-thing
   :demand t
   :custom
