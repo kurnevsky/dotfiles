@@ -61,6 +61,7 @@
  ("melpa" . "9350f0fa260b9d2be427f408e1a974626e332b1c")
  ("minimap" . "e1352f56d342eab7716a7d9a1bf24becf75e6909")
  ("multiple-cursors.el" . "b880554d04b8f61165afba7d4de19ac9e39bb7ab")
+ ("nix-mode" . "5b5961780f3b1c1b62453d2087f775298980f10d")
  ("origami.el" . "e558710a975e8511b9386edc81cd6bdd0a5bda74")
  ("pfuture" . "fbecd1562b34fcd15563b7cc00d98e5af0d7e43d")
  ("pkg-info" . "76ba7415480687d05a4353b27fea2ae02b8d9d61")
