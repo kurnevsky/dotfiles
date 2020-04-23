@@ -1,15 +1,15 @@
 #!/bin/sh
+
 # Detects the width of running trayer-srg window (xprop name 'panel')
 # and creates an XPM icon of that width, 1px height, and transparent.
 # Outputs an <icon>-tag for use in xmobar to display the generated
-# XPM icon. 
+# XPM icon.
 #
 # Run script from xmobar:
 # `Run Com "/where/ever/trayer-padding-icon.sh" [] "trayer" 10`
 # and use `%trayer%` in your template.
 
-pgrep -x -u $(whoami) trayer > /dev/null
-if [ $? -ne 0 ]
+if ! pgrep -x -u "$(whoami)" trayer > /dev/null
 then
     echo "???"
     exit 0
@@ -17,10 +17,10 @@ fi
 
 # Function to create a transparent Wx1 px XPM icon
 create_xpm_icon () {
-  timestamp=$(date)
-  pixels=$(for i in $(seq $1); do echo -n "."; done)
+    timestamp=$(date)
+    pixels=$(yes "." | head -n "$1" | tr -d '\n')
 
-  cat << EOF > "$2"
+    cat << EOF > "$2"
 /* XPM *
 static char * trayer_pad_xpm[] = {
 /* This XPM icon is used for padding in xmobar to  */
@@ -45,9 +45,9 @@ width=$(xprop -name panel | grep 'program specified minimum size' | cut -d ' ' -
 iconfile="/tmp/trayer-padding-${width}px.xpm"
 
 # If the desired icon does not exist create it
-if [ ! -f $iconfile ]
+if [ ! -f "$iconfile" ]
 then
-    create_xpm_icon $width $iconfile
+    create_xpm_icon "$width" "$iconfile"
 fi
 
 # Output the icon tag for xmobar

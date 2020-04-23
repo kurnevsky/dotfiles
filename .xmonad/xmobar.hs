@@ -70,8 +70,8 @@ Config { font = "xft:Dejavu Sans:size=11"
                                             , "--maxtwidth", "50"
                                             ] 10
                     , Run UnsafeStdinReader
-                    , Run Com "/bin/bash" [ "-c", "~/.xmonad/trayer-pad-icon.sh"
-                                          ] "trayer" 10
+                    , Run Com "/bin/sh" [ "-c", "~/.xmonad/trayer-pad-icon.sh"
+                                        ] "trayer" 10
                     ]
        , sepChar = "%"
        , alignSep = "}{"
