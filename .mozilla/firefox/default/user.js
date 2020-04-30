@@ -226,8 +226,6 @@ user_pref("dom.serviceWorkers.enabled", false);
 
 // 2402: disable website access to clipboard events/content
 user_pref("dom.event.clipboardevents.enabled", false);
-// 2404: disable clipboard commands (cut/copy) from "non-privileged" content
-user_pref("dom.allow_cut_copy", false);
 // 2405: disable "Confirm you want to leave" dialog on page close
 user_pref("dom.disable_beforeunload", true);
 // 2414: disable shaking the screen
