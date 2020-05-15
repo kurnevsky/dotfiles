@@ -474,6 +474,7 @@ If CLEAR is specified, clear them instead."
           :map ivy-minibuffer-map
           ("RET" . ivy-alt-done)
           ("<C-return>" . ivy-immediate-done)
+          ("C-s" . ignore)
           :map ivy-switch-buffer-map
           ("<f2>" . keyboard-escape-quit))
   :custom
