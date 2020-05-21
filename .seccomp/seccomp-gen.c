@@ -1,5 +1,7 @@
-// See local README.md on how to compile and run.
-// In short: gcc seccomp-gen.c -lseccomp -Wall -pedantic -o seccomp-gen
+/*
+See local README.md on how to compile and run.
+In short: gcc seccomp-gen.c -lseccomp -Wall -pedantic -o seccomp-gen
+*/
 
 #include <errno.h>
 #include <fcntl.h>
