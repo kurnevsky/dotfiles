@@ -953,6 +953,11 @@ If CLEAR is specified, clear them instead."
   (diff-hl-flydiff-mode)
   (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
 
+(use-package magit-delta
+  :demand t
+  :config
+  (magit-delta-mode))
+
 (use-package treemacs
   :bind (("<f8>" . treemacs)
           :map treemacs-mode-map
