@@ -145,6 +145,9 @@
                                         right-char
                                         forward-char))
                              (ding))))
+;; Enable mouse support in terminal.
+(unless (display-graphic-p)
+  (xterm-mouse-mode t))
 ;; Recompile init file on exit.
 (defun recompile-init ()
   "Recompile init file when it was modified."
