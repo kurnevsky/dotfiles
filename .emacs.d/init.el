@@ -927,6 +927,11 @@ If CLEAR is specified, clear them instead."
   :demand t
   :after yasnippet)
 
+(use-package vc
+  :straight nil
+  :custom
+  (vc-follow-symlinks t))
+
 (use-package magit
   :demand t
   :bind (("<C-m> <C-m>" . magit-status)
