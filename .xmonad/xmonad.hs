@@ -182,6 +182,14 @@ myKeys conf@XConfig { XMonad.modMask = modm } = M.union (planeKeys modm (Lines 3
   , ((shiftMask, xF86XK_MonBrightnessUp), spawn "xbacklight = 100")
   -- Set monitor backlight level to minimum value.
   , ((shiftMask, xF86XK_MonBrightnessDown), spawn "xbacklight = 1")
+  -- Toggle microphone.
+  , ((0, xF86XK_AudioMicMute), spawn "pactl set-source-mute @DEFAULT_SOURCE@ toggle")
+  -- Toggle sound.
+  , ((0, xF86XK_AudioMute), spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
+  -- Raise volume.
+  , ((0, xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ +5%")
+  -- Lower volume.
+  , ((0, xF86XK_AudioLowerVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ -5%")
   -- dbus-send --dest=com.github.chjj.compton._0 / com.github.chjj.compton.win_set uint32:0x5a0000a string:invert_color_force uint16:1
   , ((modm, xK_i), withDisplay $ \dpy -> withFocused $ io . invert dpy)
   -- Invert colors.
