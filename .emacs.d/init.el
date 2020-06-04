@@ -1008,17 +1008,6 @@ If CLEAR is specified, clear them instead."
   :mode ("\\.adoc\\'" . adoc-mode))
 
 (use-package polymode
-  :config/el-patch
-  (defun pm--move-vars (vars from-buffer &optional to-buffer)
-    (let ((to-buffer (or to-buffer (current-buffer))))
-      (unless (eq to-buffer from-buffer)
-        (with-current-buffer to-buffer
-          (dolist (var vars)
-            (when (default-boundp var)
-              (el-patch-swap
-                (make-variable-buffer-local var)
-                (make-local-variable var))
-              (set var (buffer-local-value var from-buffer))))))))
   :config
   ;; Doesn't work well with polymode.
   (add-hook 'prog-mode-hook (lambda ()
