@@ -25,10 +25,10 @@
                /* url-prefix("about:profiles"), */
                url-prefix("about:rights"),
                url-prefix("about:robots"),
-               url-prefix("about:serviceworkers"),
+               /* url-prefix("about:serviceworkers"), */
                /* url-prefix("about:sessionrestore"), */
                url-prefix("about:studies"),
-               url-prefix("about:support"),
+               /* url-prefix("about:support"), */
                url-prefix("about:sync-log"),
                /* url-prefix("about:telemetry"), */
                /* url-prefix("about:url-classifier"), */
