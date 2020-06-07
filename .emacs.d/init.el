@@ -169,6 +169,9 @@
 (use-package bind-key
   :demand t)
 
+(use-package dash
+  :demand t)
+
 (use-package el-patch
   :demand t
   :config
@@ -517,19 +520,27 @@ If CLEAR is specified, clear them instead."
   :if (not prefer-helm)
   :demand t
   :after ivy
-  :init
-  (defun ivy-rich-switch-buffer-icon (candidate)
-    (concat
-      (with-current-buffer (get-buffer candidate)
-        (let ((icon (all-the-icons-icon-for-mode major-mode :height 0.7 :v-adjust 0.05)))
-          (if (symbolp icon)
-            (all-the-icons-icon-for-mode 'fundamental-mode :height 0.7 :v-adjust 0.05)
-            icon)))
-      "\t"))
-  (defun ivy-rich-find-file-icon (candidate)
-    (concat
-      (all-the-icons-icon-for-file candidate :height 0.7 :v-adjust 0.05)
-      "\t"))
+  :config
+  ;; Prevent highlighting helper columns
+  (advice-add 'ivy-rich-format-column :around (lambda (orig-fun &rest args)
+                                                (let ((candidate (car (car (cdr args))))
+                                                       (formatted (apply orig-fun args)))
+                                                  (if (or
+                                                        (eq candidate 'ivy-rich-candidate)
+                                                        (string-suffix-p "-transformer" (symbol-name candidate)))
+                                                    (concat (char-to-string #x200B) formatted (char-to-string #x200B))
+                                                    formatted))))
+  (advice-add 'ivy--highlight-fuzzy :around (lambda (orig-fun &rest args)
+                                              (pcase (split-string (car args) (char-to-string #x200B))
+                                                (`(,left ,candidate ,right) (concat left (apply orig-fun (list candidate)) right))
+                                                (_ (apply orig-fun args)))))
+  (ivy-rich-mode 1))
+
+(use-package all-the-icons-ivy-rich
+  :if (not prefer-helm)
+  :demand t
+  :after ivy-rich
+  :config
   (defun ivy-rich-file-size (candidate)
     (let ((candidate (expand-file-name candidate ivy--directory)))
       (if (or (not (file-exists-p candidate)) (file-remote-p candidate))
@@ -560,69 +571,50 @@ If CLEAR is specified, clear them instead."
                 (group-function (if (fboundp 'group-login-name) #'group-login-name #'identity))
                 (group-name (funcall group-function group-id)))
           (format "%s" group-name)))))
-  (setq ivy-rich-display-transformers-list
-    '(ivy-switch-buffer
-       (:columns
-         ((ivy-rich-switch-buffer-icon :width 2)
-           (ivy-rich-candidate (:width 30 :highlight t))
-           (ivy-rich-switch-buffer-size (:width 7))
-           (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
-           (ivy-rich-switch-buffer-major-mode (:width 20 :face warning))
-           (ivy-rich-switch-buffer-project (:width 15 :face success))
-           (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
-         :predicate
-         (lambda (cand) (get-buffer cand)))
-       counsel-M-x
-       (:columns
-         ((counsel-M-x-transformer (:width 40 :highlight t))
-           (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
-       counsel-describe-function
-       (:columns
-         ((counsel-describe-function-transformer (:width 40 :highlight t))
-           (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
-       counsel-describe-variable
-       (:columns
-         ((counsel-describe-variable-transformer (:width 40 :highlight t))
-           (ivy-rich-counsel-variable-docstring (:face font-lock-doc-face))))
-       counsel-recentf
-       (:columns
-         ((ivy-rich-candidate (:width 0.8 :highlight t))
-           (ivy-rich-file-last-modified-time (:face font-lock-comment-face))))
-       counsel-find-file
-       (:columns
-         ((ivy-rich-find-file-icon :width 2)
-           (ivy-rich-candidate (:width 60 :highlight t))
-           (ivy-rich-file-user (:width 10 :face font-lock-doc-face))
-           (ivy-rich-file-group (:width 4 :face font-lock-doc-face))
-           (ivy-rich-file-modes (:width 11 :face font-lock-doc-face))
-           (ivy-rich-file-size (:width 10 :face font-lock-doc-face))
-           (ivy-rich-file-last-modified-time (:width 30 :face font-lock-doc-face))))))
-  :config
-  ;; Handle 'highlight' option to prevent highlighting helper columns
-  (defun ivy-rich-format-column (candidate column)
-    (let* ((fn (car column))
-            (props (cadr column))
-            (width (plist-get props :width))
-            (align (plist-get props :align))
-            (face (plist-get props :face))
-            (highlight (plist-get props :highlight))
-            (formated (funcall fn candidate)))
-      (when width
-        (if (functionp width)
-          (setq formated (funcall width formated))
-          (if (floatp width)
-            (setq width (floor (* (window-width (minibuffer-window)) width))))
-          (setq formated (ivy-rich-normalize-width formated width (eq align 'left)))))
-      (if face
-        (setq formated (propertize formated 'face face)))
-      (when highlight
-        (setq formated (concat (char-to-string #x200B) formated (char-to-string #x200B))))
-      formated))
-  (advice-add 'ivy--highlight-fuzzy :around (lambda (orig-fun &rest args)
-                                              (pcase (split-string (car args) (char-to-string #x200B))
-                                                (`(,left ,candidate ,right) (concat left (apply orig-fun (list candidate)) right))
-                                                (_ (apply orig-fun args)))))
-  (ivy-rich-mode 1))
+  (defun modify-all-the-icons-ivy-rich-display-transformers-list (key value)
+    (setcar
+      (nthcdr
+        (+ (-elem-index key all-the-icons-ivy-rich-display-transformers-list) 1)
+        all-the-icons-ivy-rich-display-transformers-list)
+      value))
+  (modify-all-the-icons-ivy-rich-display-transformers-list
+    'counsel-find-file
+    '(:columns
+       ((all-the-icons-ivy-rich-file-icon)
+         (ivy-read-file-transformer (:width 60))
+         (ivy-rich-file-user (:width 10 :face font-lock-doc-face))
+         (ivy-rich-file-group (:width 4 :face font-lock-doc-face))
+         (ivy-rich-file-modes (:width 11 :face font-lock-doc-face))
+         (ivy-rich-file-size (:width 10 :face font-lock-doc-face))
+         (ivy-rich-file-last-modified-time (:width 30 :face font-lock-doc-face)))
+       :delimiter "\t"))
+  (modify-all-the-icons-ivy-rich-display-transformers-list
+    'ivy-switch-buffer
+    '(:columns
+       ((all-the-icons-ivy-rich-buffer-icon)
+         (ivy-rich-candidate (:width 30))
+         (ivy-rich-switch-buffer-size (:width 7))
+         (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
+         (ivy-rich-switch-buffer-major-mode (:width 20 :face warning))
+         (ivy-rich-switch-buffer-project (:width 15 :face success))
+         (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
+       :predicate
+       (lambda (cand) (get-buffer cand))
+       :delimiter "\t"))
+  (modify-all-the-icons-ivy-rich-display-transformers-list
+    'ivy-switch-buffer-other-window
+    '(:columns
+       ((all-the-icons-ivy-rich-buffer-icon)
+         (ivy-rich-candidate (:width 30))
+         (ivy-rich-switch-buffer-size (:width 7))
+         (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
+         (ivy-rich-switch-buffer-major-mode (:width 20 :face warning))
+         (ivy-rich-switch-buffer-project (:width 15 :face success))
+         (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
+       :predicate
+       (lambda (cand) (get-buffer cand))
+       :delimiter "\t"))
+  (all-the-icons-ivy-rich-mode 1))
 
 (use-package helm
   :if prefer-helm
