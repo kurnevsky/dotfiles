@@ -1124,9 +1124,7 @@ If CLEAR is specified, clear them instead."
       (origami-mode t)
       (lsp-origami-mode t))))
 
-(use-package lsp-treemacs
-  :config
-  (lsp-metals-treeview-enable t))
+(use-package lsp-treemacs)
 
 (use-package lsp-rust
   :straight lsp-mode
@@ -1136,6 +1134,10 @@ If CLEAR is specified, clear them instead."
   (lsp-rust-clippy-preference "on")
   (lsp-rust-cfg-test t)
   (lsp-rust-build-on-save t))
+
+(use-package lsp-metals
+  :after lsp-mode
+  :demand t)
 
 (use-package lsp-haskell
   :disabled
