@@ -1137,7 +1137,9 @@ If CLEAR is specified, clear them instead."
 
 (use-package lsp-metals
   :after lsp-mode
-  :demand t)
+  :demand t
+  :custom
+  (lsp-metals-super-method-lenses-enabled t))
 
 (use-package lsp-haskell
   :disabled
