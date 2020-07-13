@@ -1097,6 +1097,7 @@ If CLEAR is specified, clear them instead."
   (lsp-keep-workspace-alive nil)
   (lsp-lens-auto-enable t)
   (lsp-prefer-capf t)
+  (lsp-headerline-breadcrumb-enable t)
   :config
   (lsp-enable-which-key-integration)
   (defun lsp-activate-if-already-activated (server-id)
@@ -1114,6 +1115,7 @@ If CLEAR is specified, clear them instead."
   (lsp-ui-sideline-update-mode 'line)
   (lsp-ui-doc-position 'top)
   :config
+  (delete (list 'no-accept-focus) lsp-ui-doc-frame-parameters)
   (add-to-list 'lsp-ui-doc-frame-parameters '(no-accept-focus . t)))
 
 (use-package lsp-origami
