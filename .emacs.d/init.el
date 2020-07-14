@@ -1098,6 +1098,7 @@ If CLEAR is specified, clear them instead."
   (lsp-lens-auto-enable t)
   (lsp-prefer-capf t)
   (lsp-headerline-breadcrumb-enable t)
+  (lsp-headerline-breadcrumb-segments '(symbols))
   :config
   (lsp-enable-which-key-integration)
   (defun lsp-activate-if-already-activated (server-id)
