@@ -946,6 +946,21 @@ If CLEAR is specified, clear them instead."
   (add-hook 'magit-status-mode-hook
     (lambda () (company-mode -1))))
 
+(use-package forge
+  :demand t
+  :after magit
+  :config
+  (let ((host "gitlab.evolutiongaming.com"))
+    (add-to-list
+      'forge-alist
+      '(host (concat host "/api/v4") host forge-gitlab-repository))))
+
+(use-package auth-source-pass
+  :demand t
+  :after auth-source
+  :config
+  (auth-source-pass-enable))
+
 (use-package gitattributes-mode)
 
 (use-package gitconfig-mode)

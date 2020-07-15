@@ -15,3 +15,5 @@
     diffFilter = delta --color-only
 [pull]
 	ff = only
+[gitlab "gitlab.evolutiongaming.com/api/v4"]
+	user = ykurneuski
