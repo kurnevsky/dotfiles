@@ -953,11 +953,13 @@ If CLEAR is specified, clear them instead."
   (let ((host "gitlab.evolutiongaming.com"))
     (add-to-list
       'forge-alist
-      '(host (concat host "/api/v4") host forge-gitlab-repository))))
+      `(,host ,(concat host "/api/v4") ,host forge-gitlab-repository))))
 
 (use-package auth-source-pass
   :demand t
   :after auth-source
+  :custom
+  (auth-source-pass-filename "~/.password-store/auth-source")
   :config
   (auth-source-pass-enable))
 
