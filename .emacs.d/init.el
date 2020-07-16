@@ -955,11 +955,12 @@ If CLEAR is specified, clear them instead."
       'forge-alist
       `(,host ,(concat host "/api/v4") ,host forge-gitlab-repository))))
 
+(use-package pass
+  :mode (".password-store/.*\\.gpg\\'" . pass-view-mode))
+
 (use-package auth-source-pass
   :demand t
   :after auth-source
-  :custom
-  (auth-source-pass-filename "~/.password-store/auth-source")
   :config
   (auth-source-pass-enable))
 
