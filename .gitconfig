@@ -17,5 +17,7 @@
 	ff = only
 [github]
 	user = kurnevsky
+[gitlab]
+	user = kurnevsky
 [gitlab "gitlab.evolutiongaming.com/api/v4"]
 	user = ykurneuski
