@@ -178,6 +178,33 @@
   (eval-when-compile
     (el-patch-use-package-mode)))
 
+(use-package hexrgb
+  :demand t
+  :config
+  (defun set-base16-terminal-colors ()
+    (when (eq (tty-display-color-cells) 256)
+      (--each-indexed
+        '(("black" "#282c34")
+           ("red" "#e06c75")
+           ("green" "#98c379")
+           ("yellow" "#e5c07b")
+           ("blue" "#61afef")
+           ("magenta" "#c678dd")
+           ("cyan" "#56b6c2")
+           ("white" "#abb2bf")
+           ("brightblack" "#545862")
+           ("brightred" "#d19a66")
+           ("brightgreen" "#353b45")
+           ("brightyellow" "#3e4451")
+           ("brightblue" "#565c64")
+           ("brightmagenta" "#b6bdca")
+           ("brightcyan" "#be5046")
+           ("brightwhite" "#c8ccd4"))
+        (-let* (((name color) it)
+                 ((r g b) (--map (* it 256) (hexrgb-hex-to-color-values color))))
+          (tty-modify-color-alist (list name it-index r g b))))))
+  (add-hook 'tty-setup-hook #'set-base16-terminal-colors))
+
 (use-package base16-theme
   :demand t
   :custom

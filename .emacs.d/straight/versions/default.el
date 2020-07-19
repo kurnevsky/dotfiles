@@ -46,6 +46,7 @@
  ("guess-language.el" . "256230072f4f828e07db6ab17b6b7e90891b7308")
  ("haskell-mode" . "41683c0e634bb3f54eac8747919a82132e1714fe")
  ("helm" . "a3343a370975d9c01df4f1ff42875cc32ae89592")
+ ("hexrgb" . "90e5f07f14bdb9966648977965094c75072691d4")
  ("highlight-indent-guides" . "a4f771418e4eed1f3f7879a43af28cf97747d41c")
  ("highlight-thing.el" . "561d08a26f78f18d405d4f371f1c813db094e2f3")
  ("ht.el" . "fff8c43f0e03d5b98deb9f988522b839ce2ca253")
