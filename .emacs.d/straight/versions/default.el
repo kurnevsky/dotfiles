@@ -96,7 +96,7 @@
  ("swiper" . "c6b60d34ac37bf4d91a25f16d22e528f85e06938")
  ("systemd-mode" . "51c148e09a129ddf33d95276aa0e89d4ef6f8dd2")
  ("transient" . "dd9c40adc3eb7f8656c8a17c3c450388610b7986")
- ("treemacs" . "399e82b24817218cf6bcf2145d1620d7feff63e6")
+ ("treemacs" . "644e9402f74dc6100a60fc2b54a2f94ba9bc52e0")
  ("treepy.el" . "306f7031d26e4ebfc9ff36614acdc6993f3e23c3")
  ("typescript.el" . "0fc729787007b5111f3584034af0f3ef2389098f")
  ("undo-tree" . "5b6df03781495d8a25695d846b0cce496d3d3058")
