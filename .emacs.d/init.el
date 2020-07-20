@@ -172,6 +172,9 @@
 (use-package dash
   :demand t)
 
+(use-package dash-functional
+  :demand t)
+
 (use-package el-patch
   :demand t
   :config
@@ -205,6 +208,10 @@
           (tty-modify-color-alist (list name it-index r g b))))))
   (add-hook 'tty-setup-hook #'set-base16-terminal-colors))
 
+(use-package color
+  :demand t
+  :straight nil)
+
 (use-package base16-theme
   :demand t
   :custom
@@ -214,23 +221,32 @@
   :config
   (defun color-blend (c1 c2 a)
     "Combine A C1 with (1-a) C2."
-    (apply
-      #'color-rgb-to-hex
+    (hexrgb-color-values-to-hex
       (cl-mapcar
         (lambda (c1 c2) (+ (* a c1) (* (- 1 a) c2)))
-        (color-name-to-rgb c1)
-        (color-name-to-rgb c2))))
+        (hexrgb-hex-to-color-values c1)
+        (hexrgb-hex-to-color-values c2))
+      2))
+  (defun color-saturate-darken (c s d)
+    "Saturate by S and darken by D a color C."
+    (->> c
+      hexrgb-hex-to-color-values
+      (-map (-rpartial '/ 255.0))
+      (funcall (-applify 'color-rgb-to-hsl))
+      (funcall (-applify (-cut color-saturate-hsl <> <> <> s)))
+      (funcall (-applify (-cut color-lighten-hsl <> <> <> (- d))))
+      (funcall (-applify 'color-hsl-to-rgb))
+      (funcall (-applify 'color-rgb-to-hex))))
   (defun modify-theme (theme)
-    (require 'color)
     (let* ((colors (symbol-value (intern (concat (symbol-name theme) "-colors"))))
             (base00 (plist-get colors :base00))
             (base01 (plist-get colors :base01))
             (base08 (plist-get colors :base08))
             (base0A (plist-get colors :base0A))
             (base0B (plist-get colors :base0B))
-            (base08-highlight (color-darken-name (color-saturate-name base08 20) 10))
-            (base0A-highlight (color-darken-name (color-saturate-name base0A 20) 10))
-            (base0B-highlight (color-darken-name (color-saturate-name base0B 20) 10)))
+            (base08-highlight (color-saturate-darken base08 20 10))
+            (base0A-highlight (color-saturate-darken base0A 20 10))
+            (base0B-highlight (color-saturate-darken base0B 20 10)))
       (base16-set-faces theme (symbol-value (intern (concat (symbol-name theme) "-colors")))
         `( ;; Make it slightly different from highlighting
            (hl-line :background ,(color-blend base00 base01 0.5))
@@ -267,22 +283,10 @@
            (font-lock-comment-face :foreground base03 :slant italic)
            ;; Apply string foreground for docstring and make it italic
            (font-lock-doc-face :foreground base0B :slant italic)))))
-  (defun theme ()
-    (if (display-graphic-p) 'base16-onedark 'base16-isotope))
   (defun set-theme (theme)
     (load-theme theme t)
     (modify-theme theme))
-  (if (daemonp)
-    (add-hook 'after-make-frame-functions
-      (lambda (frame)
-        (with-selected-frame frame
-          (set-theme (theme)))))
-    (progn
-      (set-theme (theme))
-      ;; color-name-to-rgb will work correctly only after tty initialization
-      (add-hook 'tty-setup-hook
-        (lambda ()
-          (modify-theme (theme)))))))
+  (set-theme 'base16-onedark))
 
 (use-package cl-macs
   :straight nil
