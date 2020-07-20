@@ -7,7 +7,7 @@ echo $$ > "/sys/fs/cgroup/memory/$USER/4G/tasks"
 mapfile -t video < <(find /dev -maxdepth 1 -type c -regex '/dev/video[0-9]+' | sed 's/.*/--dev-bind\n&\n&/')
 
 exec bwrap \
-     --ro-bind /usr/bin/chromium /usr/bin/chromium \
+    --ro-bind /usr/bin /usr/bin \
      \
      --ro-bind /usr/share /usr/share \
      \
@@ -21,6 +21,8 @@ exec bwrap \
      --symlink /usr/lib /lib \
      --symlink /usr/bin /bin \
      --symlink /usr/bin /sbin \
+     \
+     --ro-bind /opt/zoom /opt/zoom \
      \
      --proc /proc \
      \
@@ -39,8 +41,6 @@ exec bwrap \
      \
      --ro-bind /etc/fonts /etc/fonts \
      --ro-bind /etc/pulse /etc/pulse \
-     --ro-bind /etc/gtk-2.0 /etc/gtk-2.0 \
-     --ro-bind /etc/gtk-3.0 /etc/gtk-3.0 \
      --ro-bind /etc/resolv.conf /etc/resolv.conf \
      --ro-bind /etc/localtime /etc/localtime \
      \
@@ -49,14 +49,14 @@ exec bwrap \
      --bind "/run/user/$UID/bus" "/run/user/$UID/bus" \
      --bind "/run/user/$UID/pulse" "/run/user/$UID/pulse" \
      \
-     --bind ~/.config/chromium ~/.config/chromium \
-     --bind ~/.cache/chromium ~/.cache/chromium \
-     --bind ~/Downloads ~/Downloads \
+     --bind ~/.cache/zoom ~/.cache/zoom \
+     --bind ~/.zoom ~/.zoom \
+     --bind ~/.config/zoomus.conf ~/.config/zoomus.conf \
      --bind ~/.config/pulse ~/.config/pulse \
      --ro-bind ~/.Xauthority ~/.Xauthority \
      \
      --unsetenv MAIL \
-     --unsetenv SHELL \
+     --setenv SHELL /bin/bash \
      \
      --unshare-user \
      --unshare-ipc \
@@ -72,4 +72,4 @@ exec bwrap \
      --seccomp 3 \
      3< ~/.seccomp/seccomp.bpf \
      \
-     /usr/bin/chromium --no-sandbox "$@"
+     /usr/bin/zoom "$@"
