@@ -148,6 +148,8 @@
 ;; Enable mouse support in terminal.
 (unless (display-graphic-p)
   (xterm-mouse-mode t))
+;; Fix emacs in alacritty.
+(add-to-list 'term-file-aliases '("alacritty" . "xterm-256color"))
 ;; Recompile init file on exit.
 (defun recompile-init ()
   "Recompile init file when it was modified."
@@ -346,6 +348,13 @@
   :straight nil
   :custom
   (comint-prompt-read-only t "Make the prompt read only."))
+
+(use-package xterm
+  :straight nil
+  :custom
+  ;; It works only in plain xterm (i.e. without tmux) and might cause
+  ;; a small delay in other terminals (e.g. alacritty).
+  (xterm-extra-capabilities nil))
 
 (use-package mb-depth
   :straight nil
