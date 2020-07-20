@@ -1,0 +1,11 @@
+#!/bin/sh
+
+PULSE_IN="alsa_input.pci-0000_00_1f.3.analog-stereo"
+PULSE_OUT="alsa_output.pci-0000_00_1f.3.analog-stereo.monitor"
+
+ffmpeg -f x11grab -framerate 25 -video_size 1920x1080 -i :0.0 \
+       -f pulse -ac 1 -i "$PULSE_OUT" \
+       -f pulse -ac 1 -i "$PULSE_IN" \
+       -map 0 -map 1 -map 2 \
+       -c:v libx264 -crf 0 -preset slow \
+       -c:a libopus -b:a 128K "$1"
