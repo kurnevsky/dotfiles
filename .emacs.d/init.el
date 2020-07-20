@@ -286,7 +286,9 @@
   (defun set-theme (theme)
     (load-theme theme t)
     (modify-theme theme))
-  (set-theme 'base16-onedark))
+  (if (or (daemonp) (display-graphic-p))
+    (set-theme 'base16-onedark)
+    (add-hook 'tty-setup-hook (lambda () (set-theme 'base16-onedark)) t)))
 
 (use-package cl-macs
   :straight nil
