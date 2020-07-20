@@ -1140,6 +1140,7 @@ If CLEAR is specified, clear them instead."
 
 (use-package lsp-mode
   :custom
+  (lsp-keymap-prefix "C-l")
   (lsp-auto-guess-root t)
   (lsp-prefer-flymake nil)
   (lsp-file-watch-threshold nil)
