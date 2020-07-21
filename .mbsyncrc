@@ -1,0 +1,71 @@
+IMAPAccount gmail
+Host imap.gmail.com
+User kurnevsky@gmail.com
+PassCmd "pass show web/google.com | grep Isync | cut -d ' ' -f 2"
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore gmail-remote
+Account gmail
+
+MaildirStore gmail-local
+Path ~/Mail/gmail/
+Inbox ~/Mail/gmail/Inbox
+SubFolders Verbatim
+
+Channel gmail
+Master :gmail-remote:
+Slave :gmail-local:
+Patterns * !"[Gmail]/All Mail"
+Create Both
+Expunge Both
+SyncState *
+
+
+IMAPAccount yandex
+Host imap.ya.ru
+User kurnevsky
+PassCmd "pass show web/yandex.ru | head -n 1"
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore yandex-remote
+Account yandex
+
+MaildirStore yandex-local
+Path ~/Mail/yandex/
+Inbox ~/Mail/yandex/Inbox
+SubFolders Verbatim
+
+Channel yandex
+Master :yandex-remote:
+Slave :yandex-local:
+Patterns *
+Create Both
+Expunge Both
+SyncState *
+
+
+IMAPAccount evolution
+Host outlook.office365.com
+User ykurneuski@evolutiongaming.com
+AuthMech XOAUTH2
+PassCmd "~/cloud_mdir_sync/cms-oauth --cms_sock=/var/run/user/$UID/cms.sock --proto=IMAP --user ykurneuski@evolutiongaming.com --output=token"
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore evolution-remote
+Account evolution
+
+MaildirStore evolution-local
+Path ~/Mail/evolution/
+Inbox ~/Mail/evolution/Inbox
+SubFolders Verbatim
+
+Channel evolution
+Master :evolution-remote:
+Slave :evolution-local:
+Patterns *
+Create Both
+Expunge Both
+SyncState *
