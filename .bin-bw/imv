@@ -2,8 +2,6 @@
 
 set -e
 
-echo $$ > "/sys/fs/cgroup/memory/$USER/media/tasks"
-
 exec bwrap \
      --ro-bind /usr/bin/imv /usr/bin/imv \
      --ro-bind /usr/bin/imv-x11 /usr/bin/imv-x11 \

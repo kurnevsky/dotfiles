@@ -2,8 +2,6 @@
 
 set -e
 
-echo $$ > "/sys/fs/cgroup/memory/$USER/media/tasks"
-
 exec bwrap \
      --ro-bind /usr/bin/zathura /usr/bin/zathura \
      \

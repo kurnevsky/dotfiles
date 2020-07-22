@@ -2,8 +2,6 @@
 
 set -e
 
-echo $$ > "/sys/fs/cgroup/memory/$USER/torrent/tasks"
-
 exec bwrap \
      --ro-bind /usr/bin/qbittorrent /usr/bin/qbittorrent \
      \

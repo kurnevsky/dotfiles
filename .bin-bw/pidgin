@@ -2,8 +2,6 @@
 
 set -e
 
-echo $$ > "/sys/fs/cgroup/memory/$USER/messenger/tasks"
-
 exec bwrap \
      --ro-bind /usr/bin/pidgin /usr/bin/pidgin \
      \
