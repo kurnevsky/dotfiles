@@ -17,14 +17,22 @@ dehumanise() {
      /TB$/{    printpower($1, 10, 12)}'
 }
 
+create_cgroup() {
+  local bytes
+  bytes=$(dehumanise "$3")
+  mkdir -p "/sys/fs/cgroup/memory/$1/$2"
+  echo "$bytes" > "/sys/fs/cgroup/memory/$1/$2/memory.limit_in_bytes"
+  echo "$bytes" > "/sys/fs/cgroup/memory/$1/$2/memory.memsw.limit_in_bytes"
+  chown "$1:$1" "/sys/fs/cgroup/memory/$1/$2/tasks"
+}
+
 awk -F: '/\/home/ && ($3 >= 1000) {printf "%s\n", $1}' /etc/passwd | while read -r user
 do
-  for size in {1..8}G
-  do
-    bytes=$(dehumanise "$size")
-    mkdir -p "/sys/fs/cgroup/memory/$user/$size"
-    echo "$bytes" > "/sys/fs/cgroup/memory/$user/$size/memory.limit_in_bytes"
-    echo "$bytes" > "/sys/fs/cgroup/memory/$user/$size/memory.memsw.limit_in_bytes"
-    chown "$user:$user" "/sys/fs/cgroup/memory/$user/$size/tasks"
-  done
+  create_cgroup "$user" archiver 4G
+  create_cgroup "$user" browser 6G
+  create_cgroup "$user" media 2G
+  create_cgroup "$user" messenger 2G
+  create_cgroup "$user" torrent 1G
+  create_cgroup "$user" wine 6G
+  create_cgroup "$user" other 2G
 done

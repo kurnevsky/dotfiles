@@ -2,7 +2,7 @@
 
 set -e
 
-echo $$ > "/sys/fs/cgroup/memory/$USER/1G/tasks"
+echo $$ > "/sys/fs/cgroup/memory/$USER/torrent/tasks"
 
 exec bwrap \
      --ro-bind /usr/bin/qbittorrent /usr/bin/qbittorrent \
@@ -42,9 +42,11 @@ exec bwrap \
      \
      --bind ~/.local/share/data/qBittorrent ~/.local/share/data/qBittorrent \
      --bind ~/.config/qBittorrent ~/.config/qBittorrent \
+     --bind ~/.cache/qBittorrent ~/.cache/qBittorrent \
      --bind ~/Torrents ~/Torrents \
      --ro-bind ~/.config/qt5ct ~/.config/qt5ct \
      --ro-bind ~/.Xauthority ~/.Xauthority \
+     --bind ~/movies ~/movies \
      \
      --unsetenv MAIL \
      --unsetenv SHELL \

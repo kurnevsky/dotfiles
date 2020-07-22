@@ -2,7 +2,7 @@
 
 set -e
 
-echo $$ > "/sys/fs/cgroup/memory/$USER/4G/tasks"
+echo $$ > "/sys/fs/cgroup/memory/$USER/archiver/tasks"
 
 exec bwrap \
      --ro-bind /usr/bin/unzip /usr/bin/unzip \

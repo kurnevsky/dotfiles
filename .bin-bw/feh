@@ -2,7 +2,7 @@
 
 set -e
 
-echo $$ > "/sys/fs/cgroup/memory/$USER/1G/tasks"
+echo $$ > "/sys/fs/cgroup/memory/$USER/media/tasks"
 
 exec bwrap \
      --ro-bind /usr/bin/feh /usr/bin/feh \

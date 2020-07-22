@@ -4,7 +4,7 @@ set -e
 
 WINEPREFIX=${WINEPREFIX:-~/.wine}
 
-echo $$ > "/sys/fs/cgroup/memory/$USER/4G/tasks"
+echo $$ > "/sys/fs/cgroup/memory/$USER/wine/tasks"
 
 exec bwrap \
      --ro-bind /usr/bin /usr/bin \
