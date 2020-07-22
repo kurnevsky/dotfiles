@@ -1214,8 +1214,7 @@ If CLEAR is specified, clear them instead."
   :straight (t posframe)
   :config
   (dap-mode t)
-  (dap-ui-mode t)
-  (dap-tooltip-mode t))
+  (dap-ui-mode t))
 
 (use-package mu4e
   :straight nil
