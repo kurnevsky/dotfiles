@@ -1275,12 +1275,6 @@ If CLEAR is specified, clear them instead."
                (mu4e-refile-folder . ,(choose-mu4e-alternative name 'mu4e-refile-folder-alternatives)))))
   (setq mu4e-contexts (mapcar #'make-mu4e-context-generic (directory-files "~/Mail" nil "[^.]"))))
 
-(use-package wttrin
-  :commands wttrin
-  :custom
-  (wttrin-default-cities '("Minsk"))
-  (wttrin-default-accept-language '("Accept-Language" . "en-EN")))
-
 ;; ========== Key bindings ==========
 
 (defun new-empty-buffer ()

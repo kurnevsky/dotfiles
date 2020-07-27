@@ -30,7 +30,6 @@
  ("emacs-memoize" . "51b075935ca7070f62fae1d69fe0ff7d8fa56fdd")
  ("emacs-scala-mode" . "1d08e885b1489313666c7f15a3962432a4f757ee")
  ("emacs-which-key" . "3642c11d5ef9be3c6fb9edb8fd5ec3c370abd889")
- ("emacs-wttrin" . "df5427ce2a5ad4dab652dbb1c4a1834d7ddc2abc")
  ("emacsmirror-mirror" . "cad409830b62db74c453fb2ac3064d9099fe9ab8")
  ("emacsql" . "a118b6c95af1306f0288a383d274b5dd93efbbda")
  ("epl" . "78ab7a85c08222cd15582a298a364774e3282ce6")
