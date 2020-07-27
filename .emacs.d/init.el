@@ -70,8 +70,6 @@
 (windmove-default-keybindings 'meta)
 ;; Don't show cursor in inactive buffers.
 (setq-default cursor-in-non-selected-windows nil)
-;; Lisp indent - 2 spaces.
-(setq lisp-indent-offset 2)
 ;; Enable scroll while searching.
 (setq isearch-allow-scroll t)
 ;; Don't exit search mode on navigation.
@@ -1231,9 +1229,9 @@ If CLEAR is specified, clear them instead."
   ;; Remove padding so that content won't be shifted comparing to the header
   (dolist (hook '(mu4e-main-mode-hook mu4e-headers-mode-hook mu4e-view-mode-hook mu4e-compose-mode-hook))
     (add-hook hook (lambda ()
-                      (display-line-numbers-mode -1)
-                      (setq left-fringe-width 0)
-                      (setq show-trailing-whitespace nil))))
+                     (display-line-numbers-mode -1)
+                     (setq left-fringe-width 0)
+                     (setq show-trailing-whitespace nil))))
   (defun mu4e-shr2text ()
     "Html to text using the shr engine."
     (interactive)
@@ -1424,3 +1422,10 @@ properly."
 
 ;; Kill scratch buffer.
 (kill-buffer "*scratch*")
+
+(provide 'init)
+;;; init.el ends here
+
+;; Local Variables:
+;; lisp-indent-offset: 2
+;; End:
