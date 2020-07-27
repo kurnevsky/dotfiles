@@ -44,7 +44,7 @@
  ("groovy-emacs-modes" . "cafdd98e06a3bbff213f3ccb163de2c42d412b66")
  ("guess-language.el" . "256230072f4f828e07db6ab17b6b7e90891b7308")
  ("haskell-mode" . "41683c0e634bb3f54eac8747919a82132e1714fe")
- ("helm" . "54a5e4cd7a10b2c285dc5bfe9dc100629b5d8b99")
+ ("helm" . "e22fc20b0be61365820ecfcdcb73eec796089245")
  ("hexrgb" . "90e5f07f14bdb9966648977965094c75072691d4")
  ("highlight-indent-guides" . "a4f771418e4eed1f3f7879a43af28cf97747d41c")
  ("highlight-thing.el" . "561d08a26f78f18d405d4f371f1c813db094e2f3")
@@ -54,11 +54,11 @@
  ("json-mode" . "0e819e519ae17a2686e0881c4ca51fa873fa9b83")
  ("json-reformat" . "8eb6668ed447988aea06467ba8f42e1f2178246f")
  ("json-snatcher" . "c4cecc0a5051bd364373aa499c47a1bb7a5ac51c")
- ("let-alist" . "ef3c02fa292b6e32769945bbbfb7f2e5ac574b64")
+ ("let-alist" . "b299c78897cc307f9d5521927376fbd06a26f123")
  ("lsp-metals" . "9af4db8f8bf46ff1f80e04bbf59e9f4504e878d8")
  ("lsp-mode" . "de4d783d7cf0191a45dbf0d473e79c7626f6e923")
  ("lsp-origami" . "d8b7b3ede9b10ce6dab61c1220f3bf5113e9f6d0")
- ("lsp-treemacs" . "07b781e380a6916eb8f103deefc90bed00d9551c")
+ ("lsp-treemacs" . "d85670384351390f226a8cb454a16f8032c9d6f5")
  ("lsp-ui" . "1f3e9700395f4fae024ca45ca64c8d70e99b39d2")
  ("lua-mode" . "35b6e4c20b8b4eaf783ccc8e613d0dd06dbd165c")
  ("magit" . "9ef75c1098a525a0c817a164516e67c8a13cfca7")
@@ -105,4 +105,4 @@
  ("yaml-mode" . "68fecb5f0dec712a10c8655df6881392a4613617")
  ("yasnippet" . "5cbdbf0d2015540c59ed8ee0fcf4788effdf75b6")
  ("yasnippet-snippets" . "d5ef8ed2b34798c1576f2fbfed858ee5486d1792"))
-:alpha
+:beta
