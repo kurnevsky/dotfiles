@@ -1211,6 +1211,7 @@ If CLEAR is specified, clear them instead."
 (use-package dap-mode
   :straight (t posframe)
   :config
+  (delete 'tooltip dap-auto-configure-features)
   (dap-mode t)
   (dap-ui-mode t))
 
