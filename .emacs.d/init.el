@@ -1221,7 +1221,6 @@ If CLEAR is specified, clear them instead."
   :commands mu4e
   :custom
   (mu4e-maildir "~/Mail")
-  (mu4e-update-interval 300)
   (mu4e-view-show-addresses t)
   (mu4e-headers-results-limit 1000)
   (mu4e-change-filenames-when-moving t)
