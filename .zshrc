@@ -30,9 +30,9 @@ git_prompt() {
 
     if [ "$GIT_DETACHED" -eq 0 ]
     then
-      GIT_STATUS="(%{$fg_bold[yellow]%}$GIT_WHERE%{$reset_color%}"
+      GIT_STATUS="(%{$fg[yellow]%}$GIT_WHERE%{$reset_color%}"
     else
-      GIT_STATUS="(%{$fg_bold[green]%}$GIT_WHERE%{$reset_color%}"
+      GIT_STATUS="(%{$fg[green]%}$GIT_WHERE%{$reset_color%}"
     fi
     if [ "$GIT_BEHIND" -gt 0 ]
     then
