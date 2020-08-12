@@ -24,14 +24,13 @@ exec bwrap \
      \
      --tmpfs /run \
      \
-     --bind ~/.tor-browser ~/.tor-browser \
+     --bind ~/.tor-browser/app/Browser ~ \
      --ro-bind ~/.Xauthority ~/.Xauthority \
      \
      --unsetenv MAIL \
      --unsetenv SHELL \
-     --setenv LD_LIBRARY_PATH ~/.tor-browser/app/Browser/TorBrowser/Tor \
-     --setenv HOME ~/.tor-browser/app/Browser \
-     --setenv FONTCONFIG_PATH ~/.tor-browser/app/Browser/TorBrowser/Data/fontconfig \
+     --setenv LD_LIBRARY_PATH ~/TorBrowser/Tor \
+     --setenv FONTCONFIG_PATH ~/TorBrowser/Data/fontconfig \
      --setenv FONTCONFIG_FILE fonts.conf \
      \
      --unshare-user \
@@ -48,7 +47,7 @@ exec bwrap \
      --seccomp 3 \
      3< ~/.seccomp/seccomp.bpf \
      \
-     ~/.tor-browser/app/Browser/firefox.real \
+     ~/firefox.real \
      --class "Tor Browser" \
-     --profile ~/.tor-browser/app/Browser/TorBrowser/Data/Browser/profile.default \
+     --profile ~/TorBrowser/Data/Browser/profile.default \
      "$@"
