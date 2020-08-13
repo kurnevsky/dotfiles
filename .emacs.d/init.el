@@ -1213,7 +1213,6 @@ If CLEAR is specified, clear them instead."
   :load-path "/usr/share/emacs/site-lisp/mu4e"
   :commands mu4e
   :custom
-  (mu4e-maildir "~/Mail")
   (mu4e-view-show-addresses t)
   (mu4e-headers-results-limit 1000)
   (mu4e-change-filenames-when-moving t)
@@ -1249,9 +1248,9 @@ If CLEAR is specified, clear them instead."
                                              "/Archive" ;; yandex, outlook
                                              ))
   (defun choose-mu4e-alternative (name alternatives)
-    (string-remove-prefix mu4e-maildir
+    (string-remove-prefix "~/Mail"
       (seq-find #'file-directory-p
-        (mapcar (lambda (value) (concat mu4e-maildir "/" name value))
+        (mapcar (lambda (value) (concat "~/Mail/" name value))
           (symbol-value alternatives)))))
   (defun make-mu4e-context-generic (name)
     (make-mu4e-context
