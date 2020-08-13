@@ -238,7 +238,8 @@
       (funcall (-applify 'color-hsl-to-rgb))
       (funcall (-applify 'color-rgb-to-hex))))
   (defun modify-theme (theme)
-    (let* ((colors (symbol-value (intern (concat (symbol-name theme) "-colors"))))
+    (let* ((custom--inhibit-theme-enable nil)
+            (colors (symbol-value (intern (concat (symbol-name theme) "-colors"))))
             (base00 (plist-get colors :base00))
             (base01 (plist-get colors :base01))
             (base08 (plist-get colors :base08))
@@ -364,17 +365,7 @@
   :straight nil
   :demand t
   :config
-  (global-display-line-numbers-mode 1)
-  ;; Workaround for bug #35404.
-  (when (version< emacs-version "27")
-    (advice-add 'posn-at-point :around (lambda (orig-fun &rest args)
-                                         (let ((pos (if (car args) (car args) (point)))
-                                                (res (apply orig-fun args)))
-                                           (if (and (not (nth 1 args)) (get-text-property pos 'display))
-                                             (let ((p (car (nth 2 res))))
-                                               (setcar (car (nthcdr 2 res)) (+ p (line-number-display-width t)))
-                                               res)
-                                             res))))))
+  (global-display-line-numbers-mode 1))
 
 (use-package which-key
   :demand t
@@ -607,8 +598,7 @@ If CLEAR is specified, clear them instead."
       (if (or (not (file-exists-p candidate)) (file-remote-p candidate))
         "?"
         (let* ((group-id (file-attribute-group-id (file-attributes candidate)))
-                ;; group-login-name was added in Emacs 27
-                (group-function (if (fboundp 'group-login-name) #'group-login-name #'identity))
+                (group-function #'group-name)
                 (group-name (funcall group-function group-id)))
           (format "%s" group-name)))))
   (defun modify-all-the-icons-ivy-rich-display-transformers-list (key value)
@@ -623,7 +613,7 @@ If CLEAR is specified, clear them instead."
        ((all-the-icons-ivy-rich-file-icon)
          (ivy-read-file-transformer (:width 60))
          (ivy-rich-file-user (:width 10 :face font-lock-doc-face))
-         (ivy-rich-file-group (:width 4 :face font-lock-doc-face))
+         (ivy-rich-file-group (:width 10 :face font-lock-doc-face))
          (ivy-rich-file-modes (:width 11 :face font-lock-doc-face))
          (ivy-rich-file-size (:width 10 :face font-lock-doc-face))
          (ivy-rich-file-last-modified-time (:width 30 :face font-lock-doc-face)))
