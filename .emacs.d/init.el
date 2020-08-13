@@ -760,11 +760,8 @@ If CLEAR is specified, clear them instead."
   :custom
   (company-dabbrev-downcase nil))
 
-(use-package company-quickhelp
-  :demand t
-  :after company
-  :config
-  (company-quickhelp-mode))
+(use-package company-box
+  :hook (company-mode . company-box-mode))
 
 (use-package multiple-cursors-core
   :straight multiple-cursors
