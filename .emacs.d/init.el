@@ -367,6 +367,12 @@
   :config
   (global-display-line-numbers-mode 1))
 
+(use-package so-long
+  :straight nil
+  :demand t
+  :config
+  (global-so-long-mode))
+
 (use-package which-key
   :demand t
   :config
