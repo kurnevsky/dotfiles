@@ -720,6 +720,12 @@ If CLEAR is specified, clear them instead."
   :config
   (doom-modeline-mode))
 
+(use-package centaur-tabs
+  :demand
+  :config
+  (centaur-tabs-mode t)
+  (centaur-tabs-headline-match))
+
 (use-package projectile
   :demand t
   :bind (:map projectile-mode-map
