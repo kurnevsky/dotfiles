@@ -51,7 +51,7 @@ import XMonad.Util.NamedWindows (getName)
 import XMonad.Util.Run (hPutStrLn, runProcessWithInput, spawnPipe)
 import XMonad.Xmobar.Actions (stripActions)
 
-myTerminal = "xterm -e tmux"
+myTerminal = "alacritty"
 
 myFocusFollowsMouse = True
 
