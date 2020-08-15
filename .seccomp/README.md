@@ -1,6 +1,6 @@
 Install dependencies (ArchLinux):
 ```
-apt install libseccomp-dev
+pacman -S libseccomp
 ```
 
 Install dependencies (Ubuntu):
