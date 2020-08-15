@@ -724,7 +724,8 @@ If CLEAR is specified, clear them instead."
   :demand
   :config
   (centaur-tabs-mode t)
-  (centaur-tabs-headline-match))
+  (centaur-tabs-headline-match)
+  (remove-hook 'kill-buffer-hook 'centaur-tabs-buffer-track-killed))
 
 (use-package projectile
   :demand t
