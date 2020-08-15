@@ -1,6 +1,9 @@
 window:
   decorations: none
 
+scrolling:
+  history: 100000
+
 font:
   size: 12.0
   offset:
@@ -51,3 +54,11 @@ key_bindings:
   - { key: Insert, mods: Control, action: Copy }
   - { key: Home, chars: "\x1bOH" }
   - { key: End, chars: "\x1bOF" }
+  - { key: B, mods: Control|Shift, action: SearchForward }
+  - { key: F, mods: Control|Shift, action: SearchBackward }
+  - { key: Home, mods: Control, mode: Vi, action: ScrollToTop }
+  - { key: End, mods: Control, mode: Vi, action: ScrollToBottom }
+  - { key: PageUp, mode: Vi, action: ScrollPageUp }
+  - { key: PageDown, mode: Vi, action: ScrollPageDown }
+  - { key: Space, mode: Vi, action: ToggleNormalSelection }
+  - { key: Q, mode: Vi, action: ToggleViMode }
