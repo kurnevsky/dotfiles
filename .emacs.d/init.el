@@ -683,6 +683,12 @@ If CLEAR is specified, clear them instead."
       (when prefix
         (helm-set-pattern prefix)))))
 
+(use-package helpful
+  :bind (("C-h k" . helpful-key))
+  :custom
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable))
+
 (use-package ediff-wind
   :straight nil
   :custom
