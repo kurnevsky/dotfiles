@@ -31,6 +31,8 @@ exec bwrap \
      \
      --ro-bind /tmp/.X11-unix /tmp/.X11-unix \
      \
+     --ro-bind /etc/element /etc/element \
+     --ro-bind /etc/webapps/element /etc/webapps/element \
      --ro-bind /etc/fonts /etc/fonts \
      --ro-bind /etc/pulse /etc/pulse \
      --ro-bind /etc/localtime /etc/localtime \
@@ -39,7 +41,7 @@ exec bwrap \
      --tmpfs /run \
      --bind "/run/user/$UID/pulse" "/run/user/$UID/pulse" \
      \
-     --bind ~/.config/Riot ~/.config/Riot \
+     --bind ~/.config/Element ~/.config/Element \
      --bind ~/.config/pulse ~/.config/pulse \
      --ro-bind ~/.config/gtk-3.0 ~/.config/gtk-3.0 \
      --ro-bind ~/.Xauthority ~/.Xauthority \
@@ -61,4 +63,4 @@ exec bwrap \
      --seccomp 3 \
      3< ~/.seccomp/seccomp.bpf \
      \
-     /lib/electron/electron /usr/lib/riot/ "$@"
+     /lib/electron/electron /usr/lib/element/app.asar "$@"
