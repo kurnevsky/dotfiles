@@ -3,6 +3,9 @@
 
 // Enable OpenGL Off-Main-Thread Compositing (OMTC)
 user_pref("layers.acceleration.force-enabled", true);
+// Enable webrender
+user_pref("gfx.webrender.all", true);
+user_pref("gfx.webrender.enabled", true);
 // Allow unsigned Add-ons. Or at least try...
 user_pref("xpinstall.signatures.required", false);
 // Read userChrome.css and userContent.css
