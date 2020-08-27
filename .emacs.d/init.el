@@ -731,6 +731,7 @@ If CLEAR is specified, clear them instead."
   :config
   (centaur-tabs-mode t)
   (centaur-tabs-headline-match)
+  (centaur-tabs-group-by-projectile-project)
   (remove-hook 'kill-buffer-hook 'centaur-tabs-buffer-track-killed))
 
 (use-package projectile
