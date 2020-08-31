@@ -158,10 +158,9 @@ autoload -Uz colors && colors
 # Massive rename
 autoload -Uz zmv
 # Calculator
-autoload -U zcalc
+autoload -Uz zcalc
 # Search history by entered text
-autoload -U up-line-or-beginning-search
-autoload -U down-line-or-beginning-search
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 
@@ -183,8 +182,12 @@ bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 bindkey "\e[3~" delete-char
 bindkey '^ ' autosuggest-accept # Ctrl+Space
-bindkey "^[[A" up-line-or-beginning-search # Up
-bindkey "^[[B" down-line-or-beginning-search # Down
+# Terminal can send different control sequences depending on whether it has been put in keypad transmit mode or not.
+# The smkx and rmkx terminfo entries can be used to put a terminal in or out of that mode.
+[[ -n "${terminfo[kcuu1]}" ]] && bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search # Up
+[[ -n "${terminfo[kcuu1]/O/[}" ]] && bindkey "${terminfo[kcuu1]/O/[}" up-line-or-beginning-search # Up
+[[ -n "${terminfo[kcud1]}" ]] && bindkey "${terminfo[kcud1]}" down-line-or-beginning-search # Down
+[[ -n "${terminfo[kcud1]/O/[}" ]] && bindkey "${terminfo[kcud1]/O/[}" down-line-or-beginning-search # Down
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
