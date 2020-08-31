@@ -186,7 +186,6 @@ bindkey '^ ' autosuggest-accept # Ctrl+Space
 bindkey "^[[A" up-line-or-beginning-search # Up
 bindkey "^[[B" down-line-or-beginning-search # Down
 
-alias epm='~/.emacs.d/elpa/epm-*/epm'
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias zmv='noglob zmv -W'
