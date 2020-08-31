@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -euETo pipefail
+shopt -s inherit_errexit
 
 exec bwrap \
      --ro-bind /usr/bin/qbittorrent /usr/bin/qbittorrent \
