@@ -201,10 +201,11 @@ export EDITOR=emacsclient
 export VIEWER=less
 export AUR_PAGER=mc
 
-[ -f /usr/bin/src-hilite-lesspipe.sh ] && {
-  export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
+if command -v src-hilite-lesspipe.sh > /dev/null
+then
+  export LESSOPEN="| src-hilite-lesspipe.sh %s"
   export LESS=' -R '
-}
+fi
 
 export GPG_TTY=$(tty)
 
