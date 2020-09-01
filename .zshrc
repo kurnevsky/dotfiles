@@ -71,9 +71,9 @@ git_prompt() {
 # History file
 HISTFILE=~/.histfile
 # The number of lines the shell will keep within one session
-HISTSIZE=20480
+HISTSIZE=25000
 # The number of lines of history will be saved
-SAVEHIST=8192
+SAVEHIST=20000
 PROMPT='[%n@%m %~]$ '
 RPROMPT='$(git_prompt)'
 # Maximum input length for zsh-autosuggestions
