@@ -5,9 +5,9 @@ scrolling:
   history: 100000
 
 font:
+  normal:
+    family: 'Hack Nerd Font'
   size: 12.0
-  offset:
-   y: -2
 
 # Base16 OneDark
 colors:
