@@ -212,8 +212,6 @@ aliases[=]='noglob zcalc -e'
 
 export PATH=~/.bin-bw:~/.bin:~/.cabal/bin:$PATH
 
-export EPM_INIT_FILE=~/.emacs.d/epm.el
-
 export ALTERNATE_EDITOR=nano
 export EDITOR=emacsclient
 export VIEWER=less
