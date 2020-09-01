@@ -1,73 +1,5 @@
 [[ $TERM == 'dumb' ]] && unsetopt zle && PS1='$ ' && return
 
-git_prompt() {
-  if [ -z "$MC_SID" ] && git rev-parse --git-dir > /dev/null 2> /dev/null
-  then
-    local GIT_WHERE GIT_DETACHED GIT_AHEAD GIT_BEHIND GIT_STAGED \
-          GIT_CHANGED GIT_UNMERGED GIT_UNTRACKED GIT_CLEAN GIT_STATUS
-    GIT_WHERE=$(git symbolic-ref -q HEAD 2> /dev/null)
-    if [ "$?" -eq 0 ]
-    then
-      GIT_DETACHED=1
-    else
-      GIT_DETACHED=0
-      GIT_WHERE=$(git name-rev --name-only --no-undefined --always HEAD 2> /dev/null)
-    fi
-    GIT_WHERE=${GIT_WHERE#(refs/heads/|tags/)}
-    GIT_AHEAD=$(git log --oneline @{u}.. 2> /dev/null | wc -l)
-    GIT_BEHIND=$(git log --oneline ..@{u} 2> /dev/null | wc -l)
-    GIT_STAGED=$(git diff --cached --diff-filter=u --name-only 2> /dev/null | wc -l)
-    GIT_CHANGED=$(git diff --diff-filter=u --name-only 2> /dev/null | wc -l)
-    GIT_UNMERGED=$(git diff --diff-filter=U --name-only 2> /dev/null | wc -l)
-    GIT_CHANGED=$(( GIT_CHANGED - GIT_UNMERGED ))
-    GIT_UNTRACKED=$(git ls-files --other --exclude-standard 2> /dev/null | wc -l)
-    if [[ "$GIT_STAGED" -eq 0 && "$GIT_CHANGED" -eq 0 && "$GIT_UNMERGED" -eq 0 && "$GIT_UNTRACKED" -eq 0 ]]
-    then
-      GIT_CLEAN=0
-    else
-      GIT_CLEAN=1
-    fi
-
-    if [ "$GIT_DETACHED" -eq 0 ]
-    then
-      GIT_STATUS="(%{$fg[yellow]%}$GIT_WHERE%{$reset_color%}"
-    else
-      GIT_STATUS="(%{$fg[green]%}$GIT_WHERE%{$reset_color%}"
-    fi
-    if [ "$GIT_BEHIND" -gt 0 ]
-    then
-      GIT_STATUS="$GIT_STATUS%{↓%G%}$GIT_BEHIND"
-    fi
-    if [ "$GIT_AHEAD" -gt 0 ]
-    then
-      GIT_STATUS="$GIT_STATUS%{↑%G%}$GIT_AHEAD"
-    fi
-    GIT_STATUS="$GIT_STATUS|"
-    if [ "$GIT_STAGED" -gt 0 ]
-    then
-      GIT_STATUS="$GIT_STATUS%{$fg[green]%}%{●%G%}$GIT_STAGED%{$reset_color%}"
-    fi
-    if [ "$GIT_CHANGED" -gt 0 ]
-    then
-      GIT_STATUS="$GIT_STATUS%{$fg[yellow]%}%{✚%G%}$GIT_CHANGED%{$reset_color%}"
-    fi
-    if [ "$GIT_UNMERGED" -gt 0 ]
-    then
-      GIT_STATUS="$GIT_STATUS%{$fg[red]%}%{✖%G%}$GIT_UNMERGED%{$reset_color%}"
-    fi
-    if [ "$GIT_UNTRACKED" -gt 0 ]
-    then
-      GIT_STATUS="$GIT_STATUS%{$fg[blue]%}%{…%G%}$GIT_UNTRACKED%{$reset_color%}"
-    fi
-    if [ "$GIT_CLEAN" -eq 0 ]
-    then
-      GIT_STATUS="$GIT_STATUS%{$fg_bold[green]%}%{✔%G%}%{$reset_color%}"
-    fi
-    GIT_STATUS="$GIT_STATUS)"
-    echo "$GIT_STATUS"
-  fi
-}
-
 # History file
 HISTFILE=~/.histfile
 # The number of lines the shell will keep within one session
@@ -75,7 +7,6 @@ HISTSIZE=25000
 # The number of lines of history will be saved
 SAVEHIST=20000
 PROMPT='[%n@%m %~]$ '
-RPROMPT='$(git_prompt)'
 # Maximum input length for zsh-autosuggestions
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=10
 
@@ -162,10 +93,7 @@ zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 
 # Autocompletion for kubernetes
-if command -v kubectl > /dev/null
-then
-  source <(kubectl completion zsh)
-fi
+command -v kubectl > /dev/null && source <(kubectl completion zsh)
 
 # Many programs change the terminal state, and often do not restore terminal settings on exiting abnormally
 # This avoids the need to manually reset the terminal
@@ -190,8 +118,9 @@ if command -v sk > /dev/null
 then
   skim-history-widget() {
     local num
+    setopt localoptions pipefail
     echo -ne "\r"
-    num=$(fc -rl 1 | sk --height 50% -n2..,.. --tiebreak=score,index --layout=reverse --inline-info --query="$LBUFFER")
+    num=$(fc -rl 1 | sk --height 50% -n2..,.. --tiebreak=score,index --layout=reverse --inline-info -p "➜ " --query="$LBUFFER")
     local ret=$?
     zle reset-prompt
     if [ -n "$num" ]; then
@@ -228,3 +157,5 @@ export MAGICK_OCL_DEVICE=OFF
 
 # Set cursor type to steady bar
 echo -e -n "\x1b[\x36 q"
+
+[[ -z "$MC_SID" ]] && command -v starship > /dev/null && eval "$(starship init zsh)"
