@@ -117,9 +117,6 @@ setopt pipefail
 # Autocomplete with history.
 [ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ] && \
   source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-# History search widget with fuzzy matching.
-[ -f /usr/share/zsh/plugins/history-search-multi-word/history-search-multi-word.plugin.zsh ] && \
-  source /usr/share/zsh/plugins/history-search-multi-word/history-search-multi-word.plugin.zsh
 
 # Set LS_COLORS environment variable
 eval $(dircolors)
@@ -166,6 +163,19 @@ autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 
+skim-history-widget() {
+  local num
+  echo -ne "\r"
+  num=$(fc -rl 1 | sk --height 50% -n2..,.. --tiebreak=score,index --layout=reverse --inline-info --query="$LBUFFER")
+  local ret=$?
+  zle reset-prompt
+  if [ -n "$num" ]; then
+    zle vi-fetch-history -n "$num"
+  fi
+  return $ret
+}
+zle -N skim-history-widget
+
 # Autocompletion for kubernetes
 if command -v kubectl > /dev/null
 then
@@ -184,6 +194,7 @@ bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 bindkey "\e[3~" delete-char
 bindkey '^ ' autosuggest-accept # Ctrl+Space
+bindkey '^R' skim-history-widget
 # Terminal can send different control sequences depending on whether it has been put in keypad transmit mode or not.
 # The smkx and rmkx terminfo entries can be used to put a terminal in or out of that mode.
 [[ -n "${terminfo[kcuu1]}" ]] && bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search # Up
