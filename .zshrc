@@ -105,6 +105,8 @@ setopt transient_rprompt
 setopt magic_equal_subst
 # Apply globbing to hidden files
 setopt glob_dots
+# Set the exit code of a pipeline to that of the rightmost command to exit with a non-zero status
+setopt pipefail
 
 # Syntax highlighting
 [ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
