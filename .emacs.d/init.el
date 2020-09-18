@@ -1181,6 +1181,7 @@ If CLEAR is specified, clear them instead."
   (lsp-ui-sideline-show-hover t)
   (lsp-ui-sideline-update-mode 'line)
   (lsp-ui-doc-position 'top)
+  (lsp-ui-sideline-wait-for-all-symbols nil)
   :config
   (delete (list 'no-accept-focus) lsp-ui-doc-frame-parameters)
   (add-to-list 'lsp-ui-doc-frame-parameters '(no-accept-focus . t)))
