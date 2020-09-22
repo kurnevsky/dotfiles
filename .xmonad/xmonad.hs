@@ -1,4 +1,5 @@
 {-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, OverloadedStrings, TupleSections #-}
+{-# OPTIONS_GHC -O2 #-}
 
 import Control.Monad
 import Control.Monad.Trans.Class
