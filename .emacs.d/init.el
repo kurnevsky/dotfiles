@@ -1155,8 +1155,9 @@ If CLEAR is specified, clear them instead."
   (dumb-jump-selector (if prefer-helm 'helm 'ivy)))
 
 (use-package lsp-mode
+  :init
+  (setq lsp-keymap-prefix "C-l")
   :custom
-  (lsp-keymap-prefix "C-l")
   (lsp-auto-guess-root t)
   (lsp-prefer-flymake nil)
   (lsp-file-watch-threshold nil)
