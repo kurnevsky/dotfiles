@@ -1134,6 +1134,8 @@ If CLEAR is specified, clear them instead."
 
 (use-package nix-mode)
 
+(use-package dhall-mode)
+
 (when (executable-find "agda-mode")
   (use-package agda2-mode
     :straight nil
