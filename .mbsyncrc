@@ -48,9 +48,9 @@ SyncState *
 
 IMAPAccount evolution
 Host outlook.office365.com
-User ykurneuski@evolutiongaming.com
+User ykurneuski@evolution.com
 AuthMech XOAUTH2
-PassCmd "~/cloud_mdir_sync/cms-oauth --cms_sock=/var/run/user/$UID/cms.sock --proto=IMAP --user ykurneuski@evolutiongaming.com --output=token"
+PassCmd "~/cloud_mdir_sync/cms-oauth --cms_sock=/var/run/user/$UID/cms.sock --proto=IMAP --user ykurneuski@evolution.com --output=token"
 SSLType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
