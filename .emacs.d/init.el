@@ -1213,7 +1213,9 @@ If CLEAR is specified, clear them instead."
   :after lsp-mode
   :demand t
   :custom
-  (lsp-metals-super-method-lenses-enabled t))
+  (lsp-metals-super-method-lenses-enabled t)
+  (lsp-metals-show-implicit-arguments t)
+  (lsp-metals-show-inferred-type t))
 
 (use-package lsp-haskell
   :disabled
@@ -1221,7 +1223,8 @@ If CLEAR is specified, clear them instead."
   :demand t)
 
 (use-package dap-mode
-  :straight (t posframe)
+  :straight t
+  :straight posframe
   :config
   (delete 'tooltip dap-auto-configure-features)
   (dap-mode t)
