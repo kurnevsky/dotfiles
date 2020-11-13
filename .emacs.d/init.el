@@ -19,7 +19,10 @@
 (setq file-name-handler-alist nil)
 (add-hook 'emacs-startup-hook (lambda () (setq file-name-handler-alist file-name-handler-alist-copy)))
 ;; Collect the garbage when not used.
-(add-hook 'focus-out-hook #'garbage-collect)
+(add-function :after after-focus-change-function
+  (lambda ()
+    (unless (frame-focus-state)
+      (garbage-collect))))
 ;; Remove gap in maximized window mode.
 (setq frame-resize-pixelwise t)
 ;; Start in maximized window mode.
