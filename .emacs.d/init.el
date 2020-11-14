@@ -1177,7 +1177,7 @@ If CLEAR is specified, clear them instead."
     (when (lsp-find-workspace server-id (buffer-file-name))
       (lsp)))
   (add-hook 'rust-mode-hook (lambda ()
-                              (lsp-activate-if-already-activated 'rls)))
+                              (lsp-activate-if-already-activated 'rust-analyzer)))
   (add-hook 'scala-mode-hook (lambda ()
                                (lsp-activate-if-already-activated 'metals))))
 
@@ -1217,7 +1217,6 @@ If CLEAR is specified, clear them instead."
   :demand t
   :custom
   (lsp-metals-super-method-lenses-enabled t)
-  (lsp-metals-show-implicit-arguments t)
   (lsp-metals-show-inferred-type t))
 
 (use-package lsp-haskell
