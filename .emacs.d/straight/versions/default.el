@@ -48,7 +48,6 @@
  ("groovy-emacs-modes" . "26da902d1158c0312628d57578109be54eca2415")
  ("guess-language.el" . "256230072f4f828e07db6ab17b6b7e90891b7308")
  ("haskell-mode" . "e72677668f5fc7cc148008e885a0f256e245dd43")
- ("helm" . "5ad6c83681fda7bfd5a745fedecaa924630253dd")
  ("helpful" . "584ecc887bb92133119f93a6716cdf7af0b51dca")
  ("hexrgb" . "90e5f07f14bdb9966648977965094c75072691d4")
  ("highlight-indent-guides" . "cf352c85cd15dd18aa096ba9d9ab9b7ab493e8f6")
