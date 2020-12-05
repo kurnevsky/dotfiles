@@ -12,7 +12,7 @@ exec bwrap \
      --ro-bind /usr/bin/sh /usr/bin/sh \
      --ro-bind /usr/bin/bash /usr/bin/bash \
      --ro-bind /usr/bin/python3 /usr/bin/python3 \
-     --ro-bind /usr/bin/python3.8 /usr/bin/python3.8 \
+     --ro-bind /usr/bin/python3.9 /usr/bin/python3.9 \
      --ro-bind /usr/bin/getopt /usr/bin/getopt \
      --ro-bind /usr/bin/tail /usr/bin/tail \
      --ro-bind /usr/bin/tree /usr/bin/tree \
