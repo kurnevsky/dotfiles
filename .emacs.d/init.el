@@ -1095,6 +1095,8 @@ If CLEAR is specified, clear them instead."
 
 (use-package csharp-mode)
 
+(use-package fsharp-mode)
+
 (use-package lua-mode)
 
 (use-package nix-mode)
