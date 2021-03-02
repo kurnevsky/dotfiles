@@ -172,9 +172,6 @@
 (use-package dash
   :demand t)
 
-(use-package dash-functional
-  :demand t)
-
 (use-package el-patch
   :demand t
   :config
@@ -529,10 +526,10 @@ If CLEAR is specified, clear them instead."
   (ivy-magic-tilde nil)
   (ivy-extra-directories nil)
   (ivy-fixed-height-minibuffer t)
-  (ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
   (ivy-format-function #'ivy-format-function-line)
   :config
-  (ivy-mode 1))
+  (ivy-mode 1)
+  (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))))
 
 (use-package counsel
   :demand t
