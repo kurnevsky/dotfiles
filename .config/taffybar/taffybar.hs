@@ -65,7 +65,7 @@ battery = batteryIconNew
 
 tray = sniTrayThatStartsWatcherEvenThoughThisIsABadWayToDoIt
 
-weather = weatherNew (defaultWeatherConfig "UMMS") { weatherTemplate = "$stationPlace$ $hour$ $tempC$C" } 10
+weather = weatherNew (defaultWeatherConfig "UMMS") { weatherTemplate = "$stationPlace$ $hour$ $tempC$°C" } 10
 
 clock = textClockNewWith defaultClockConfig
   { clockFormatString = "<span fgcolor='gold'>%a %Y.%m.%d %T</span>"
