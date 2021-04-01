@@ -864,9 +864,10 @@ If CLEAR is specified, clear them instead."
   (global-undo-tree-mode)
   (defun undo-tree-overridden-undo-bindings-p () nil)
   (defun last-edit-next (undo tree)
-    (if tree
-      (undo-tree-node-previous undo)
-      (cdr undo)))
+    (when undo
+      (if tree
+        (undo-tree-node-previous undo)
+        (cdr undo))))
   (defun last-edit (arg)
     "Go back to last add/delete edit."
     (interactive "^P")
@@ -881,7 +882,15 @@ If CLEAR is specified, clear them instead."
                    (car undo))
             (`(,beg . ,end) (let ((pos (cond
                                          ((and (integerp beg) (integerp end)) end)
-                                         ((and (stringp beg) (integerp end)) (abs end)))))
+                                         ((and (stringp beg) (integerp end)) (abs end))
+                                         ((eq beg 'apply) (pcase end
+                                                            (`(,delta ,beg ,end . ,_)
+                                                              (if (and
+                                                                    (integerp delta)
+                                                                    (integerp beg)
+                                                                    (integerp end))
+                                                                end
+                                                                (setq undo nil))))))))
                               (if pos
                                 (progn
                                   (setq arg (1- arg))
