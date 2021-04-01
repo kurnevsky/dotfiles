@@ -38,12 +38,8 @@
 (setq inhibit-splash-screen t)
 ;; Cursor as line.
 (setq-default cursor-type 'bar)
-;; Turn off auto tabbing.
-(electric-indent-mode -1)
-;; Don't use tabs for tabing.
+;; Don't use tabs for tabbing.
 (setq-default indent-tabs-mode nil)
-;; Turn on parens auto closing.
-(electric-pair-mode 1)
 ;; Disable dialog boxes.
 (setq use-dialog-box nil)
 ;; Show clock.
@@ -377,6 +373,20 @@ ARGS is `kill-buffer' arguments."
   (show-paren-style 'parenthesis)
   :config
   (show-paren-mode t))
+
+(use-package smartparens
+  :hook (prog-mode . smartparens-mode)
+  :custom
+  (sp-highlight-pair-overlay nil)
+  :config
+  (require 'smartparens-config)
+  (defun indent-between-pair (&rest _ignored)
+    (newline)
+    (indent-according-to-mode)
+    (forward-line -1)
+    (indent-according-to-mode))
+  (dolist (paren '("{" "[" "("))
+    (sp-local-pair 'prog-mode paren nil :post-handlers '((indent-between-pair "RET")))))
 
 (use-package hl-line
   :straight nil

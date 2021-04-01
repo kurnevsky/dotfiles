@@ -97,6 +97,7 @@
  ("rust-mode" . "e9e9e32c4f82a9b895543c120b327ab5536ec42b")
  ("s.el" . "43ba8b563bee3426cead0e6d4ddc09398e1a349d")
  ("shrink-path.el" . "c14882c8599aec79a6e8ef2d06454254bb3e1e41")
+ ("smartparens" . "25f4d6d1b732f4deabf922059d22a0a7dc04bd0a")
  ("smex" . "55aaebe3d793c2c990b39a302eb26c184281c42c")
  ("spinner" . "e19f3cfc0646c0e23c10c22df219fcf427054621")
  ("straight.el" . "e1390a933b6f5a15079d6dec91eac97a17aad10c")
