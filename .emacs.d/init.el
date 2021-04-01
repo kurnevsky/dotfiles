@@ -108,7 +108,9 @@
 (defvar new-untitled nil)
 (put 'new-untitled 'permanent-local t)
 (defun kill-buffer-ask-first (orig-fun &rest args)
-  "Prompts before killing buffer if it isn't associated with a file."
+  "Prompts before killing buffer if it isn't associated with a file.
+ORIG-FUN is original `kill-buffer' function.
+ARGS is `kill-buffer' arguments."
   (let ((buffer (get-buffer (if (and args (car args)) (car args) (buffer-name)))))
     (if (and (buffer-local-value 'new-untitled buffer)
           (buffer-modified-p buffer)
