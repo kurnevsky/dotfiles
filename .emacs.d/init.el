@@ -345,13 +345,6 @@
   :custom
   (comint-prompt-read-only t "Make the prompt read only."))
 
-(use-package xterm
-  :straight nil
-  :custom
-  ;; It works only in plain xterm (i.e. without tmux) and might cause
-  ;; a small delay in other terminals (e.g. alacritty).
-  (xterm-extra-capabilities nil))
-
 (use-package mb-depth
   :straight nil
   :demand t
