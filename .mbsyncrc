@@ -14,8 +14,8 @@ Inbox ~/Mail/gmail/Inbox
 SubFolders Verbatim
 
 Channel gmail
-Master :gmail-remote:
-Slave :gmail-local:
+Far :gmail-remote:
+Near :gmail-local:
 Patterns * !"[Gmail]/All Mail"
 Create Both
 Expunge Both
@@ -38,8 +38,8 @@ Inbox ~/Mail/yandex/Inbox
 SubFolders Verbatim
 
 Channel yandex
-Master :yandex-remote:
-Slave :yandex-local:
+Far :yandex-remote:
+Near :yandex-local:
 Patterns *
 Create Both
 Expunge Both
@@ -63,8 +63,8 @@ Inbox ~/Mail/evolution/Inbox
 SubFolders Verbatim
 
 Channel evolution
-Master :evolution-remote:
-Slave :evolution-local:
+Far :evolution-remote:
+Near :evolution-local:
 Patterns *
 Create Both
 Expunge Both
