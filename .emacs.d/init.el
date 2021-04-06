@@ -897,12 +897,11 @@ If CLEAR is specified, clear them instead."
                                          ((and (stringp beg) (integerp end)) (abs end))
                                          ((eq beg 'apply) (pcase end
                                                             (`(,delta ,beg ,end . ,_)
-                                                              (if (and
-                                                                    (integerp delta)
-                                                                    (integerp beg)
-                                                                    (integerp end))
-                                                                end
-                                                                (setq undo nil))))))))
+                                                              (when (and
+                                                                      (integerp delta)
+                                                                      (integerp beg)
+                                                                      (integerp end))
+                                                                end)))))))
                               (if pos
                                 (progn
                                   (setq arg (1- arg))
