@@ -95,6 +95,8 @@
 ;; Enable the downcase-region and upcase-region commands.
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
+;; Don't align existing lines on RET.
+(setq-default electric-indent-inhibit t)
 ;; File to write custom-set-variables.
 (setq custom-file "~/.emacs.d/custom.el")
 (unless (file-exists-p custom-file)
