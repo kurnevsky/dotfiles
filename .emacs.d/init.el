@@ -383,10 +383,14 @@ ARGS is `kill-buffer' arguments."
   :config
   (require 'smartparens-config)
   (defun indent-between-pair (&rest _ignored)
-    (newline)
-    (indent-according-to-mode)
-    (forward-line -1)
-    (indent-according-to-mode))
+    "Open a new brace or bracket expression, with relevant newlines and indent."
+    ;; Need to check last operation to prevent newline insertion when switching
+    ;; buffers with ivy buffer and pressing RET.
+    (when (eq sp-last-operation 'sp-self-insert)
+      (newline)
+      (indent-according-to-mode)
+      (forward-line -1)
+      (indent-according-to-mode)))
   (dolist (paren '("{" "[" "("))
     (sp-local-pair 'prog-mode paren nil :post-handlers '((indent-between-pair "RET")))))
 
