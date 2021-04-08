@@ -1196,6 +1196,7 @@ If CLEAR is specified, clear them instead."
   :after lsp-mode
   :demand t
   :custom
+  (lsp-metals-server-args '("-J-Dmetals.allow-multiline-string-formatting=off"))
   (lsp-metals-super-method-lenses-enabled t)
   (lsp-metals-show-inferred-type t))
 
