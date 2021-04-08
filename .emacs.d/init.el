@@ -332,6 +332,15 @@ ARGS is `kill-buffer' arguments."
     (edmacro-finish-edit))
   (advice-add 'kmacro-end-macro :around #'cua-macro-fix))
 
+(use-package unicode-fonts
+  :straight t
+  :straight persistent-soft
+  :demand t
+  :custom
+  (unicode-fonts-skip-font-groups '(decorative low-quality-glyphs))
+  :config
+  (unicode-fonts-setup))
+
 (use-package time
   :straight nil
   :demand t
@@ -1196,7 +1205,8 @@ If CLEAR is specified, clear them instead."
   :after lsp-mode
   :demand t
   :custom
-  (lsp-metals-server-args '("-J-Dmetals.allow-multiline-string-formatting=off"))
+  (lsp-metals-server-args '("-J-Dmetals.allow-multiline-string-formatting=off"
+                             "-J-Dmetals.icons=unicode"))
   (lsp-metals-super-method-lenses-enabled t)
   (lsp-metals-show-inferred-type t))
 
