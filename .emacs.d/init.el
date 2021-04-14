@@ -59,9 +59,7 @@
 ;; Add new line at the end of file if it doesn't exist.
 (setq require-final-newline t)
 ;; Highlight trailing whitespaces.
-(setq-default show-trailing-whitespace t)
-(add-hook 'minibuffer-setup-hook (lambda () (setq show-trailing-whitespace nil)))
-(add-hook 'Buffer-menu-mode-hook (lambda () (setq show-trailing-whitespace nil)))
+(add-hook 'prog-mode-hook (lambda () (setq show-trailing-whitespace t)))
 ;; Easy transition between buffers: M-arrow-keys.
 (windmove-default-keybindings 'meta)
 ;; Don't show cursor in inactive buffers.
@@ -435,6 +433,10 @@ ARGS is `kill-buffer' arguments."
   (add-hook 'after-change-major-mode-hook (lambda ()
                                             (when (derived-mode-p 'prog-mode)
                                               (add-to-list 'font-lock-extra-managed-props 'display)))))
+
+(use-package vterm
+  :config
+  (add-hook 'vterm-mode-hook (lambda () (setq-local global-hl-line-mode nil))))
 
 (use-package flyspell
   :straight nil
