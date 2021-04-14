@@ -436,7 +436,9 @@ ARGS is `kill-buffer' arguments."
 
 (use-package vterm
   :config
-  (add-hook 'vterm-mode-hook (lambda () (setq-local global-hl-line-mode nil))))
+  (add-hook 'vterm-mode-hook (lambda ()
+                               (setq-local global-hl-line-mode nil)
+                               (undo-tree-mode -1))))
 
 (use-package flyspell
   :straight nil
