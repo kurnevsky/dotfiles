@@ -435,6 +435,8 @@ ARGS is `kill-buffer' arguments."
                                               (add-to-list 'font-lock-extra-managed-props 'display)))))
 
 (use-package vterm
+  :bind (:map vterm-mode-map
+          ("<f2>"))
   :config
   (add-hook 'vterm-mode-hook (lambda ()
                                (setq-local global-hl-line-mode nil)
