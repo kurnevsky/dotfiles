@@ -442,6 +442,8 @@ ARGS is `kill-buffer' arguments."
                                (setq-local global-hl-line-mode nil)
                                (undo-tree-mode -1))))
 
+(use-package multi-vterm)
+
 (use-package flyspell
   :straight nil
   :hook ((text-mode . flyspell-mode)
