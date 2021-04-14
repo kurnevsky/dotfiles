@@ -1477,14 +1477,11 @@ properly."
 (global-set-key (kbd "C-_") #'split-window-vertically)
 (global-set-key (kbd "C-x C-M-c") #'tell-emacsclients-for-buffer-to-die)
 (global-set-key (kbd "<S-f2>") #'list-buffers)
-(global-set-key (kbd "S-C-M-<left>") 'shrink-window-horizontally)
-(global-set-key (kbd "S-C-M-<right>") 'enlarge-window-horizontally)
-(global-set-key (kbd "S-C-M-<down>") 'shrink-window)
-(global-set-key (kbd "S-C-M-<up>") 'enlarge-window)
-
-;;https://stackoverflow.com/questions/4918707/in-emacs-how-to-go-back-to-previous-line-position-after-using-semantic-jump-to
-;; pop-global-mark
-;; C-x C-x (exchange-point-and-mark)
+(global-set-key (kbd "S-C-M-<left>") #'shrink-window-horizontally)
+(global-set-key (kbd "S-C-M-<right>") #'enlarge-window-horizontally)
+(global-set-key (kbd "S-C-M-<down>") #'shrink-window)
+(global-set-key (kbd "S-C-M-<up>") #'enlarge-window)
+(global-set-key (kbd "<f7>") #'pop-global-mark)
 
 ;; ========== Startup actions ==========
 
