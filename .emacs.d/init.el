@@ -370,6 +370,9 @@ ARGS is `kill-buffer' arguments."
   :config
   (global-so-long-mode))
 
+(use-package goto-line-preview
+  :bind (([remap goto-line] . goto-line-preview)))
+
 (use-package which-key
   :demand t
   :config
@@ -674,7 +677,7 @@ If CLEAR is specified, clear them instead."
   (all-the-icons-ivy-rich-mode 1))
 
 (use-package helpful
-  :bind (("C-h k" . helpful-key))
+  :bind (([remap describe-key] . helpful-key))
   :custom
   (counsel-describe-function-function #'helpful-callable)
   (counsel-describe-variable-function #'helpful-variable))
