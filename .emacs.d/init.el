@@ -732,7 +732,8 @@ If CLEAR is specified, clear them instead."
   :demand t
   :bind (:map projectile-mode-map
           ("C-p f" . projectile-find-file)
-          ("C-p o" . projectile-find-file))
+          ("C-p o" . projectile-find-file)
+          ("C-p C-p" . projectile-switch-project))
   :custom
   (projectile-completion-system 'ivy)
   :config
