@@ -443,6 +443,7 @@ ARGS is `kill-buffer' arguments."
   :config
   (add-hook 'vterm-mode-hook (lambda ()
                                (setq-local global-hl-line-mode nil)
+                               (setq-local cua-mode nil)
                                (undo-tree-mode -1))))
 
 (use-package multi-vterm)
