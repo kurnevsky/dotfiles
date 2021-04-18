@@ -34,3 +34,11 @@ function find_window_id()
 end
 
 mp.add_timeout(1, find_window_id)
+
+function on_shutdown()
+   if window_id and not mp.get_property_native("pause") then
+      resume()
+   end
+end
+
+mp.register_event("shutdown", on_shutdown)
