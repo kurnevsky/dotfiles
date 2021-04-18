@@ -4,17 +4,7 @@ set -euETo pipefail
 shopt -s inherit_errexit
 
 exec bwrap \
-     --ro-bind /usr/bin/mpv /usr/bin/mpv \
-     `# MPV uses xdg-screensaver script to disable screensaver` \
-     --ro-bind /usr/bin/xdg-screensaver /usr/bin/xdg-screensaver \
-     --ro-bind /usr/bin/sh /usr/bin/sh \
-     --ro-bind /usr/bin/bash /usr/bin/bash \
-     --ro-bind /usr/bin/sed /usr/bin/sed \
-     --ro-bind /usr/bin/hostname /usr/bin/hostname \
-     --ro-bind /usr/bin/echo /usr/bin/echo \
-     --ro-bind /usr/bin/grep /usr/bin/grep \
-     --ro-bind /usr/bin/xset /usr/bin/xset \
-     --ro-bind /usr/bin/xscreensaver-command /usr/bin/xscreensaver-command \
+     --ro-bind /usr/bin /usr/bin \
      \
      --ro-bind /usr/share /usr/share \
      \
@@ -38,7 +28,8 @@ exec bwrap \
      --ro-bind /sys/dev /sys/dev \
      --ro-bind /sys/devices /sys/devices \
      \
-     --ro-bind /tmp/.X11-unix /tmp/.X11-unix \
+     `# xdg-screensaver creates a lockfile in /tmp` \
+     --bind /tmp /tmp \
      \
      --ro-bind /etc/fonts /etc/fonts \
      --ro-bind /etc/pulse /etc/pulse \
@@ -50,15 +41,17 @@ exec bwrap \
      --ro-bind ~ ~ \
      --tmpfs ~/.gnupg \
      --tmpfs ~/.ssh \
+     --bind ~/.cache/fontconfig ~/.cache/fontconfig \
      --bind ~/.config/pulse ~/.config/pulse \
      \
      --unsetenv DBUS_SESSION_BUS_ADDRESS \
      --unsetenv MAIL \
      --setenv SHELL /bin/bash \
      \
+     `# unshare-pid breaks xdg-screensaver in a way that it can't detect` \
+     `# process termination and therefore might not enable screensaver` \
      --unshare-user \
      --unshare-ipc \
-     --unshare-pid \
      --unshare-net \
      --unshare-uts \
      --unshare-cgroup \
