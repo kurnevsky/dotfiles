@@ -1255,7 +1255,9 @@ If CLEAR is specified, clear them instead."
       (origami-mode t)
       (lsp-origami-mode t))))
 
-(use-package lsp-treemacs)
+(use-package lsp-treemacs
+  :custom
+  (lsp-treemacs-error-list-current-project-only t))
 
 (use-package lsp-rust
   :straight lsp-mode
