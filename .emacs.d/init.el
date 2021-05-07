@@ -441,6 +441,8 @@ ARGS is `kill-buffer' arguments."
 (use-package vterm
   :bind (:map vterm-mode-map
           ("<f2>"))
+  :custom
+  (vterm-always-compile-module t)
   :config
   (add-hook 'vterm-mode-hook (lambda ()
                                (setq-local global-hl-line-mode nil)
