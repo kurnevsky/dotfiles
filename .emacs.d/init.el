@@ -391,6 +391,7 @@ ARGS is `kill-buffer' arguments."
   :custom
   (sp-highlight-pair-overlay nil)
   (sp-wrap-repeat-last 0)
+  (sp-wrap-respect-direction t)
   :config
   (require 'smartparens-config)
   (defun indent-between-pair (&rest _ignored)
