@@ -1,5 +1,7 @@
 #!/bin/sh
 
+dbus-update-activation-environment --systemd DISPLAY XAUTHORITY
+
 xrdb ~/.Xresources
 
 xsetroot -cursor_name left_ptr
