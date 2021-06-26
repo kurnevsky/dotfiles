@@ -13,6 +13,7 @@ import Graphics.X11.ExtraTypes.XF86
 import System.Exit (exitSuccess)
 import System.Posix.Signals (signalProcess)
 import System.Posix.Types (ProcessID)
+import System.Taffybar.Support.PagerHints (pagerHints)
 import XMonad hiding ((|||))
 import XMonad.Actions.CopyWindow (copy, copyToAll, killAllOtherCopies)
 import XMonad.Actions.GridSelect (gridselect, gridselectWorkspace, GSConfig(..), HasColorizer)
@@ -340,7 +341,7 @@ myStartupHook = do
   spawn "feh --no-fehbg --bg-fill ~/Images/pic-3909-1920x1200.jpg"
   spawn "sleep 1; xscreensaver -no-splash"
 
-myConfig hXmobar = withUrgencyHook NoUrgencyHook $ ewmh def
+myConfig hXmobar = withUrgencyHook NoUrgencyHook $ ewmh $ pagerHints def
   { terminal           = myTerminal
   , focusFollowsMouse  = myFocusFollowsMouse
   , clickJustFocuses   = myClickJustFocuses
