@@ -6,10 +6,12 @@ import Control.Monad.Trans.Class
 import Control.Monad.Trans.Maybe
 import Control.Applicative
 import Data.Char (ord)
+import Data.Foldable (traverse_)
 import qualified Data.Map as M
 import Data.Maybe
 import Data.Monoid
 import Graphics.X11.ExtraTypes.XF86
+import System.Environment (lookupEnv)
 import System.Exit (exitSuccess)
 import System.Posix.Signals (signalProcess)
 import System.Posix.Types (ProcessID)
@@ -309,7 +311,7 @@ myPP hXmobar = xmobarPP { ppOutput = hPutStrLn hXmobar
 
 myLogHook hXmobar = do
   updatePointer (0.5, 0.5) (0, 0)
-  dynamicLogWithPP $ myPP hXmobar
+  traverse_ (dynamicLogWithPP . myPP) hXmobar
 
 myGSConfig :: HasColorizer a => GSConfig a
 myGSConfig = def { gs_cellheight = 200
@@ -363,5 +365,8 @@ myBar = "xmobar ~/.xmonad/xmobar.hs"
 
 main :: IO ()
 main = do
-  hXmobar <- spawnPipe myBar
+  xmobar <- fmap (== Just "xmobar") $ lookupEnv "STATUSBAR"
+  hXmobar <- if xmobar
+             then fmap Just $ spawnPipe myBar
+             else return Nothing
   xmonad $ myConfig hXmobar

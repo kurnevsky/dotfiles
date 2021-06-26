@@ -20,7 +20,25 @@ parcellite &
 
 nm-applet &
 
-trayer --edge top --align left --SetDockType true --SetPartialStrut false --expand true --height 25 --transparent true --alpha 0 --tint 0x000000 --widthtype request --monitor primary &
+STATUSBAR=${STATUSBAR:-taffybar}
+
+if [ "$STATUSBAR" = "xmobar" ]
+then
+  trayer --edge top \
+         --align left \
+         --SetDockType true \
+         --SetPartialStrut false \
+         --expand true \
+         --height 25 \
+         --transparent true \
+         --alpha 0 \
+         --tint 0x000000 \
+         --widthtype request \
+         --monitor primary &
+elif [ "$STATUSBAR" = "taffybar" ]
+then
+  taffybar &
+fi
 
 picom -b --config ~/.config/picom.conf --dbus --glx-fshader-win "$(cat ~/.glsl/negative.glsl)"
 
