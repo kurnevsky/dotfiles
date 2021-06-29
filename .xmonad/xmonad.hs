@@ -24,7 +24,6 @@ import XMonad.Actions.UpdatePointer (updatePointer)
 import XMonad.Actions.WindowMenu (windowMenu)
 import XMonad.Hooks.DynamicLog (dynamicLogWithPP, xmobarPP, PP(..))
 import XMonad.Hooks.EwmhDesktops (ewmh, fullscreenEventHook)
-import XMonad.Hooks.IgnoreNetActiveWindow (ignoreNetActiveWindow)
 import XMonad.Hooks.InsertPosition (insertPosition, Focus(..), Position(..))
 import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, docksStartupHook, manageDocks, ToggleStruts(..))
 import XMonad.Hooks.ManageHelpers (doFullFloat, isDialog, isFullscreen, pid)
@@ -341,7 +340,7 @@ myStartupHook = do
   spawn "feh --no-fehbg --bg-fill ~/Images/pic-3909-1920x1200.jpg"
   spawn "sleep 1; xscreensaver -no-splash"
 
-myConfig hXmobar = ignoreNetActiveWindow (return True) $ withUrgencyHook NoUrgencyHook $ ewmh def
+myConfig hXmobar = withUrgencyHook NoUrgencyHook $ ewmh def
   { terminal           = myTerminal
   , focusFollowsMouse  = myFocusFollowsMouse
   , clickJustFocuses   = myClickJustFocuses
