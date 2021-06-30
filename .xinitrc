@@ -18,12 +18,12 @@ volumeicon &
 
 parcellite &
 
-nm-applet &
-
 STATUSBAR=${STATUSBAR:-taffybar}
 
 if [ "$STATUSBAR" = "xmobar" ]
 then
+  nm-applet &
+
   trayer --edge top \
          --align left \
          --SetDockType true \
@@ -37,6 +37,8 @@ then
          --monitor primary &
 elif [ "$STATUSBAR" = "taffybar" ]
 then
+  nm-applet --indicator &
+
   taffybar &
 fi
 
