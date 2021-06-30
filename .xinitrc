@@ -16,7 +16,7 @@ dunst &
 
 volumeicon &
 
-parcellite &
+clipit &
 
 STATUSBAR=${STATUSBAR:-taffybar}
 
