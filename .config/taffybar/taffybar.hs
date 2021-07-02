@@ -67,7 +67,7 @@ mem = pollingGraphNew memCfg 1 memCallback
 
 battery = batteryIconNew
 
-tray = sniTrayThatStartsWatcherEvenThoughThisIsABadWayToDoIt
+tray = sniTrayNew
 
 weather = weatherNew (defaultWeatherConfig "UMMS") { weatherTemplate = "$stationPlace$ $hour$ $tempC$°C" } 10
 

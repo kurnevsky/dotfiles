@@ -1,6 +1,8 @@
 #!/bin/sh
 
-dbus-update-activation-environment --systemd DISPLAY XAUTHORITY
+dbus-update-activation-environment --systemd DISPLAY XAUTHORITY GDK_PIXBUF_MODULE_FILE
+
+systemctl --user start hm-graphical-session.target
 
 xrdb ~/.Xresources
 
@@ -38,8 +40,6 @@ then
 elif [ "$STATUSBAR" = "taffybar" ]
 then
   nm-applet --indicator &
-
-  taffybar &
 fi
 
 picom -b --config ~/.config/picom.conf --dbus --glx-fshader-win "$(cat ~/.glsl/negative.glsl)"
@@ -48,4 +48,7 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 
 export QT_QPA_PLATFORMTHEME=qt5ct
 
-exec xmonad 2>> ~/.xsession-errors
+xmonad 2>> ~/.xsession-errors
+
+systemctl --user stop graphical-session.target
+systemctl --user stop graphical-session-pre.target
