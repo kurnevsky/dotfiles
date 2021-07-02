@@ -3,6 +3,7 @@
 
 import Control.Exception
 import Control.Monad.Trans.Reader
+import System.Log.Logger
 import System.Taffybar
 import System.Taffybar.Context (TaffybarConfig)
 import System.Taffybar.Hooks
@@ -122,4 +123,9 @@ taffybarConfig =
      toTaffyConfig myConfig
 
 main :: IO ()
-main = startTaffybar taffybarConfig
+main = do
+  taffyLogger <- getLogger "System.Taffybar"
+  trayLogger <- getLogger "StatusNotifier.Tray"
+  saveGlobalLogger $ setLevel WARNING taffyLogger
+  saveGlobalLogger $ setLevel WARNING trayLogger
+  startTaffybar taffybarConfig
