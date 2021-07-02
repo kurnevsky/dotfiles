@@ -91,6 +91,7 @@ myGetWindowIconPixbuf = scaledWindowIconPixbufGetter $
 myWorkspacesConfig = defaultWorkspacesConfig
   { showWorkspaceFn = hideEmpty
   , getWindowIconPixbuf = myGetWindowIconPixbuf
+  , iconSort = return . id
   }
 
 workspaces = workspacesNew myWorkspacesConfig
