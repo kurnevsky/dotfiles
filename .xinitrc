@@ -16,8 +16,6 @@ gnome-keyring-daemon
 
 dunst &
 
-clipit &
-
 STATUSBAR=${STATUSBAR:-taffybar}
 
 if [ "$STATUSBAR" = "xmobar" ]
