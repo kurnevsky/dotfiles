@@ -16,8 +16,6 @@ gnome-keyring-daemon
 
 dunst &
 
-volumeicon &
-
 clipit &
 
 STATUSBAR=${STATUSBAR:-taffybar}
