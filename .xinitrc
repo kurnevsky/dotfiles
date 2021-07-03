@@ -14,8 +14,6 @@ numlockx
 
 gnome-keyring-daemon
 
-dunst &
-
 STATUSBAR=${STATUSBAR:-taffybar}
 
 if [ "$STATUSBAR" = "xmobar" ]
