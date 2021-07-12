@@ -234,7 +234,7 @@ user_pref("dom.disable_beforeunload", true);
 // 2414: disable shaking the screen
 user_pref("dom.vibrator.enabled", false);
 // 2429: enable (limited but sufficient) window.opener protection
-user_pref("dom.targetBlankNoOpener.enabled", true)
+user_pref("dom.targetBlankNoOpener.enabled", true);
 
 /*** [SECTION 2600]: MISCELLANEOUS ***/
 
