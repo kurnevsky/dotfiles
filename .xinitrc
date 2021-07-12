@@ -6,8 +6,6 @@ systemctl --user start hm-graphical-session.target
 
 xrdb ~/.Xresources
 
-xsetroot -cursor_name left_ptr
-
 syndaemon -d -t -k -R
 
 numlockx
