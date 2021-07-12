@@ -40,7 +40,4 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 
 export QT_QPA_PLATFORMTHEME=qt5ct
 
-xmonad 2>> ~/.xsession-errors
-
-systemctl --user stop graphical-session.target
-systemctl --user stop graphical-session-pre.target
+exec ~/.xsession
