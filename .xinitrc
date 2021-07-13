@@ -16,8 +16,6 @@ STATUSBAR=${STATUSBAR:-taffybar}
 
 if [ "$STATUSBAR" = "xmobar" ]
 then
-  nm-applet &
-
   trayer --edge top \
          --align left \
          --SetDockType true \
@@ -29,9 +27,6 @@ then
          --tint 0x000000 \
          --widthtype request \
          --monitor primary &
-elif [ "$STATUSBAR" = "taffybar" ]
-then
-  nm-applet --indicator &
 fi
 
 picom -b --config ~/.config/picom.conf --dbus --glx-fshader-win "$(cat ~/.glsl/negative.glsl)"
