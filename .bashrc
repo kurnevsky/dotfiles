@@ -19,8 +19,5 @@ export GPG_TTY=$(tty)
 # It causes segfaults
 export MAGICK_OCL_DEVICE=OFF
 
-alias ls='ls --color=auto'
-alias grep='grep --color=auto'
-
 # Set cursor type to steady bar
 echo -e -n "\x1b[\x36 q"

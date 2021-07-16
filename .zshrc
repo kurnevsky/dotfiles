@@ -1,52 +1,5 @@
 [[ $TERM == 'dumb' ]] && unsetopt zle && PS1='$ ' && return
 
-# History file
-HISTFILE=~/.histfile
-# The number of lines the shell will keep within one session
-HISTSIZE=25000
-# The number of lines of history will be saved
-SAVEHIST=20000
-PROMPT='[%n@%m %~]$ '
-# Maximum input length for zsh-autosuggestions
-ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=10
-
-# Remove all duplicates of current command from history, add current to end
-setopt hist_ignore_all_dups
-# Don't save any commands beginning with space
-setopt hist_ignore_space
-# Enable extended globs to interpret things like rm ^(file|file2)
-setopt extended_glob
-# Don't beep even if zsh don't like something
-setopt no_beep
-# Change directory even if user forgot to put 'cd' command in front, but entered path is valid
-setopt auto_cd
-# If possible, correct commands
-setopt correct
-# Append their history list to the history file, rather than replace it
-setopt append_history
-# If a pattern for filename generation has no matches, print an error, instead of leaving it unchanged in the argument list
-setopt nomatch
-# Report the status of background jobs immediately, rather than waiting until just before printing a prompt
-setopt notify
-# Allow parameter expansion, command substitution and arithmetic expansion for prompt string
-setopt prompt_subst
-# Remove any right prompt from display when accepting a command line
-setopt transient_rprompt
-# File completion after =
-setopt magic_equal_subst
-# Apply globbing to hidden files
-setopt glob_dots
-
-# Syntax highlighting
-[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && \
-  source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-# Automatically search the official repositories through pkgfile, when entering an unrecognized command
-[ -f /usr/share/doc/pkgfile/command-not-found.zsh ] && \
-  source /usr/share/doc/pkgfile/command-not-found.zsh
-# Autocomplete with history.
-[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ] && \
-  source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-
 # Set LS_COLORS environment variable
 eval $(dircolors)
 
@@ -132,25 +85,19 @@ then
   bindkey '^R' skim-history-widget
 fi
 
-alias ls='ls --color=auto'
-alias grep='grep --color=auto'
 alias zmv='noglob zmv -W'
 aliases[=]='noglob zcalc -e'
 
-export PATH=~/.bin-bw:~/.bin:~/.cabal/bin:$PATH
+export PATH=~/.bin:$PATH
 
 export ALTERNATE_EDITOR=nano
-export EDITOR=emacsclient
 export VIEWER=less
-export AUR_PAGER=mc
 
 if command -v src-hilite-lesspipe.sh > /dev/null
 then
   export LESSOPEN="| src-hilite-lesspipe.sh %s"
   export LESS=' -R '
 fi
-
-export GPG_TTY=$(tty)
 
 # It causes segfaults
 export MAGICK_OCL_DEVICE=OFF
