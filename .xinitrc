@@ -8,8 +8,6 @@ xrdb ~/.Xresources
 
 numlockx
 
-gnome-keyring-daemon
-
 STATUSBAR=${STATUSBAR:-taffybar}
 
 if [ "$STATUSBAR" = "xmobar" ]
