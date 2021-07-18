@@ -6,8 +6,6 @@ systemctl --user start hm-graphical-session.target
 
 xrdb ~/.Xresources
 
-syndaemon -d -t -k -R
-
 numlockx
 
 gnome-keyring-daemon
