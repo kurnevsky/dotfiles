@@ -6,8 +6,6 @@ systemctl --user start hm-graphical-session.target
 
 xrdb ~/.Xresources
 
-numlockx
-
 STATUSBAR=${STATUSBAR:-taffybar}
 
 if [ "$STATUSBAR" = "xmobar" ]
