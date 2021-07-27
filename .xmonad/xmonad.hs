@@ -42,7 +42,6 @@ import XMonad.Layout.Minimize (minimize)
 import XMonad.Layout.Named (named)
 import XMonad.Layout.NoBorders (smartBorders)
 import XMonad.Prompt.Shell (shellPrompt)
-import XMonad.Layout.Simplest
 import XMonad.Layout.Spacing (smartSpacing)
 import XMonad.Layout.TrackFloating (trackFloating)
 import XMonad.Prompt (XPConfig(..), XPPosition(..))
@@ -273,7 +272,7 @@ myLayout = fullLayoutModifiers fullLayout |||
   tiledLayoutModifiers = named "Tiled" . dwmStyle shrinkText myTheme . smartBorders . smartSpacing 2 . avoidStruts . maximize . minimize . boringWindows
   mirrorLayoutModifiers = named "Mirror" . dwmStyle shrinkText myTheme . smartBorders . smartSpacing 2 . avoidStruts . maximize . minimize . boringWindows
   gridLayoutModifiers = named "Grid" . dwmStyle shrinkText myTheme . smartBorders . smartSpacing 2 . avoidStruts . maximize . minimize . boringWindows
-  fullLayout = Simplest
+  fullLayout = Full
   tiledLayout = Tall nmaster delta ratio
   mirrorLayout = Mirror tiledLayout
   gridLayout = Grid
