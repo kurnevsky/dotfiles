@@ -1,5 +1,6 @@
 {-# LANGUAGE OverloadedStrings, ScopedTypeVariables #-}
 {-# OPTIONS_GHC -O2 #-}
+module Main where
 
 import Control.Exception
 import Control.Monad.Trans.Reader
