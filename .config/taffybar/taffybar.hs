@@ -31,7 +31,7 @@ netCfg = myGraphConfig
 memCallback :: IO [Double]
 memCallback = do
   mi <- parseMeminfo
-  return [memoryUsedRatio mi, memorySwapUsed mi]
+  return [memoryUsedRatio mi, memorySwapUsedRatio mi]
 
 cpuCallback :: IO [Double]
 cpuCallback = do
