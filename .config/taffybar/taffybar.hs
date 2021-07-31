@@ -13,7 +13,7 @@ import System.Taffybar.SimpleConfig
 import System.Taffybar.Util ((<|||>))
 import System.Taffybar.Widget
 import System.Taffybar.Widget.Generic.PollingGraph
-import System.Taffybar.Widget.Text.NetworkMonitor
+import System.Taffybar.Widget.NetworkGraphWithTooltip
 
 myGraphConfig, netCfg, memCfg, cpuCfg, diskCfg :: GraphConfig
 myGraphConfig = defaultGraphConfig
@@ -55,9 +55,7 @@ diskCfg = myGraphConfig
 
 mpris2 = mpris2New
 
-net = networkGraphNew netCfg Nothing
-
-netMon = networkMonitorNew defaultNetFormat Nothing
+net = networkGraphNewWithTooltip netCfg Nothing
 
 disk = dioMonitorNew diskCfg 1 "sda"
 
@@ -112,7 +110,6 @@ taffybarConfig =
           , mem
           , cpu
           , disk
-          , netMon
           , net
           , mpris2
           ]
