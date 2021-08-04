@@ -1,7 +1,5 @@
 #!/bin/sh
 
-dbus-update-activation-environment --systemd DISPLAY XAUTHORITY GDK_PIXBUF_MODULE_FILE
-
 systemctl --user start hm-graphical-session.target
 
 xrdb ~/.Xresources
