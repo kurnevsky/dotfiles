@@ -54,7 +54,9 @@ diskCfg = myGraphConfig
 
 mpris2 = mpris2New
 
-net = networkGraphNew netCfg Nothing
+net = networkGraphNewWith defaultNetworkGraphConfig { networkGraphGraphConfig = netCfg
+                                                    , networkGraphScale = (/ (8 * 1024 * 1024))
+                                                    } Nothing
 
 disk = dioMonitorNew diskCfg 1 "sda"
 
