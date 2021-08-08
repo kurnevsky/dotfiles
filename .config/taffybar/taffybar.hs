@@ -3,6 +3,8 @@
 
 import Control.Exception
 import Control.Monad.Trans.Reader
+import qualified GI.Gtk
+import GI.Gtk.Objects.Widget (widgetSetTooltipMarkup)
 import System.Log.Logger
 import System.Taffybar
 import System.Taffybar.Context (TaffybarConfig)
@@ -10,9 +12,10 @@ import System.Taffybar.Hooks
 import System.Taffybar.Information.CPU
 import System.Taffybar.Information.Memory
 import System.Taffybar.SimpleConfig
-import System.Taffybar.Util ((<|||>))
+import System.Taffybar.Util ((<|||>), postGUIASync)
 import System.Taffybar.Widget
 import System.Taffybar.Widget.Generic.PollingGraph
+import System.Taffybar.Widget.Generic.PollingGraphWithWidget
 
 myGraphConfig, netCfg, memCfg, cpuCfg, diskCfg :: GraphConfig
 myGraphConfig = defaultGraphConfig
@@ -27,9 +30,11 @@ netCfg = myGraphConfig
   , graphLabel = Just "net "
   }
 
-memCallback :: IO [Double]
-memCallback = do
+memCallback :: GI.Gtk.Widget -> IO [Double]
+memCallback widget = do
   mi <- parseMeminfo
+  let tooltip = showMemoryInfo "Memory: $used$" 3 mi
+  postGUIASync $ widgetSetTooltipMarkup widget $ Just tooltip
   return [memoryUsedRatio mi, memorySwapUsedRatio mi]
 
 cpuCallback :: IO [Double]
@@ -56,13 +61,13 @@ mpris2 = mpris2New
 
 net = networkGraphNewWith defaultNetworkGraphConfig { networkGraphGraphConfig = netCfg
                                                     , networkGraphScale = (/ (8 * 1024 * 1024))
-                                                    } Nothing
+                                                    }
 
 disk = dioMonitorNew diskCfg 1 "sda"
 
 cpu = pollingGraphNew cpuCfg 1 cpuCallback
 
-mem = pollingGraphNew memCfg 1 memCallback
+mem = pollingGraphNewWithWidget memCfg 1 memCallback
 
 battery = batteryIconNew
 
