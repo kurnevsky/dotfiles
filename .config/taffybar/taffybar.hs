@@ -3,6 +3,7 @@
 
 import Control.Exception
 import Control.Monad.Trans.Reader
+import Data.Text (pack)
 import qualified GI.Gtk
 import GI.Gtk.Objects.Widget (widgetSetTooltipMarkup)
 import System.Log.Logger
@@ -38,9 +39,13 @@ memCallback widget = do
   postGUIASync $ widgetSetTooltipMarkup widget $ Just tooltip
   return [memoryUsedRatio mi, memorySwapUsedRatio mi]
 
-cpuCallback :: IO [Double]
-cpuCallback = do
+cpuCallback :: GI.Gtk.Widget -> IO [Double]
+cpuCallback widget = do
   (_, systemLoad, totalLoad) <- cpuLoad
+  let totalLoadStr = show $ round $ totalLoad * 100
+      systemLoadStr = show $ round $ systemLoad * 100
+      tooltip = pack $ "Total:\t" ++ totalLoadStr ++ "%\nSystem:\t" ++ systemLoadStr ++ "%"
+  postGUIASync $ widgetSetTooltipMarkup widget $ Just tooltip
   return [totalLoad, systemLoad]
 
 memCfg = myGraphConfig
@@ -68,7 +73,7 @@ net = networkGraphNewWith defaultNetworkGraphConfig { networkGraphGraphConfig = 
 
 disk = dioMonitorNew diskCfg 1 "sda" >>= withClass "graph"
 
-cpu = pollingGraphNew cpuCfg 1 cpuCallback >>= withClass "graph"
+cpu = pollingGraphNewWithWidget cpuCfg 1 cpuCallback >>= withClass "graph"
 
 mem = pollingGraphNewWithWidget memCfg 1 memCallback >>= withClass "graph"
 
