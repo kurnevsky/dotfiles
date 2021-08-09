@@ -93,3 +93,7 @@
 .taffy-window menuitem:hover, menuitem:hover {
 	background-color: midnightblue;
 }
+
+.graph > * {
+    color: skyblue;
+}

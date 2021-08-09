@@ -16,6 +16,7 @@ import System.Taffybar.Util ((<|||>), postGUIASync)
 import System.Taffybar.Widget
 import System.Taffybar.Widget.Generic.PollingGraph
 import System.Taffybar.Widget.Generic.PollingGraphWithWidget
+import System.Taffybar.Widget.Util (widgetSetClassGI)
 
 myGraphConfig, netCfg, memCfg, cpuCfg, diskCfg :: GraphConfig
 myGraphConfig = defaultGraphConfig
@@ -59,15 +60,17 @@ diskCfg = myGraphConfig
 
 mpris2 = mpris2New
 
+withClass c w = widgetSetClassGI w "graph" >> return w
+
 net = networkGraphNewWith defaultNetworkGraphConfig { networkGraphGraphConfig = netCfg
                                                     , networkGraphScale = (/ (8 * 1024 * 1024))
-                                                    }
+                                                    } >>= withClass "graph"
 
-disk = dioMonitorNew diskCfg 1 "sda"
+disk = dioMonitorNew diskCfg 1 "sda" >>= withClass "graph"
 
-cpu = pollingGraphNew cpuCfg 1 cpuCallback
+cpu = pollingGraphNew cpuCfg 1 cpuCallback >>= withClass "graph"
 
-mem = pollingGraphNewWithWidget memCfg 1 memCallback
+mem = pollingGraphNewWithWidget memCfg 1 memCallback >>= withClass "graph"
 
 battery = batteryIconNew
 
