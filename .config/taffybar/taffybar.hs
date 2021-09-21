@@ -3,9 +3,7 @@
 
 import Control.Exception
 import Control.Monad.Trans.Reader
-import Data.Text (pack)
-import qualified GI.Gtk
-import GI.Gtk.Objects.Widget (widgetSetTooltipMarkup)
+import qualified Data.Text as T
 import System.Log.Logger
 import System.Taffybar
 import System.Taffybar.Context (TaffybarConfig)
@@ -13,10 +11,9 @@ import System.Taffybar.Hooks
 import System.Taffybar.Information.CPU
 import System.Taffybar.Information.Memory
 import System.Taffybar.SimpleConfig
-import System.Taffybar.Util ((<|||>), postGUIASync)
+import System.Taffybar.Util ((<|||>))
 import System.Taffybar.Widget
 import System.Taffybar.Widget.Generic.PollingGraph
-import System.Taffybar.Widget.Generic.PollingGraphWithWidget
 import System.Taffybar.Widget.Util (widgetSetClassGI)
 
 myGraphConfig, netCfg, memCfg, cpuCfg, diskCfg :: GraphConfig
@@ -32,21 +29,19 @@ netCfg = myGraphConfig
   , graphLabel = Just "net "
   }
 
-memCallback :: GI.Gtk.Widget -> IO [Double]
-memCallback widget = do
+memCallback :: IO ([Double], Maybe T.Text)
+memCallback = do
   mi <- parseMeminfo
   let tooltip = showMemoryInfo "Memory: $used$" 3 mi
-  postGUIASync $ widgetSetTooltipMarkup widget $ Just tooltip
-  return [memoryUsedRatio mi, memorySwapUsedRatio mi]
+  return ([memoryUsedRatio mi, memorySwapUsedRatio mi], Just tooltip)
 
-cpuCallback :: GI.Gtk.Widget -> IO [Double]
-cpuCallback widget = do
+cpuCallback :: IO ([Double], Maybe T.Text)
+cpuCallback = do
   (_, systemLoad, totalLoad) <- cpuLoad
   let totalLoadStr = show $ round $ totalLoad * 100
       systemLoadStr = show $ round $ systemLoad * 100
-      tooltip = pack $ "Total:\t" ++ totalLoadStr ++ "%\nSystem:\t" ++ systemLoadStr ++ "%"
-  postGUIASync $ widgetSetTooltipMarkup widget $ Just tooltip
-  return [totalLoad, systemLoad]
+      tooltip = T.pack $ "Total:\t" ++ totalLoadStr ++ "%\nSystem:\t" ++ systemLoadStr ++ "%"
+  return ([totalLoad, systemLoad], Just tooltip)
 
 memCfg = myGraphConfig
   { graphDataColors = [(1, 1, 1, 1), (0.5, 0.5, 0.5, 1)]
@@ -73,9 +68,9 @@ net = networkGraphNewWith defaultNetworkGraphConfig { networkGraphGraphConfig = 
 
 disk = dioMonitorNew diskCfg 1 "sda" >>= withClass "graph"
 
-cpu = pollingGraphNewWithWidget cpuCfg 1 cpuCallback >>= withClass "graph"
+cpu = pollingGraphNewWithTooltip cpuCfg 1 cpuCallback >>= withClass "graph"
 
-mem = pollingGraphNewWithWidget memCfg 1 memCallback >>= withClass "graph"
+mem = pollingGraphNewWithTooltip memCfg 1 memCallback >>= withClass "graph"
 
 battery = batteryIconNew
 
