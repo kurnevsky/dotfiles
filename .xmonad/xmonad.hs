@@ -177,13 +177,13 @@ myKeys conf@XConfig { XMonad.modMask = modm } = M.union (planeKeys modm (Lines 3
   -- Toggle window state back.
   , ((modm .|. shiftMask, xK_v), killAllOtherCopies)
   -- Increase monitor backlight level.
-  , ((0, xF86XK_MonBrightnessUp), spawn "xbacklight -inc 10")
+  , ((0, xF86XK_MonBrightnessUp), spawn "brightnessctl s 10%+")
   -- Decrease monitor backlight level.
-  , ((0, xF86XK_MonBrightnessDown), spawn "xbacklight -dec 10")
+  , ((0, xF86XK_MonBrightnessDown), spawn "brightnessctl s 10%-")
   -- Set monitor backlight level to maximum value.
-  , ((shiftMask, xF86XK_MonBrightnessUp), spawn "xbacklight = 100")
+  , ((shiftMask, xF86XK_MonBrightnessUp), spawn "brightnessctl s 100%")
   -- Set monitor backlight level to minimum value.
-  , ((shiftMask, xF86XK_MonBrightnessDown), spawn "xbacklight = 1")
+  , ((shiftMask, xF86XK_MonBrightnessDown), spawn "brightnessctl s 1%")
   -- Toggle microphone.
   , ((0, xF86XK_AudioMicMute), spawn "pactl set-source-mute @DEFAULT_SOURCE@ toggle")
   -- Toggle sound.
