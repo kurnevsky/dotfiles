@@ -5,13 +5,10 @@ import Control.Monad
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Maybe
 import Control.Applicative
-import Data.Char (ord)
-import Data.Foldable (traverse_)
 import qualified Data.Map as M
 import Data.Maybe
 import Data.Monoid
 import Graphics.X11.ExtraTypes.XF86
-import System.Environment (lookupEnv)
 import System.Exit (exitSuccess)
 import System.Posix.Signals (signalProcess)
 import System.Posix.Types (ProcessID)
@@ -25,7 +22,6 @@ import XMonad.Actions.Plane (planeKeys, Limits(..), Lines(..))
 import XMonad.Actions.SwapWorkspaces (swapWithCurrent)
 import XMonad.Actions.UpdatePointer (updatePointer)
 import XMonad.Actions.WindowMenu (windowMenu)
-import XMonad.Hooks.DynamicLog (dynamicLogWithPP, xmobarPP, PP(..))
 import XMonad.Hooks.EwmhDesktops (ewmh, fullscreenEventHook)
 import XMonad.Hooks.InsertPosition (insertPosition, Focus(..), Position(..))
 import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, docksStartupHook, manageDocks, ToggleStruts(..))
@@ -50,8 +46,7 @@ import XMonad.Prompt.FuzzyMatch (fuzzyMatch, fuzzySort)
 import qualified XMonad.StackSet as SS
 import XMonad.Util.Compton (invert)
 import XMonad.Util.NamedWindows (getName)
-import XMonad.Util.Run (hPutStrLn, runProcessWithInput, spawnPipe)
-import XMonad.Xmobar.Actions (stripActions)
+import XMonad.Util.Run (runProcessWithInput)
 
 myTerminal = "alacritty"
 
@@ -287,30 +282,7 @@ myManageHook = manageDocks <> (isFullscreen --> doFullFloat) <> (masterCondition
 
 myEventHook e = minimizeEventHook e <> fullscreenEventHook e <> docksEventHook e
 
-xmobarWorkspace :: String -> String
-xmobarWorkspace [ws] | ws > '0' && ws <= '9' =
-  let n = ord ws - ord '1' in "<action=`xdotool key super+" ++ [ws] ++ "` button=3><action=wmctrl -s +" ++ show n ++ ">" ++ [ws] ++ "</action></action>"
-xmobarWorkspace ws = stripActions ws
-
-xmobarLayout :: String -> String
-xmobarLayout l = "<action=`xdotool key super+shift+space` button=3><action=xdotool key super+space>" ++ stripActions l ++ "</action></action>"
-
-xmobarTitle :: String -> String
-xmobarTitle = stripActions
-
-myPP hXmobar = xmobarPP { ppOutput = hPutStrLn hXmobar
-                        , ppCurrent = ppCurrent xmobarPP . xmobarWorkspace
-                        , ppVisible = ppVisible xmobarPP . xmobarWorkspace
-                        , ppHidden = ppHidden xmobarPP . xmobarWorkspace
-                        , ppHiddenNoWindows = ppHiddenNoWindows xmobarPP . xmobarWorkspace
-                        , ppUrgent = ppUrgent xmobarPP . xmobarWorkspace
-                        , ppLayout = ppLayout xmobarPP . xmobarLayout
-                        , ppTitle = ppTitle xmobarPP . xmobarTitle
-                        }
-
-myLogHook hXmobar = do
-  updatePointer (0.5, 0.5) (0, 0)
-  traverse_ (dynamicLogWithPP . myPP) hXmobar
+myLogHook = updatePointer (0.5, 0.5) (0, 0)
 
 myGSConfig :: HasColorizer a => GSConfig a
 myGSConfig = def { gs_cellheight = 200
@@ -341,7 +313,7 @@ myStartupHook = do
   spawn "sleep 1; xmodmap ~/.Xmodmap"
   spawn "feh --no-fehbg --bg-fill ~/Images/pic-3909-1920x1200.jpg"
 
-myConfig hXmobar = withUrgencyHook NoUrgencyHook $ ewmh $ pagerHints def
+myConfig = withUrgencyHook NoUrgencyHook $ ewmh $ pagerHints def
   { terminal           = myTerminal
   , focusFollowsMouse  = myFocusFollowsMouse
   , clickJustFocuses   = myClickJustFocuses
@@ -355,16 +327,9 @@ myConfig hXmobar = withUrgencyHook NoUrgencyHook $ ewmh $ pagerHints def
   , layoutHook         = myLayout
   , manageHook         = myManageHook
   , handleEventHook    = myEventHook
-  , logHook            = myLogHook hXmobar
+  , logHook            = myLogHook
   , startupHook        = myStartupHook
   }
 
-myBar = "xmobar ~/.xmonad/xmobar.hs"
-
 main :: IO ()
-main = do
-  xmobar <- fmap (== Just "xmobar") $ lookupEnv "STATUSBAR"
-  hXmobar <- if xmobar
-             then fmap Just $ spawnPipe myBar
-             else return Nothing
-  xmonad $ myConfig hXmobar
+main = xmonad myConfig
