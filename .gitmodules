@@ -1,3 +1,0 @@
-[submodule ".emacs.d/straight/repos/straight.el"]
-	path = .emacs.d/straight/repos/straight.el
-	url = https://github.com/raxod502/straight.el.git
